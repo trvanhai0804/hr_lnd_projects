@@ -3,32 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday!</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Portfolio Hero Page</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-    <!-- Start Screen -->
-    <section class="card" id="startCard">
-        <h1>🎁 Surprise!</h1>
-        <p>Someone has prepared a special birthday surprise for you.</p>
-        <button id="startButton">Click To Open 🎂</button>
+    <header>
+        <div class="logo">Ale<span>X</span></div>
+
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">About Me</a>
+            <a href="#">Services</a>
+            <a href="#">Portfolio</a>
+            <a href="#">Contact</a>
+        </nav>
+
+        <button class="btn">Connect With Me</button>
+    </header>
+
+    <section class="hero">
+
+        <img src="images/profile.jpg" class="profile-img" alt="Profile Image">
+
+        <h1>
+            I'm <span class="gradient-text">Alex Bennett</span>,
+            frontend developer based in USA.
+        </h1>
+
+        <p>
+            I am a frontend developer from California, USA with 10 years of experience
+            in multiple companies like Microsoft, Tesla and Apple.
+        </p>
+
+        <div class="hero-buttons">
+            <button class="btn">Connect with me</button>
+            <button class="outline-btn">My Resume</button>
+        </div>
+
     </section>
 
-    <!-- Birthday Main Card -->
-    <section class="card hidden" id="birthdayCard">
-        <h1 id="birthdayTitle">🎉 Happy Birthday! 🎉</h1>
-        <div class="name" id="birthdayName">Shival</div>
-        <img class="birthday-photo" id="birthdayPhoto" src="" alt="Birthday Photo">
-
-        <div id="birthdayMessages"></div>
-    </section>
-
-    <!-- Message shown after user clicks gifts / bubbles -->
-    <div id="giftMessage" class="hidden">Click the floating surprises 🎁</div>
-
-    <!-- JS files: config first, app second -->
-    <script src="js/config.js"></script>
-    <script src="js/app.js"></script>
 </body>
 </html>
