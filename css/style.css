@@ -1,266 +1,161 @@
-/* =========================================================
-   GLOBAL SETTINGS
-   Change color, font, card size here
-   ========================================================= */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', sans-serif;
+/* Reset */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
 }
 
-body {
-    min-height: 100vh;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg, #0070c0, #8e44ad, #ff6b81);
+/* Body */
+body{
+    background:#111;
+    color:white;
+    min-height:100vh;
 }
 
-.hidden {
-    display: none;
+/* Header */
+header{
+    width:100%;
+    padding:25px 10%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
 
-/* =========================================================
-   MAIN CARD
-   ========================================================= */
-.card {
-    width: 90%;
-    max-width: 700px;
-    padding: 40px;
-    border-radius: 30px;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(15px);
-    text-align: center;
-    color: white;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
-    z-index: 10;
-    animation: popIn 0.8s ease;
+.logo{
+    font-size:32px;
+    font-weight:bold;
 }
 
-h1 {
-    font-size: 52px;
-    margin-bottom: 15px;
-    animation: bounce 1.5s infinite;
+.logo span{
+    color:#d946ef;
 }
 
-.name {
-    font-size: 40px;
-    font-weight: 700;
-    color: #fff700;
-    margin-bottom: 20px;
+nav{
+    display:flex;
+    gap:30px;
 }
 
-p {
-    font-size: 20px;
-    line-height: 1.6;
-    margin-bottom: 20px;
+nav a{
+    color:white;
+    text-decoration:none;
+    font-size:14px;
+    transition:0.3s;
 }
 
-button {
-    border: none;
-    padding: 15px 35px;
-    border-radius: 999px;
-    cursor: pointer;
-    background: white;
-    color: #0070c0;
-    font-size: 20px;
-    font-weight: 700;
-    transition: 0.3s;
+nav a:hover{
+    color:#d946ef;
 }
 
-button:hover {
-    transform: scale(1.08);
-    background: #fff700;
+/* Buttons */
+.btn{
+    padding:14px 28px;
+    border:none;
+    border-radius:30px;
+    background:linear-gradient(
+        90deg,
+        #c026d3,
+        #fb923c
+    );
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
 }
 
-.birthday-photo {
-    width: 220px;
-    height: 220px;
-    object-fit: cover;
-    border-radius: 50%;
-    display: block;
-    margin: 20px auto;
-    border: 6px solid rgba(255, 255, 255, 0.9);
-    box-shadow:
-        0 0 20px rgba(255, 255, 255, 0.7),
-        0 0 50px rgba(255, 255, 255, 0.4);
-    animation: photoFloat 3s ease-in-out infinite;
+.outline-btn{
+    padding:14px 35px;
+    border-radius:30px;
+    border:2px solid white;
+    background:transparent;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
 }
 
-/* =========================================================
-   FLOATING EFFECTS
-   ========================================================= */
-.emoji {
-    position: absolute;
-    font-size: 40px;
-    animation: floatUp linear forwards;
-    pointer-events: none;
+/* Hero Section */
+.hero{
+    min-height:calc(100vh - 100px);
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    text-align:center;
+    padding:20px;
 }
 
-.confetti {
-    position: absolute;
-    width: 10px;
-    height: 20px;
-    animation: fall linear forwards;
-    z-index: 50;
+/* Profile Image */
+.profile-img{
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    border:12px solid #d9d9d9;
+    object-fit:cover;
+    margin-bottom:35px;
 }
 
-.bubble {
-    position: absolute;
-    width: 95px;
-    height: 95px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.22);
-    border: 2px solid rgba(255, 255, 255, 0.65);
-    box-shadow:
-        inset 0 0 25px rgba(255, 255, 255, 0.45),
-        0 0 25px rgba(255, 255, 255, 0.35);
-    cursor: pointer;
-    z-index: 25;
-    animation: bubbleMove 12s ease-in-out infinite;
+/* Heading */
+.hero h1{
+    font-size:56px;
+    font-weight:700;
+    max-width:900px;
+    line-height:1.2;
 }
 
-.bubble:hover {
-    filter: brightness(1.3);
-    box-shadow:
-        inset 0 0 30px rgba(255, 255, 255, 0.7),
-        0 0 35px rgba(255, 255, 255, 0.8);
+/* Gradient Text */
+.gradient-text{
+    background:linear-gradient(
+        90deg,
+        #c026d3,
+        #fb923c
+    );
+
+    -webkit-background-clip:text;
+    color:transparent;
 }
 
-.bubble.popped {
-    animation: pop 0.25s ease forwards;
+/* Description */
+.hero p{
+    margin-top:25px;
+    max-width:700px;
+    color:#d4d4d4;
+    font-size:16px;
+    line-height:1.8;
 }
 
-.floating-gift {
-    position: absolute;
-    font-size: 60px;
-    cursor: pointer;
-    z-index: 20;
-    user-select: none;
-    animation: giftFloat 6s ease-in-out infinite;
-    transition: 0.3s;
+/* Buttons Group */
+.hero-buttons{
+    margin-top:35px;
+    display:flex;
+    gap:20px;
 }
 
-.floating-gift:hover {
-    transform: scale(1.35) rotate(10deg);
-    filter: drop-shadow(0 0 15px #fff700);
-}
+/* Responsive */
+@media(max-width:768px){
 
-.floating-gift.opened {
-    pointer-events: none;
-    opacity: 0.45;
-    animation: none;
-}
-
-.revealed-image {
-    position: absolute;
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 25px;
-    border: 4px solid white;
-    z-index: 60;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
-    animation: imagePop 0.7s ease;
-}
-
-#giftMessage {
-    position: fixed;
-    left: 50%;
-    bottom: 45px;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.35);
-    color: #fff700;
-    font-size: 26px;
-    font-weight: 700;
-    padding: 15px 30px;
-    border-radius: 999px;
-    z-index: 100;
-    min-width: 300px;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-/* =========================================================
-   ANIMATIONS
-   ========================================================= */
-@keyframes photoFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
-
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
-
-@keyframes popIn {
-    from { opacity: 0; transform: scale(0.8); }
-    to { opacity: 1; transform: scale(1); }
-}
-
-@keyframes floatUp {
-    from { transform: translateY(100vh) rotate(0deg); opacity: 1; }
-    to { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
-}
-
-@keyframes fall {
-    from { transform: translateY(-20px) rotate(0deg); opacity: 1; }
-    to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
-}
-
-@keyframes bubbleMove {
-    0% { transform: translate(0, 0) scale(1); }
-    20% { transform: translate(45px, -35px) scale(1.05); }
-    40% { transform: translate(-35px, -70px) scale(0.95); }
-    60% { transform: translate(60px, 25px) scale(1.08); }
-    80% { transform: translate(-45px, 40px) scale(1); }
-    100% { transform: translate(0, 0) scale(1); }
-}
-
-@keyframes pop {
-    to { transform: scale(1.8); opacity: 0; }
-}
-
-@keyframes imagePop {
-    from { transform: scale(0.3) rotate(-10deg); opacity: 0; }
-    to { transform: scale(1) rotate(0deg); opacity: 1; }
-}
-
-@keyframes giftFloat {
-    0%, 100% { transform: translateY(0) rotate(-5deg); }
-    50% { transform: translateY(-25px) rotate(5deg); }
-}
-
-/* =========================================================
-   MOBILE RESPONSIVE
-   ========================================================= */
-@media (max-width: 600px) {
-    .card {
-        padding: 28px;
+    header{
+        flex-direction:column;
+        gap:20px;
+        padding:20px;
     }
 
-    h1 {
-        font-size: 36px;
+    nav{
+        flex-wrap:wrap;
+        justify-content:center;
+        gap:15px;
     }
 
-    .name {
-        font-size: 32px;
+    .hero h1{
+        font-size:36px;
     }
 
-    p {
-        font-size: 17px;
+    .profile-img{
+        width:140px;
+        height:140px;
     }
 
-    .birthday-photo {
-        width: 170px;
-        height: 170px;
-    }
-
-    #giftMessage {
-        font-size: 18px;
-        min-width: 260px;
+    .hero-buttons{
+        flex-direction:column;
     }
 }
