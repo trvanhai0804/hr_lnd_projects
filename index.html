@@ -9,6 +9,7 @@
 </head>
 
 <body>
+    <div class="cursor-glow"></div>
 
     <header>
         <div class="logo">Ale<span>X</span></div>
@@ -44,6 +45,15 @@
         </div>
 
     </section>
+
+        <script>
+    const glow = document.querySelector('.cursor-glow');
+    
+    document.addEventListener('mousemove', (e) => {
+        glow.style.left = e.clientX + 'px';
+        glow.style.top = e.clientY + 'px';
+    });
+    </script>
 
 </body>
 </html>
