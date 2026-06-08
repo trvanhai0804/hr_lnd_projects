@@ -159,47 +159,51 @@ nav a:hover{
         flex-direction:column;
     }
 }
-.ripple-layer{
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 999;
-    overflow: hidden;
-}
 
+/* ripple effect */
 .ripple{
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    border: 2px solid rgba(168, 85, 247, 0.8);
-    border-radius: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    animation: waterRipple 1.2s ease-out forwards;
+    position:absolute;
+    width:20px;
+    height:20px;
+    pointer-events:none;
 }
 
-.ripple::before,
-.ripple::after{
-    content: "";
-    position: absolute;
-    inset: -10px;
-    border: 1px solid rgba(168, 85, 247, 0.45);
-    border-radius: 50%;
-    animation: waterRipple 1.2s ease-out forwards;
+.ripple span{
+    position:absolute;
+    left:50%;
+    top:50%;
+    border:1px solid rgba(180,120,255,.8);
+    border-radius:50%;
+    transform:translate(-50%,-50%);
+    animation:rippleWave 2s linear forwards;
 }
 
-.ripple::after{
-    inset: -20px;
-    border-color: rgba(168, 85, 247, 0.25);
+.ripple span:nth-child(1){
+    animation-delay:0s;
 }
 
-@keyframes waterRipple{
+.ripple span:nth-child(2){
+    animation-delay:.2s;
+}
+
+.ripple span:nth-child(3){
+    animation-delay:.4s;
+}
+
+.ripple span:nth-child(4){
+    animation-delay:.6s;
+}
+
+@keyframes rippleWave{
     0%{
-        transform: translate(-50%, -50%) scale(0);
-        opacity: 1;
+        width:0;
+        height:0;
+        opacity:1;
     }
 
     100%{
-        transform: translate(-50%, -50%) scale(8);
-        opacity: 0;
+        width:300px;
+        height:300px;
+        opacity:0;
     }
 }
