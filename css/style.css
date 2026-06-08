@@ -160,7 +160,7 @@ nav a:hover{
     }
 }
 
-/* ripple effect */
+/* ripple effect 
 .ripple{
     position:absolute;
     width:20px;
@@ -207,7 +207,7 @@ nav a:hover{
         opacity:0;
     }
 }
-
+*/
 .water-ripple{
     position: fixed;
     width: 10px;
