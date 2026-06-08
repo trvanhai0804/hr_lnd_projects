@@ -9,7 +9,11 @@
 </head>
 
 <body>
-    <div class="cursor-glow"></div>
+    <div class="ripple-layer"></div>
+    
+    <audio id="waterSound">
+        <source src="./music/water.mp3" type="audio/mpeg">
+    </audio>
 
     <header>
         <div class="logo">Ale<span>X</span></div>
@@ -46,12 +50,25 @@
 
     </section>
 
-        <script>
-    const glow = document.querySelector('.cursor-glow');
+    <script>
+    const rippleLayer = document.querySelector(".ripple-layer");
+    const waterSound = document.getElementById("waterSound");
     
-    document.addEventListener('mousemove', (e) => {
-        glow.style.left = e.clientX + 'px';
-        glow.style.top = e.clientY + 'px';
+    document.addEventListener("click", function(e){
+        const ripple = document.createElement("span");
+        ripple.className = "ripple";
+    
+        ripple.style.left = e.clientX + "px";
+        ripple.style.top = e.clientY + "px";
+    
+        rippleLayer.appendChild(ripple);
+    
+        waterSound.currentTime = 0;
+        waterSound.play();
+    
+        setTimeout(() => {
+            ripple.remove();
+        }, 1200);
     });
     </script>
 
