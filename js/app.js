@@ -40,6 +40,7 @@ function startSurprise() {
     elements.giftMessage.classList.remove("hidden");
 
     playMusic();
+    enableWaterRipple();
 
     if (SITE_CONFIG.enableEmojiRain) createEmojis();
     if (SITE_CONFIG.enableConfettiRain) createConfetti();
@@ -74,6 +75,30 @@ function createFloatingGifts() {
 function openGift(box, message) {
     if (box.classList.contains("opened")) return;
 
+   function enableWaterRipple() {
+    document.addEventListener("click", function (e) {
+
+        const ripple = document.createElement("div");
+        ripple.className = "water-ripple";
+
+        ripple.style.left = e.clientX + "px";
+        ripple.style.top = e.clientY + "px";
+
+        ripple.innerHTML = `
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        `;
+
+        document.body.appendChild(ripple);
+
+        setTimeout(() => {
+            ripple.remove();
+        }, 2500);
+    });
+}
     box.classList.add("opened");
     box.innerHTML = "🎉";
     openedGifts++;
