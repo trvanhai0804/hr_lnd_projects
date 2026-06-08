@@ -159,3 +159,20 @@ nav a:hover{
         flex-direction:column;
     }
 }
+.cursor-glow{
+    position: fixed;
+    width: 500px;
+    height: 500px;
+
+    background: radial-gradient(
+        circle,
+        rgba(168,85,247,0.25),
+        transparent 70%
+    );
+
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    filter: blur(60px);
+
+    z-index: 0;
+}
