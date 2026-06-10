@@ -1,11 +1,11 @@
-# Birthday Surprise Website
+# Shival Portfolio
 
 This project is separated into clean files so it is easier to maintain.
 
 ## Folder structure
 
 ```text
-birthday_surprise_clean/
+hr_lnd_projects/
 ├── index.html
 ├── css/
 │   └── style.css
