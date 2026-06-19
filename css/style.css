@@ -21,16 +21,6 @@ header{
     justify-content:space-between;
     align-items:center;
 }
-
-.logo{
-    font-size:32px;
-    font-weight:bold;
-}
-
-.logo span{
-    color:#d946ef;
-}
-
 .logo-img{
     height: 32px;
     width: 100px;
