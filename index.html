@@ -10,10 +10,6 @@
 
 <body>
     <div class="ripple-layer"></div>
-    
-    <audio id="waterSound">
-        <source src="./music/water.mp3" type="audio/mpeg">
-    </audio>
 
     <header>
         <img src="images/shival_logo.png" class="logo-img" alt="Logo Image">
@@ -46,32 +42,9 @@
 
         <div class="hero-buttons">
             <button class="btn">Connect with me</button>
-            <button class="outline-btn">My Resume</button>
         </div>
 
     </section>
-
-    <script>
-    const rippleLayer = document.querySelector(".ripple-layer");
-    const waterSound = document.getElementById("waterSound");
-    
-    document.addEventListener("click", function(e){
-        const ripple = document.createElement("span");
-        ripple.className = "ripple";
-    
-        ripple.style.left = e.clientX + "px";
-        ripple.style.top = e.clientY + "px";
-    
-        rippleLayer.appendChild(ripple);
-    
-        waterSound.currentTime = 0;
-        waterSound.play();
-    
-        setTimeout(() => {
-            ripple.remove();
-        }, 1200);
-    });
-    </script>
 
 </body>
 </html>
