@@ -21,9 +21,11 @@ header{
     justify-content:space-between;
     align-items:center;
 }
-logo-img{
-    height: 32px;
-    width: 100px;
+
+.logo-img{
+    height:32px;
+    width:100px;
+    object-fit:contain;
 }
 
 nav{
