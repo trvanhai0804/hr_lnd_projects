@@ -597,3 +597,90 @@ button:hover {
   margin-top: 20px;
   font-weight: 700;
 }
+
+.get-in-touch {
+  position: relative;
+  height: 700px;
+  background: #f2f2f2;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+.get-in-touch .git-glow-eff-part {
+  display: flex;
+  height: 100%;
+  background: #bfbfbf;
+}
+
+.get-in-touch .git-glow-eff-part .git-glow-eff-part-one {
+  position: relative;
+  height: 100%;
+  width: 50%;
+  background: #000000;
+}
+
+.get-in-touch .git-glow-eff-part .git-glow-eff-part-one span {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0px;
+  right: 0px;
+  background: radial-gradient(
+    ellipse at top right,
+    #ffcc33 0%,
+    rgba(255, 204, 51, 0.6) 25%,
+    rgba(255, 204, 51, 0.25) 50%,
+    transparent 80%
+  );
+}
+
+.get-in-touch .git-glow-eff-part .git-glow-eff-part-two {
+  position: relative;
+  height: 100%;
+  width: 50%;
+  background: #000000;
+}
+
+.get-in-touch .git-glow-eff-part .git-glow-eff-part-two span {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0px;
+  left: 0px;
+  background: radial-gradient(
+    ellipse at top left,
+    rgba(22, 217, 255, 0.55) 0%,
+    rgba(14, 165, 198, 0.3) 45%,
+    rgba(14, 165, 198, 0.1) 65%,
+    transparent 80%
+  );
+}
+
+.get-in-touch .head-img {
+  position: absolute;
+  height: 650px;
+  width: 1000px;
+  top: -50px;
+  left: 400px;
+  overflow: hidden;
+}
+
+.get-in-touch .head-img img {
+  height: 800px;
+}
+
+.get-in-touch .footer-gradient {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  bottom: 0px;
+  left: 0px;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 15%,
+    rgba(0, 0, 0, 0.8) 20%,
+    rgba(0, 0, 0, 0.4) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
