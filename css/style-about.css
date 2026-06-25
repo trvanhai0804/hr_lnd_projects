@@ -623,8 +623,8 @@ button:hover {
   position: absolute;
   height: 100%;
   width: 100%;
-  top: 0px;
-  right: 0px;
+  top: 0;
+  right: 0;
   background: radial-gradient(
     ellipse at top right,
     #ffcc33 0%,
@@ -645,8 +645,8 @@ button:hover {
   position: absolute;
   height: 100%;
   width: 100%;
-  top: 0px;
-  left: 0px;
+  top: 0;
+  left: 0;
   background: radial-gradient(
     ellipse at top left,
     rgba(22, 217, 255, 0.55) 0%,
@@ -656,25 +656,41 @@ button:hover {
   );
 }
 
+/* ===========================
+   Center Image
+=========================== */
+
 .get-in-touch .head-img {
   position: absolute;
-  height: 650px;
-  width: 1000px;
   top: -50px;
-  left: 400px;
+  left: 0;
+  width: 100%;
+  height: 650px;
   overflow: hidden;
+  pointer-events: none;
 }
 
 .get-in-touch .head-img img {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+
   height: 800px;
+  width: auto;
+  max-width: none;
 }
+
+/* ===========================
+   Gradient Overlay
+=========================== */
 
 .get-in-touch .footer-gradient {
   position: absolute;
   height: 100%;
   width: 100%;
-  bottom: 0px;
-  left: 0px;
+  bottom: 0;
+  left: 0;
   background: linear-gradient(
     to top,
     rgba(0, 0, 0, 1) 0%,
