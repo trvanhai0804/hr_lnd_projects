@@ -700,3 +700,37 @@ button:hover {
     rgba(0, 0, 0, 0) 100%
   );
 }
+
+.get-in-touch .get-in-touch-text {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  font-family: "Montserrat", sans-serif;
+  z-index: 1;
+  padding: 15px;
+}
+
+.get-in-touch .get-in-touch-text .get-in-touch-header {
+  margin-top: 50px;
+  margin-bottom: 150px;
+  width: 100%;
+  color: #d4d4d4;
+  text-align: center;
+  font-size: 75px;
+  font-weight: 900;
+  z-index: 1;
+  -webkit-box-reflect: below 5px
+    linear-gradient(transparent, rgba(255, 255, 255, 0.2));
+}
+
+.get-in-touch .get-in-touch-text .get-in-touch-message {
+  text-align: center;
+  color: #d4d4d4;
+}
+.get-in-touch .get-in-touch-text .get-in-touch-message-two {
+  margin-top: 20px;
+  text-align: center;
+  color: #d4d4d4;
+}
