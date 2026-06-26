@@ -111,10 +111,18 @@ button:hover {
   background-color: rgba(0, 197, 195, 0.7);
 }
 
-.techguy-img {
-  width: 35%;
-  height: auto;
-  border-radius: 10px;
+.hero-image {
+  position: relative;
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-image .techguy-img {
+  position: relative;
+  width: 100%;
+  z-index: 2;
 }
 
 .hero {
