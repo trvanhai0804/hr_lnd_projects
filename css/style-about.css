@@ -914,3 +914,38 @@ button:hover {
   text-align: center;
   color: #d4d4d4;
 }
+
+.flying-book {
+  position: fixed;
+  left: 100px;
+  top: 100px;
+  font-size: 32px;
+  z-index: 9999;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.15s linear;
+  filter: drop-shadow(0 0 8px rgba(51, 255, 252, 0.8));
+}
+
+.book-message {
+  position: absolute;
+  left: 35px;
+  top: -20px;
+  padding: 5px 10px;
+  border: 1px solid #33fffc;
+  border-radius: 999px;
+  background: #0c0c0c;
+  color: #33fffc;
+  font-size: 14px;
+  font-family: "Montserrat", sans-serif;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  transform: scale(0);
+  transition: 0.25s ease;
+}
+
+.flying-book.show-message .book-message {
+  opacity: 1;
+  transform: scale(1);
+}

@@ -70,3 +70,40 @@ backBtn.addEventListener("click", () => {
 
 updateSlider();
 startAutoSlide();
+
+const flyingBook = document.getElementById("flyingBook");
+
+let x = 100;
+let y = 100;
+let targetX = 300;
+let targetY = 200;
+
+function moveBookRandomly() {
+  const padding = 60;
+
+  targetX = Math.random() * (window.innerWidth - padding * 2) + padding;
+  targetY = Math.random() * (window.innerHeight - padding * 2) + padding;
+}
+
+function animateBook() {
+  x += (targetX - x) * 0.015;
+  y += (targetY - y) * 0.015;
+
+  flyingBook.style.left = `${x}px`;
+  flyingBook.style.top = `${y}px`;
+  flyingBook.style.transform = `rotate(${Math.sin(Date.now() / 300) * 12}deg)`;
+
+  requestAnimationFrame(animateBook);
+}
+
+flyingBook.addEventListener("click", () => {
+  flyingBook.classList.add("show-message");
+
+  setTimeout(() => {
+    flyingBook.classList.remove("show-message");
+  }, 1200);
+});
+
+setInterval(moveBookRandomly, 1800);
+moveBookRandomly();
+animateBook();
