@@ -162,7 +162,7 @@ button:hover {
   max-width: 900px;
   line-height: 1.2;
   color: #d4d4d4;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .hero h2 {
@@ -217,6 +217,107 @@ button:hover {
   filter: blur(25px);
 
   z-index: 1;
+}
+
+.hero-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-top: 28px;
+  max-width: 720px;
+}
+
+.hero-stat-card {
+  position: relative;
+  min-height: 130px;
+  padding: 20px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(51, 255, 252, 0.45);
+  background: rgba(12, 12, 12, 0.75);
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.hero-stat-card::before {
+  content: "";
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  top: -70px;
+  left: -70px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(51, 255, 252, 0.45),
+    rgba(0, 197, 195, 0.18),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: 0.3s ease;
+}
+
+.hero-stat-card:hover {
+  border-color: rgba(51, 255, 252, 0.95);
+  box-shadow:
+    0 0 18px rgba(51, 255, 252, 0.35),
+    inset 0 0 18px rgba(51, 255, 252, 0.08);
+  animation: stat-shake 0.45s ease;
+}
+
+.hero-stat-card:hover::before {
+  opacity: 1;
+  top: -35px;
+  left: -35px;
+}
+
+.hero-stat-number {
+  font-size: 38px;
+  font-weight: 800;
+  line-height: 1;
+  color: #33fffc;
+  text-shadow: 0 0 14px rgba(51, 255, 252, 0.45);
+  z-index: 1;
+}
+
+.hero-stat-label {
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.35;
+  text-align: center;
+  color: #d4d4d4;
+  z-index: 1;
+}
+
+@keyframes stat-shake {
+  0% {
+    transform: rotate(0deg) translateY(0);
+  }
+
+  25% {
+    transform: rotate(1.5deg) translateY(-3px);
+  }
+
+  50% {
+    transform: rotate(-1.5deg) translateY(-3px);
+  }
+
+  75% {
+    transform: rotate(1deg) translateY(-2px);
+  }
+
+  100% {
+    transform: rotate(0deg) translateY(0);
+  }
 }
 
 .hobby {
