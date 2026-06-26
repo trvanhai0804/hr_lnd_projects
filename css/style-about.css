@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
 * {
   box-sizing: border-box;
@@ -163,6 +163,24 @@ button:hover {
   margin-top: 10px;
   display: flex;
   gap: 20px;
+}
+
+.hero-glow {
+  position: absolute;
+
+  width: 700px;
+  height: 700px;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(51, 255, 252, 0.45),
+      transparent 35%
+    ),
+    radial-gradient(circle at 60% 40%, rgba(0, 197, 195, 0.2), transparent 55%),
+    radial-gradient(circle at 35% 70%, rgba(0, 112, 192, 0.18), transparent 60%);
+
+  filter: blur(45px);
 }
 
 .hobby {
@@ -725,29 +743,29 @@ button:hover {
     linear-gradient(transparent, rgba(255, 255, 255, 0.2));
 }
 
-.get-in-touch .get-in-touch-text .get-in-touch-button-list{
-    display: flex;
-    justify-content: center;   /* Center horizontally */
-    width: 100%;
-    align-items: center;
-    gap: 20px;                 /* Space between buttons */
-    margin-top: 40px;
+.get-in-touch .get-in-touch-text .get-in-touch-button-list {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  width: 100%;
+  align-items: center;
+  gap: 20px; /* Space between buttons */
+  margin-top: 40px;
 }
 
-.get-in-touch-button-list a{
-    text-decoration: none;
-    margin: 0;
-    padding: 10px 22px;
-    border: 1px solid #d4d4d4;
-    border-radius: 999px;
-    color: #d4d4d4;
-    transition: all .3s ease;
+.get-in-touch-button-list a {
+  text-decoration: none;
+  margin: 0;
+  padding: 10px 22px;
+  border: 1px solid #d4d4d4;
+  border-radius: 999px;
+  color: #d4d4d4;
+  transition: all 0.3s ease;
 }
 
-.get-in-touch-button-list a:hover{
-    background: #d4d4d4;
-    color: #222;
-    transform: translateY(-3px);
+.get-in-touch-button-list a:hover {
+  background: #d4d4d4;
+  color: #222;
+  transform: translateY(-3px);
 }
 
 .get-in-touch .get-in-touch-text .get-in-touch-message {
