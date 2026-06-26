@@ -250,7 +250,7 @@ button:hover {
 .hero .hero-text .hero-stats-grid .hero-stat-card::before {
   content: "";
   position: absolute;
-  width: 130px;
+  width: 200px;
   height: 130px;
   top: -70px;
   left: -70px;
