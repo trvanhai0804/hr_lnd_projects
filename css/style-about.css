@@ -728,6 +728,7 @@ button:hover {
 .get-in-touch .get-in-touch-text .get-in-touch-button-list{
     display: flex;
     justify-content: center;   /* Center horizontally */
+    width: 100%;
     align-items: center;
     gap: 20px;                 /* Space between buttons */
     margin-top: 40px;
