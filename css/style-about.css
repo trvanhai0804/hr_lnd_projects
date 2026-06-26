@@ -177,20 +177,19 @@ button:hover {
 .hero-glow {
   position: absolute;
 
-  width: 850px;
-  height: 600px;
+  width: 800px;
+  height: 800px;
 
-  border-radius: 50%;
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(51, 255, 252, 0.45),
+      transparent 35%
+    ),
+    radial-gradient(circle at 60% 40%, rgba(0, 197, 195, 0.2), transparent 55%),
+    radial-gradient(circle at 35% 70%, rgba(0, 112, 192, 0.18), transparent 60%);
 
-  background: radial-gradient(
-    ellipse,
-    rgba(51, 255, 252, 0.55) 0%,
-    rgba(0, 197, 195, 0.35) 35%,
-    rgba(0, 197, 195, 0.15) 60%,
-    transparent 80%
-  );
-
-  filter: blur(55px);
+  filter: blur(45px);
 }
 
 .hobby {
