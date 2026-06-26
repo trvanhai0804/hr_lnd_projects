@@ -725,6 +725,14 @@ button:hover {
     linear-gradient(transparent, rgba(255, 255, 255, 0.2));
 }
 
+.get-in-touch .get-in-touch-text .get-in-touch-button-list{
+    display: flex;
+    justify-content: center;   /* Center horizontally */
+    align-items: center;
+    gap: 20px;                 /* Space between buttons */
+    margin-top: 40px;
+}
+
 .get-in-touch-button-list a{
     text-decoration: none;
     margin: 0;
