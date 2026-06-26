@@ -224,7 +224,7 @@ button:hover {
   grid-template-columns: repeat(4, 1fr);
   gap: 14px;
   margin-top: 28px;
-  max-width: 720px;
+  width: 100%;
 }
 
 .hero .hero-text .hero-stats-grid .hero-stat-card {
@@ -250,7 +250,7 @@ button:hover {
 .hero .hero-text .hero-stats-grid .hero-stat-card::before {
   content: "";
   position: absolute;
-  width: 200px;
+  width: 120px;
   height: 130px;
   top: -70px;
   left: -70px;
