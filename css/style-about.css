@@ -725,6 +725,22 @@ button:hover {
     linear-gradient(transparent, rgba(255, 255, 255, 0.2));
 }
 
+.get-in-touch-button-list a{
+    text-decoration: none;
+    margin: 0;
+    padding: 10px 22px;
+    border: 1px solid #d4d4d4;
+    border-radius: 999px;
+    color: #d4d4d4;
+    transition: all .3s ease;
+}
+
+.get-in-touch-button-list a:hover{
+    background: #d4d4d4;
+    color: #222;
+    transform: translateY(-3px);
+}
+
 .get-in-touch .get-in-touch-text .get-in-touch-message {
   text-align: center;
   color: #d4d4d4;
