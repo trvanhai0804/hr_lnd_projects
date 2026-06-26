@@ -219,7 +219,7 @@ button:hover {
   z-index: 1;
 }
 
-.hero-stats-grid {
+.hero .hero-text .hero-stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 14px;
@@ -227,7 +227,7 @@ button:hover {
   max-width: 720px;
 }
 
-.hero-stat-card {
+.hero .hero-text .hero-stats-grid .hero-stat-card {
   position: relative;
   min-height: 130px;
   padding: 20px 12px;
@@ -247,7 +247,7 @@ button:hover {
     box-shadow 0.25s ease;
 }
 
-.hero-stat-card::before {
+.hero .hero-text .hero-stats-grid .hero-stat-card::before {
   content: "";
   position: absolute;
   width: 130px;
@@ -265,7 +265,7 @@ button:hover {
   transition: 0.3s ease;
 }
 
-.hero-stat-card:hover {
+.hero .hero-text .hero-stats-grid .hero-stat-card:hover {
   border-color: rgba(51, 255, 252, 0.95);
   box-shadow:
     0 0 18px rgba(51, 255, 252, 0.35),
@@ -273,13 +273,13 @@ button:hover {
   animation: stat-shake 0.45s ease;
 }
 
-.hero-stat-card:hover::before {
+.hero .hero-text .hero-stats-grid .hero-stat-card:hover::before {
   opacity: 1;
   top: -35px;
   left: -35px;
 }
 
-.hero-stat-number {
+.hero .hero-text .hero-stats-grid .hero-stat-card .hero-stat-number {
   font-size: 38px;
   font-weight: 800;
   line-height: 1;
@@ -288,7 +288,7 @@ button:hover {
   z-index: 1;
 }
 
-.hero-stat-label {
+.hero .hero-text .hero-stats-grid .hero-stat-card .hero-stat-label {
   margin-top: 10px;
   font-size: 13px;
   font-weight: 500;
