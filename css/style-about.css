@@ -192,6 +192,27 @@ button:hover {
   filter: blur(45px);
 }
 
+.hero-ground-glow {
+  position: absolute;
+  bottom: 30px;
+
+  width: 420px;
+  height: 90px;
+
+  border-radius: 50%;
+
+  background: radial-gradient(
+    ellipse,
+    rgba(51, 255, 252, 0.45) 0%,
+    rgba(0, 197, 195, 0.2) 50%,
+    transparent 75%
+  );
+
+  filter: blur(25px);
+
+  z-index: 1;
+}
+
 .hobby {
   display: flex;
   justify-content: center;
