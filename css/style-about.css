@@ -119,10 +119,11 @@ button:hover {
   align-items: center;
 }
 
-.hero-image .techguy-img {
+.hero-image img {
   position: relative;
   width: 100%;
   z-index: 2;
+  height: 35%;
 }
 
 .hero {
