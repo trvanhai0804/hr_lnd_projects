@@ -319,7 +319,7 @@ button:hover {
     transform: rotate(0deg) translateY(0);
   }
 }
-
+/*
 .hobby {
   display: flex;
   justify-content: center;
@@ -336,6 +336,49 @@ button:hover {
   align-items: center;
   gap: 10px;
   list-style: none;
+}
+*/
+.hobby {
+  overflow: hidden;
+  height: 60px;
+  background: rgba(0, 197, 195, 1);
+  display: flex;
+  align-items: center;
+}
+
+.hobby-track {
+  display: flex;
+  width: max-content;
+  animation: hobby-scroll 25s linear infinite;
+}
+
+.hobby:hover .hobby-track {
+  animation-play-state: paused;
+}
+
+.hobby-list {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  padding-right: 30px;
+}
+
+.hobby-item {
+  white-space: nowrap;
+  font-family: "Montserrat", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #000;
+}
+
+@keyframes hobby-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 .experience {
