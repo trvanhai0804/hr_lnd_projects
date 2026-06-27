@@ -107,3 +107,22 @@ flyingBook.addEventListener("click", () => {
 setInterval(moveBookRandomly, 1800);
 moveBookRandomly();
 animateBook();
+
+const person = document.getElementById("gamePerson");
+const steps = document.querySelectorAll(".step");
+
+steps.forEach((step) => {
+  step.addEventListener("click", () => {
+    steps.forEach((s) => s.classList.remove("active"));
+    step.classList.add("active");
+
+    person.classList.add("walking");
+
+    person.style.left = `${step.dataset.x}px`;
+    person.style.top = `${step.dataset.y}px`;
+
+    setTimeout(() => {
+      person.classList.remove("walking");
+    }, 850);
+  });
+});

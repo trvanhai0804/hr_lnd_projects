@@ -381,6 +381,191 @@ button:hover {
   }
 }
 
+.motivation {
+  margin: 80px 10%;
+  font-family: "Montserrat", sans-serif;
+  color: #d4d4d4;
+}
+
+.motivation-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.section-tag {
+  color: #33fffc;
+  letter-spacing: 4px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.motivation-header h1 {
+  margin-top: 15px;
+  font-size: 42px;
+  font-weight: 800;
+}
+
+.stair-stage {
+  position: relative;
+  height: 430px;
+  overflow: hidden;
+}
+
+.step {
+  position: absolute;
+  width: 270px;
+  height: 90px;
+  padding: 16px 20px;
+  border: 1px solid rgba(51, 255, 252, 0.55);
+  border-radius: 14px;
+  background: rgba(12, 12, 12, 0.85);
+  color: #d4d4d4;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: inset 0 0 18px rgba(51, 255, 252, 0.05);
+  transition: 0.3s ease;
+}
+
+.step:hover,
+.step.active {
+  border-color: #33fffc;
+  box-shadow:
+    0 0 24px rgba(51, 255, 252, 0.35),
+    inset 0 0 18px rgba(51, 255, 252, 0.12);
+  transform: translateY(-5px);
+}
+
+.step h3 {
+  color: #33fffc;
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+
+.step p {
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.step-1 {
+  left: 80px;
+  bottom: 20px;
+}
+
+.step-2 {
+  left: 260px;
+  bottom: 85px;
+}
+
+.step-3 {
+  left: 450px;
+  bottom: 150px;
+}
+
+.step-4 {
+  left: 640px;
+  bottom: 215px;
+}
+
+.step-5 {
+  left: 830px;
+  bottom: 280px;
+}
+
+/* Character */
+.game-person {
+  position: absolute;
+  left: 130px;
+  top: 300px;
+  width: 42px;
+  height: 70px;
+  z-index: 5;
+  transform: translate(-50%, -100%);
+  transition:
+    left 0.8s cubic-bezier(0.25, 0.8, 0.25, 1),
+    top 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.game-person.walking .arm-left,
+.game-person.walking .leg-right {
+  animation: walk-front 0.28s infinite alternate;
+}
+
+.game-person.walking .arm-right,
+.game-person.walking .leg-left {
+  animation: walk-back 0.28s infinite alternate;
+}
+
+.head {
+  position: absolute;
+  top: 0;
+  left: 10px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #f2c6a0;
+  box-shadow: 0 0 12px rgba(51, 255, 252, 0.45);
+}
+
+.body {
+  position: absolute;
+  top: 24px;
+  left: 12px;
+  width: 18px;
+  height: 28px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #0070c0, #194b4f);
+}
+
+.arm,
+.leg {
+  position: absolute;
+  width: 6px;
+  height: 24px;
+  border-radius: 999px;
+  background: #33fffc;
+  transform-origin: top center;
+}
+
+.arm-left {
+  top: 28px;
+  left: 8px;
+}
+
+.arm-right {
+  top: 28px;
+  right: 8px;
+}
+
+.leg-left {
+  top: 50px;
+  left: 14px;
+}
+
+.leg-right {
+  top: 50px;
+  right: 14px;
+}
+
+@keyframes walk-front {
+  from {
+    transform: rotate(25deg);
+  }
+
+  to {
+    transform: rotate(-25deg);
+  }
+}
+
+@keyframes walk-back {
+  from {
+    transform: rotate(-25deg);
+  }
+
+  to {
+    transform: rotate(25deg);
+  }
+}
+
 .experience {
   display: flex;
   justify-content: center;
