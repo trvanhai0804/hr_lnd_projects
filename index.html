@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="/css/style.css" />
   </head>
   <body>
+    <canvas id="world"></canvas>
+
     <header>
       <img src="images/shival_logo.png" class="logo" alt="Logo" />
       <nav>
@@ -36,5 +38,127 @@
         <button class="btn">Connect with me</button>
       </div>
     </section>
+
+    <script>
+      const canvas = document.getElementById("world");
+      const ctx = canvas.getContext("2d");
+
+      let screenWidth = window.innerWidth;
+      let screenHeight = window.innerHeight;
+
+      let mouseX = screenWidth / 2;
+      let mouseY = screenHeight / 2;
+      let mouseIsDown = false;
+
+      const radius = 70;
+      let radiusScale = 1;
+      const radiusScaleMin = 1;
+      const radiusScaleMax = 1.5;
+      const quantity = 25;
+
+      let particles = [];
+
+      function resizeCanvas() {
+        screenWidth = window.innerWidth;
+        screenHeight = window.innerHeight;
+
+        canvas.width = screenWidth;
+        canvas.height = screenHeight;
+      }
+
+      function createParticles() {
+        particles = [];
+
+        for (let i = 0; i < quantity; i++) {
+          particles.push({
+            size: 1,
+            targetSize: 1,
+            position: { x: mouseX, y: mouseY },
+            offset: { x: 0, y: 0 },
+            shift: { x: mouseX, y: mouseY },
+            speed: 0.01 + Math.random() * 0.04,
+            fillColor: "#33fffc",
+            orbit: radius * 0.5 + radius * 0.5 * Math.random(),
+          });
+        }
+      }
+
+      function animate() {
+        if (mouseIsDown) {
+          radiusScale += (radiusScaleMax - radiusScale) * 0.02;
+        } else {
+          radiusScale -= (radiusScale - radiusScaleMin) * 0.02;
+        }
+
+        ctx.fillStyle = "rgba(36, 37, 42, 0.08)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        particles.forEach((particle, i) => {
+          const lastPosition = {
+            x: particle.position.x,
+            y: particle.position.y,
+          };
+
+          particle.offset.x += particle.speed;
+          particle.offset.y += particle.speed;
+
+          particle.shift.x += (mouseX - particle.shift.x) * particle.speed;
+          particle.shift.y += (mouseY - particle.shift.y) * particle.speed;
+
+          particle.position.x =
+            particle.shift.x +
+            Math.cos(i + particle.offset.x) * particle.orbit * radiusScale;
+
+          particle.position.y =
+            particle.shift.y +
+            Math.sin(i + particle.offset.y) * particle.orbit * radiusScale;
+
+          particle.size += (particle.targetSize - particle.size) * 0.05;
+
+          if (Math.round(particle.size) === Math.round(particle.targetSize)) {
+            particle.targetSize = 1 + Math.random() * 7;
+          }
+
+          ctx.beginPath();
+          ctx.strokeStyle = particle.fillColor;
+          ctx.fillStyle = particle.fillColor;
+          ctx.lineWidth = particle.size;
+
+          ctx.moveTo(lastPosition.x, lastPosition.y);
+          ctx.lineTo(particle.position.x, particle.position.y);
+          ctx.stroke();
+
+          ctx.arc(
+            particle.position.x,
+            particle.position.y,
+            particle.size / 2,
+            0,
+            Math.PI * 2,
+          );
+          ctx.fill();
+        });
+
+        requestAnimationFrame(animate);
+      }
+
+      window.addEventListener("mousemove", function (e) {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+
+      window.addEventListener("mousedown", function () {
+        mouseIsDown = true;
+      });
+
+      window.addEventListener("mouseup", function () {
+        mouseIsDown = false;
+      });
+
+      window.addEventListener("resize", resizeCanvas);
+
+      resizeCanvas();
+      createParticles();
+      animate();
+    </script>
   </body>
 </html>
