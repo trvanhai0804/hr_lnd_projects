@@ -77,7 +77,8 @@
             offset: { x: 0, y: 0 },
             shift: { x: mouseX, y: mouseY },
             speed: 0.01 + Math.random() * 0.04,
-            fillColor: "#33fffc",
+            fillColor:
+              "#" + ((Math.random() * 0x404040 + 0xaaaaaa) | 0).toString(16),
             orbit: radius * 0.5 + radius * 0.5 * Math.random(),
           });
         }
@@ -90,7 +91,7 @@
           radiusScale -= (radiusScale - radiusScaleMin) * 0.02;
         }
 
-        ctx.fillStyle = "rgba(36, 37, 42, 0.08)";
+        ctx.fillStyle = "rgba(0,0,0,0.01)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         particles.forEach((particle, i) => {
