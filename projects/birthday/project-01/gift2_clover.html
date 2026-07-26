@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turning Back Time ✨ - Gift #2</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Dancing+Script:wght@600;700&family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #050711;
+            --bg-mid: #0d1226;
+            --bg-light: #161e38;
+            --gold-bright: #fff2be;
+            --gold-main: #ffd166;
+            --parchment: #fcf8ee;
+            --ink-color: #2b1e16;
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --ease-apple: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: radial-gradient(circle at 50% 40%, var(--bg-light) 0%, var(--bg-mid) 50%, var(--bg-dark) 100%);
+            font-family: 'Outfit', 'Inter', sans-serif;
+            color: #ffffff;
+            position: relative;
+            user-select: none;
+            transition: background 3s ease;
+        }
+
+        body.brighten {
+            background: radial-gradient(circle at 50% 40%, #202b52 0%, #121936 50%, #080c1e 100%);
+        }
+
+        /* 60fps Canvas for Subtle Stars & Stardust Particles */
+        #dust-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        /* Main Viewport Container */
+        .viewport {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Pure Minimal Floating Date Text Container */
+        .date-display-container {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 36px;
+            z-index: 35;
+            transition: transform 2.0s var(--ease-apple), top 2.0s var(--ease-apple);
+        }
+
+        /* Position ABOVE narrative message at top of screen! */
+        .date-display-container.slide-up {
+            top: 6%;
+            transform: translate(-50%, 0) scale(0.68);
+        }
+
+        .date-unit {
+            font-family: 'Cinzel', serif;
+            font-size: 4.2rem;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: 2px;
+            text-shadow: 0 6px 25px rgba(0, 0, 0, 0.6);
+            transition: color 0.5s ease, text-shadow 0.5s ease;
+        }
+
+        .date-unit.locked {
+            color: #ffffff;
+            text-shadow: 0 0 25px #ffffff, 0 0 50px var(--gold-main), 0 0 75px rgba(255, 209, 102, 0.5);
+        }
+
+        /* Narrative Box - Positioned DIRECTLY BELOW the date when date slides up */
+        .narrative-box {
+            position: absolute;
+            top: 17%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 30;
+            text-align: center;
+            width: 90%;
+            max-width: 650px;
+            pointer-events: none;
+            transition: top 1.8s var(--ease-apple);
+        }
+
+        .narrative-text {
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-size: 1.55rem;
+            font-weight: 600;
+            color: #f1f5f9;
+            line-height: 1.5;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 1.5s var(--ease-apple), transform 1.5s var(--ease-apple);
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+        }
+
+        .narrative-text.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .narrative-text.gold-glow {
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-size: 1.8rem;
+            font-style: normal;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #fff5cc 0%, #ffd166 50%, #ff8b94 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 25px rgba(255, 209, 102, 0.4);
+        }
+
+        .narrative-text.guideline-hint {
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-size: 0.98rem;
+            font-weight: 500;
+            text-transform: none;
+            letter-spacing: 0.3px;
+            color: rgba(255, 235, 180, 0.85);
+            background: none;
+            -webkit-background-clip: initial;
+            -webkit-text-fill-color: rgba(255, 235, 180, 0.85);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Authentic Aged Parchment 2002 Envelope */
+        .envelope-wrapper {
+            position: absolute;
+            top: 56%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.3) translateY(80px);
+            z-index: 50;
+            opacity: 0;
+            cursor: pointer;
+            transition: opacity 1.8s var(--ease-apple), transform 1.8s var(--ease-spring);
+        }
+
+        .envelope-wrapper.visible {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1) translateY(0);
+        }
+
+        .envelope-card {
+            position: relative;
+            width: 490px;
+            height: 330px;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            filter: drop-shadow(0 20px 45px rgba(0, 0, 0, 0.75)) drop-shadow(0 0 10px rgba(255, 215, 100, 0.12));
+            transition: transform 0.35s var(--ease-spring), filter 0.35s ease;
+        }
+
+        .envelope-card:hover {
+            transform: scale(1.04);
+            filter: drop-shadow(0 28px 55px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 16px rgba(255, 215, 100, 0.22));
+        }
+
+        .envelope-real-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        /* Aged Vintage Postmark Stamp (2002) - Positioned lower (44px) & left (110px) inside envelope */
+        .vintage-postmark {
+            position: absolute;
+            top: 44px;
+            right: 110px;
+            width: 58px;
+            height: 58px;
+            border: 1.5px dashed rgba(120, 30, 30, 0.65);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transform: rotate(-14deg);
+            color: rgba(120, 30, 30, 0.75);
+            font-family: 'Cinzel', serif;
+            font-size: 0.46rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .postmark-year {
+            font-size: 0.68rem;
+            font-weight: 900;
+            color: rgba(140, 20, 20, 0.9);
+        }
+
+        /* Handwritten Parchment Letter Card */
+        .letter-card {
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -46%) scale(0.2);
+            width: 660px;
+            max-width: 92vw;
+            min-height: 380px;
+            background: #e8d8b8;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(240, 222, 190, 0.95) 0%, rgba(220, 198, 160, 0.88) 70%, rgba(190, 160, 120, 0.95) 100%),
+                radial-gradient(circle at 10% 10%, rgba(120, 80, 35, 0.18) 0%, transparent 45%),
+                radial-gradient(circle at 90% 90%, rgba(100, 65, 30, 0.2) 0%, transparent 50%);
+            border: 1.5px solid rgba(140, 95, 45, 0.65);
+            border-radius: 12px;
+            padding: 38px 48px;
+            box-shadow: 
+                inset 0 0 45px rgba(110, 70, 30, 0.42),
+                0 30px 75px rgba(0, 0, 0, 0.9),
+                0 0 35px rgba(212, 175, 55, 0.2);
+            opacity: 0;
+            pointer-events: none;
+            transition: transform 1.6s var(--ease-spring), opacity 1.2s ease;
+            z-index: 70;
+        }
+
+        .letter-card.open {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translate(-50%, -46%) scale(1);
+        }
+
+        .letter-header {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.1rem;
+            color: #2b180a;
+            margin-bottom: 12px;
+            text-shadow: 0 1px 2px rgba(180, 140, 90, 0.3);
+        }
+
+        .letter-body {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.12rem;
+            color: #1f1208;
+            min-height: 150px;
+        }
+
+        .letter-title-line {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #3b220e;
+            margin-bottom: 16px;
+        }
+
+        .letter-p {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.12rem;
+            line-height: 1.65;
+            color: #1f1208;
+            margin-bottom: 12px;
+        }
+
+        .letter-p:last-child {
+            margin-bottom: 0;
+        }
+
+        .letter-signature {
+            margin-top: 18px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.85rem;
+            color: #4a1219;
+            text-align: right;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+        }
+
+        .letter-signature.visible {
+            opacity: 1;
+        }
+
+        /* Fountain Pen Icon */
+        .fountain-pen {
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            pointer-events: none;
+            z-index: 80;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .fountain-pen.active {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 60fps Canvas for Subtle Stars & Particles -->
+    <canvas id="dust-canvas"></canvas>
+
+    <div class="viewport">
+
+        <!-- Pure Minimal Floating Date Text (Slides ABOVE narrative message!) -->
+        <div id="date-display-container" class="date-display-container">
+            <span id="date-day" class="date-unit date-unit-day">26</span>
+            <span id="date-month" class="date-unit date-unit-month">JUL</span>
+            <span id="date-year" class="date-unit date-unit-year">2026</span>
+        </div>
+
+        <!-- Minimal Narrative Box (Positioned directly below the date) -->
+        <div class="narrative-box">
+            <h1 id="narrative-text" class="narrative-text">...</h1>
+        </div>
+
+        <!-- Authentic Aged Parchment 2002 Envelope -->
+        <div id="envelope-wrapper" class="envelope-wrapper">
+            <div class="envelope-card">
+                <!-- High-Realism Vintage Envelope Image -->
+                <img src="assets/envelope.png" alt="Vintage Letter Envelope" class="envelope-real-img" />
+
+                <!-- Aged Vintage Postmark Stamp (2002) -->
+                <div class="vintage-postmark">
+                    <span>MEMORY</span>
+                    <span class="postmark-year">2002</span>
+                    <span>JUL 22</span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Handwritten Parchment Letter Card -->
+        <div id="letter-card" class="letter-card">
+            <div class="letter-header">Dear Evelyn,</div>
+            <div id="letter-body" class="letter-body"></div>
+            <div id="letter-signature" class="letter-signature">
+                Warm regards,<br>
+                <strong>Shival</strong>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Vanilla JS Automatic Time Countdown Engine -->
+    <script>
+        const FRIEND_NAME = "Evelyn Đỗ Hoàng Ngọc Hân";
+
+        // Audio Hooks
+        let audioCtx = null;
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        let isMuted = false;
+
+        let reelAudioTrack = null;
+
+        function startReelAudio() {
+            try {
+                if (!reelAudioTrack) {
+                    reelAudioTrack = new Audio('assets/sound/clock-ticking.mp3');
+                    reelAudioTrack.loop = true;
+                    reelAudioTrack.volume = 0.50;
+                }
+                reelAudioTrack.muted = isMuted;
+                reelAudioTrack.currentTime = 0;
+                if (!isMuted) {
+                    reelAudioTrack.play().catch(e => {});
+                }
+            } catch(e) {}
+        }
+
+        function stopReelAudio() {
+            if (reelAudioTrack) {
+                reelAudioTrack.pause();
+                reelAudioTrack.currentTime = 0;
+            }
+        }
+
+        function playReelClickSound() {
+            if (isMuted) return;
+            try {
+                const ctx = getAudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(320, ctx.currentTime);
+                gain.gain.setValueAtTime(0.12, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.08);
+            } catch(e) {}
+        }
+
+        window.addEventListener('message', (e) => {
+            if (e.data && e.data.type === 'SET_MUTE') {
+                isMuted = !!e.data.muted;
+                if (reelAudioTrack) {
+                    reelAudioTrack.muted = isMuted;
+                    if (isMuted) reelAudioTrack.pause();
+                }
+                if (typingAudioTrack) {
+                    typingAudioTrack.muted = isMuted;
+                    if (isMuted) typingAudioTrack.pause();
+                }
+                if (letterOpenAudioTrack) {
+                    letterOpenAudioTrack.muted = isMuted;
+                }
+                if (audioCtx) {
+                    if (isMuted && audioCtx.state === 'running') {
+                        audioCtx.suspend();
+                    } else if (!isMuted && audioCtx.state === 'suspended') {
+                        audioCtx.resume();
+                    }
+                }
+            }
+        });
+
+        let letterOpenAudioTrack = null;
+
+        function playPaperOpenSound() {
+            try {
+                if (!letterOpenAudioTrack) {
+                    letterOpenAudioTrack = new Audio('assets/sound/letter-open.mp3');
+                    letterOpenAudioTrack.volume = 0.35;
+                }
+                letterOpenAudioTrack.muted = isMuted;
+                letterOpenAudioTrack.currentTime = 0;
+                if (!isMuted) {
+                    letterOpenAudioTrack.play().catch(err => {});
+                }
+            } catch(e) {}
+        }
+
+        let typingAudioTrack = null;
+
+        function startKeyboardTypingSound() {
+            try {
+                if (!typingAudioTrack) {
+                    typingAudioTrack = new Audio('assets/sound/keyboard-typing.mp3');
+                    typingAudioTrack.loop = true;
+                    typingAudioTrack.volume = 0.60; // Clear, crisp, comfortable typing volume
+                }
+                typingAudioTrack.muted = isMuted;
+                typingAudioTrack.currentTime = 0;
+                if (!isMuted) {
+                    typingAudioTrack.play().catch(err => {});
+                }
+            } catch(e) {}
+        }
+
+        function stopKeyboardTypingSound() {
+            if (typingAudioTrack) {
+                typingAudioTrack.pause();
+                typingAudioTrack.currentTime = 0;
+            }
+        }
+
+        function playLetterWritingSound() {
+            startKeyboardTypingSound();
+        }
+
+        function playMagicChime() {
+            if (isMuted) return;
+            try {
+                const ctx = getAudioContext();
+                const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98];
+                notes.forEach((freq, idx) => {
+                    setTimeout(() => {
+                        if (isMuted) return;
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(freq, ctx.currentTime);
+                        gain.gain.setValueAtTime(0.25, ctx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start();
+                        osc.stop(ctx.currentTime + 1.2);
+                    }, idx * 120);
+                });
+            } catch(e) {}
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // 60fps Dust Particle Canvas Engine
+            const canvas = document.getElementById('dust-canvas');
+            const ctx = canvas.getContext('2d');
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            const dustParticles = [];
+            let particleCount = 45;
+            for (let i = 0; i < 90; i++) {
+                dustParticles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 1.8 + 0.6,
+                    vy: -Math.random() * 0.35 - 0.1,
+                    alpha: Math.random() * 0.6 + 0.2
+                });
+            }
+
+            function renderCanvas() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let i = 0; i < particleCount; i++) {
+                    const d = dustParticles[i];
+                    d.y += d.vy;
+                    if (d.y < 0) d.y = canvas.height;
+                    ctx.beginPath();
+                    ctx.arc(d.x, d.y, d.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 209, 102, ${d.alpha})`;
+                    ctx.shadowBlur = 8;
+                    ctx.shadowColor = '#ffd166';
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+                requestAnimationFrame(renderCanvas);
+            }
+            renderCanvas();
+
+            // DOM Elements
+            const narrativeText = document.getElementById('narrative-text');
+            const dateDisplayContainer = document.getElementById('date-display-container');
+
+            const dateDay = document.getElementById('date-day');
+            const dateMonth = document.getElementById('date-month');
+            const dateYear = document.getElementById('date-year');
+
+            const envelopeWrapper = document.getElementById('envelope-wrapper');
+            const waxSeal = document.getElementById('wax-seal');
+            const letterCard = document.getElementById('letter-card');
+            const letterBody = document.getElementById('letter-body');
+            const letterSignature = document.getElementById('letter-signature');
+            const fountainPen = document.getElementById('fountain-pen');
+
+            function showNarrative(text, isGold, isGuideline) {
+                narrativeText.classList.remove('active');
+                setTimeout(() => {
+                    narrativeText.innerHTML = text;
+                    if (isGold) {
+                        narrativeText.classList.add('gold-glow');
+                        narrativeText.classList.remove('guideline-hint');
+                    } else if (isGuideline) {
+                        narrativeText.classList.add('guideline-hint');
+                        narrativeText.classList.remove('gold-glow');
+                    } else {
+                        narrativeText.classList.remove('gold-glow');
+                        narrativeText.classList.remove('guideline-hint');
+                    }
+                    narrativeText.classList.add('active');
+                }, 500);
+            }
+
+            function hideNarrative() {
+                narrativeText.classList.remove('active');
+            }
+
+            // Scene 1: Initial Today's Date (26 JUL 2026) Displays cleanly
+            showNarrative("Let's travel back to a very special day...", false);
+
+            // AUTOMATIC TRIGGER 3 SECONDS LATER
+            setTimeout(() => {
+                hideNarrative();
+                startAutomaticTimeCountdown();
+            }, 3000);
+
+            // Staggered Reel Countdown (Year spins fastest -> Month -> Day spins last)
+            function startAutomaticTimeCountdown() {
+                const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+
+                // Start continuous time-ticking audio track
+                startReelAudio();
+
+                // 1. Year Reel (Spins fastest line-by-line: 2026 -> 2025 -> 2024 -> 2023... -> 2002)
+                let currentYear = 2026;
+                let yearCount = 0;
+                const maxYearFlips = 24;
+
+                const yearInterval = setInterval(() => {
+                    yearCount++;
+                    currentYear = Math.max(2002, currentYear - 1);
+                    dateYear.textContent = String(currentYear);
+                    playReelClickSound();
+
+                    if (yearCount >= maxYearFlips) {
+                        clearInterval(yearInterval);
+                        dateYear.textContent = "2002";
+                        dateYear.classList.add('locked');
+                    }
+                }, 80);
+
+                // 2. Month Reel (Slows next -> locks on JUL)
+                let monthCount = 0;
+                const maxMonthFlips = 32;
+
+                const monthInterval = setInterval(() => {
+                    monthCount++;
+                    dateMonth.textContent = months[Math.floor(Math.random() * months.length)];
+                    playReelClickSound();
+
+                    if (monthCount >= maxMonthFlips) {
+                        clearInterval(monthInterval);
+                        dateMonth.textContent = "JUL";
+                        dateMonth.classList.add('locked');
+                    }
+                }, 95);
+
+                // 3. Day Reel (Slows last -> locks on 22)
+                let dayCount = 0;
+                const maxDayFlips = 42;
+
+                const dayInterval = setInterval(() => {
+                    dayCount++;
+                    dateDay.textContent = String(Math.floor(Math.random() * 28) + 1).padStart(2, '0');
+                    playReelClickSound();
+
+                    if (dayCount >= maxDayFlips) {
+                        clearInterval(dayInterval);
+                        dateDay.textContent = "22";
+                        dateDay.classList.add('locked');
+
+                        // Stop time-ticking audio track when date is locked!
+                        stopReelAudio();
+
+                        // ALL UNITS LOCKED ON 22 JUL 2002!
+                        onBirthdayReached();
+                    }
+                }, 110);
+            }
+
+            // On Birthday Reached (22 JUL 2002)
+            function onBirthdayReached() {
+                playMagicChime();
+
+                // Everything glows softly, tiny particles appear, background slowly brightens
+                document.body.classList.add('brighten');
+                particleCount = 85;
+
+                // 2-second pause
+                setTimeout(() => {
+                    // Entire date text (22 JUL 2002) smoothly slides UP ABOVE the narrative message!
+                    if (dateDisplayContainer) dateDisplayContainer.classList.add('slide-up');
+
+                    // Aged parchment envelope floats into center
+                    setTimeout(() => {
+                        if (envelopeWrapper) envelopeWrapper.classList.add('visible');
+
+                        setTimeout(() => {
+                            showNarrative("Click the envelope to read your birthday message... 💌", false, true);
+                        }, 1000);
+                    }, 800);
+
+                }, 2200);
+            }
+
+            // Envelope Click -> Unfold Letter
+            let letterOpened = false;
+            if (envelopeWrapper) {
+                envelopeWrapper.addEventListener('click', () => {
+                    if (letterOpened) return;
+                    letterOpened = true;
+
+                    playPaperOpenSound();
+                    playMagicChime();
+                    
+                    // Display "A VERY SPECIAL DAY FOR EVELYN ĐỖ HOÀNG NGỌC HÂN" BEFORE typing starts!
+                    showNarrative("A VERY SPECIAL DAY FOR<br><strong>EVELYN ĐỖ HOÀNG NGỌC HÂN</strong>", true);
+
+                    envelopeWrapper.style.transform = 'translate(-50%, -50%) scale(0.2)';
+                    envelopeWrapper.style.opacity = '0';
+                    envelopeWrapper.style.pointerEvents = 'none';
+
+                    setTimeout(() => {
+                        if (letterCard) letterCard.classList.add('open');
+
+                        setTimeout(() => {
+                            startFountainPenWriting();
+                        }, 1200);
+                    }, 800);
+                });
+            }
+
+            // Line-by-Line Character & Word Reveal with real Keyboard Typing Audio
+            function startFountainPenWriting() {
+                const paragraphs = [
+                    { text: "Happy Birthday! 🎉", isTitle: true },
+                    { text: "Wishing you another wonderful year filled with happiness, meaningful journeys, and everything you've been hoping for." },
+                    { text: "I made this as a small birthday gift, and I hope it adds a little extra joy to your special day." },
+                    { text: "Wishing you all the best, continued success, good health, and many happy moments in the year ahead." }
+                ];
+
+                let pIdx = 0;
+                let charIdx = 0;
+                letterBody.innerHTML = "";
+
+                // Start real keyboard-typing.mp3 sound track
+                startKeyboardTypingSound();
+
+                // Create initial paragraph element
+                let currentP = document.createElement(paragraphs[0].isTitle ? 'div' : 'p');
+                currentP.className = paragraphs[0].isTitle ? 'letter-title-line' : 'letter-p';
+                letterBody.appendChild(currentP);
+
+                const writingInterval = setInterval(() => {
+                    if (pIdx < paragraphs.length) {
+                        const targetText = paragraphs[pIdx].text;
+                        if (charIdx < targetText.length) {
+                            currentP.textContent += targetText.charAt(charIdx);
+                            charIdx++;
+                        } else {
+                            pIdx++;
+                            charIdx = 0;
+                            if (pIdx < paragraphs.length) {
+                                currentP = document.createElement(paragraphs[pIdx].isTitle ? 'div' : 'p');
+                                currentP.className = paragraphs[pIdx].isTitle ? 'letter-title-line' : 'letter-p';
+                                letterBody.appendChild(currentP);
+                            }
+                        }
+                    } else {
+                        clearInterval(writingInterval);
+
+                        // Stop keyboard typing sound track when message is complete
+                        stopKeyboardTypingSound();
+
+                        // Signature & Final Atmosphere
+                        setTimeout(() => {
+                            if (letterSignature) letterSignature.classList.add('visible');
+                            playMagicChime();
+                        }, 800);
+                    }
+                }, 45);
+            }
+        });
+    </script>
+</body>
+</html>

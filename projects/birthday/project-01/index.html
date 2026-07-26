@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Surprise for You ✨</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Canvas for Confetti -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Audio Elements -->
+    <audio id="bg-music" src="https://assets.mixkit.co/music/preview/mixkit-dreaming-big-31.mp3" loop></audio>
+
+    <!-- Floating Background Particles (Stars/Glows) -->
+    <div class="bg-particles"></div>
+
+    <!-- Floating Magic Fairy (Direct child of body to match Canvas coordinates) -->
+    <div id="magic-fairy" class="magic-fairy">
+        <svg viewBox="0 0 100 100" class="fairy-svg">
+            <defs>
+                <linearGradient id="wing-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#ffd0a6" stop-opacity="0.9"/>
+                    <stop offset="100%" stop-color="#ff758c" stop-opacity="0.4"/>
+                </linearGradient>
+                <radialGradient id="body-grad" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#ffffff"/>
+                    <stop offset="60%" stop-color="#ffe683"/>
+                    <stop offset="100%" stop-color="#ffa726"/>
+                </radialGradient>
+                <filter id="fairy-glow-filter" x="-30%" y="-30%" width="160%" height="160%">
+                    <feGaussianBlur stdDeviation="3.5" result="blur"/>
+                    <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                </filter>
+            </defs>
+            <path class="svg-wing left-wing" d="M 40,42 C 15,20 5,35 12,52 C 16,62 30,55 42,48 Z" fill="url(#wing-grad)"/>
+            <path class="svg-wing right-wing" d="M 60,42 C 85,20 95,35 88,52 C 84,62 70,55 58,48 Z" fill="url(#wing-grad)"/>
+            <path class="fairy-star-body" d="M 50,22 L 57,38 L 74,40 L 61,52 L 65,69 L 50,60 L 35,69 L 39,52 L 26,40 L 43,38 Z" fill="url(#body-grad)" filter="url(#fairy-glow-filter)"/>
+            <circle cx="44" cy="46" r="2.5" fill="#221b1b"/>
+            <circle cx="43.2" cy="44.8" r="0.8" fill="#ffffff"/>
+            <circle cx="56" cy="46" r="2.5" fill="#221b1b"/>
+            <circle cx="55.2" cy="44.8" r="0.8" fill="#ffffff"/>
+            <circle cx="41.5" cy="50.5" r="2" fill="#ff758c" opacity="0.7"/>
+            <circle cx="58.5" cy="50.5" r="2" fill="#ff758c" opacity="0.7"/>
+            <path d="M 48.5,50.8 Q 50,52.8 51.5,50.8" stroke="#221b1b" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        </svg>
+        <div class="fairy-dialog" id="fairy-dialog">
+            <span>Psst... the passcode is <strong>2002</strong>! 🤫🔑</span>
+        </div>
+    </div>
+
+    <!-- 1. Passcode Screen -->
+    <div id="screen-passcode" class="screen active">
+
+        <div class="glass-card passcode-card">
+            <div class="avatar-container" id="avatar-container">
+                <img src="assets/avatar.jpg" alt="Profile" class="avatar-img" id="avatar-img">
+            </div>
+            
+            <h1 class="passcode-title">Hey there!</h1>
+            <p class="passcode-subtitle">Catch the floating golden fairy flying around to find the passcode!</p>
+            
+            <div class="pin-container">
+                <div class="pin-display" id="pin-display">
+                    <span class="pin-dot"></span>
+                    <span class="pin-dot"></span>
+                    <span class="pin-dot"></span>
+                    <span class="pin-dot"></span>
+                </div>
+            </div>
+            
+            <div class="numpad">
+                <button class="num-btn" data-val="1">1</button>
+                <button class="num-btn" data-val="2">2</button>
+                <button class="num-btn" data-val="3">3</button>
+                <button class="num-btn" data-val="4">4</button>
+                <button class="num-btn" data-val="5">5</button>
+                <button class="num-btn" data-val="6">6</button>
+                <button class="num-btn" data-val="7">7</button>
+                <button class="num-btn" data-val="8">8</button>
+                <button class="num-btn" data-val="9">9</button>
+                <button class="num-btn action-btn clear-btn" data-val="clear">C</button>
+                <button class="num-btn" data-val="0">0</button>
+                <button class="num-btn action-btn delete-btn" data-val="backspace"><i class="fa-solid fa-backspace"></i></button>
+            </div>
+            <div id="error-message" class="error-msg">Incorrect passcode. Try again! 🤫</div>
+        </div>
+    </div>
+
+    <!-- 2. Loading Screen -->
+    <div id="screen-loading" class="screen">
+        <div class="glass-card loading-card">
+            <!-- Phase 1: Headphone Recommendation Content -->
+            <div id="headphone-phase" class="loading-sub-phase">
+                <div class="heart-loader">
+                    <i class="fa-solid fa-headphones floating-headphones"></i>
+                </div>
+                <h2 class="loading-title">Before We Begin...</h2>
+                <p class="phase-message">This surprise is best enjoyed with your headphones on. Put them on, then click below.</p>
+                <button id="ready-btn" class="glow-btn ready-btn" style="margin-top: 25px; width: 100%;">
+                    I'm Ready
+                </button>
+            </div>
+
+            <!-- Phase 2 & 3: Actual Loading Content (hidden initially) -->
+            <div id="loading-phase" class="loading-sub-phase" style="display: none; opacity: 0; transform: scale(0.96);">
+                <div class="heart-loader">
+                    <i class="fa-solid fa-gift floating-gift"></i>
+                </div>
+                <h2 class="loading-title">Unlocking Magic...</h2>
+                
+                <!-- Progress Bar (Deadline Chase Track) -->
+                <div class="deadline-track">
+                    <!-- Impending danger fill -->
+                    <div id="progress-bar-fill" class="progress-bar-fill"></div>
+                    
+                    <!-- Chaser: Death Hunter (Reaper) -->
+                    <div class="reaper-chaser" id="reaper-chaser">
+                        <svg class="reaper-icon" viewBox="0 0 100 80">
+                            <!-- Cloak / Body -->
+                            <path d="M 20,70 C 20,45 35,30 45,30 C 50,30 52,22 47,15 C 45,10 40,8 35,12 C 40,3 55,2 58,10 C 60,15 58,25 54,32 C 50,38 52,50 56,70 Z" fill="#ff0844" />
+                            <!-- Scythe & Arm Group (Animated) -->
+                            <g class="scythe-hand">
+                                <!-- Arm -->
+                                <path d="M 46,45 C 55,43 62,50 68,52 L 64,55 C 58,53 52,48 46,47 Z" fill="#ff0844" />
+                                <!-- Scythe Handle -->
+                                <line x1="58" y1="62" x2="80" y2="28" stroke="#ff0844" stroke-width="3" stroke-linecap="round" />
+                                <!-- Scythe Blade -->
+                                <path d="M 80,28 C 82,28 92,34 90,50 Q 84,40 80,28" fill="#ff0844" />
+                            </g>
+                        </svg>
+                    </div>
+
+                    <!-- Target: Programmer at Desk (Positioned closer to desk) -->
+                    <div class="programmer-target">
+                        <svg class="programmer-icon" viewBox="0 0 100 80">
+                            <!-- Desk & Monitor -->
+                            <path d="M 68,68 L 88,68 L 88,38 L 85,38 L 85,68 Z" fill="#ffffff" />
+                            <rect x="62" y="36" width="30" height="4" rx="1" fill="#ffffff" />
+                            <!-- Monitor -->
+                            <path d="M 78,36 L 81,22 L 83,22 L 80,36 Z" fill="#ffffff" />
+                            <path d="M 75,22 L 86,22 L 81,10 Z" fill="#ffffff" />
+                            <!-- Chair (Shifted closer) -->
+                            <path d="M 34,68 L 44,68 M 39,68 L 39,55 M 36,55 L 46,55 M 34,55 C 32,40 34,30 36,25" stroke="#ffffff" stroke-width="3.5" fill="none" stroke-linecap="round" />
+                            <!-- Programmer Body (Shifted closer) -->
+                            <circle cx="55" cy="20" r="6" fill="#ffffff" />
+                            <path d="M 45,53 C 42,40 45,28 54,25 C 60,27 58,38 58,45 L 46,53 Z" fill="#ffffff" />
+                            <path d="M 45,52 L 56,52 L 56,68" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                            <!-- Typing Arms (Animated via CSS) -->
+                            <path class="typing-hands" d="M 52,28 Q 62,26 67,35 Q 59,36 52,28" fill="#ffffff" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="progress-info">
+                    <span id="loading-status" class="loading-status">Deadline is coming...</span>
+                    <span id="loading-percentage" class="loading-percentage">0%</span>
+                </div>
+
+                <!-- Proceed Button (hidden by default) -->
+                <button id="proceed-btn" class="glow-btn proceed-btn" style="display: none; margin-top: 25px; width: 100%;">
+                    Enter The Surprise Room
+                </button>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Decorative Animation Transition Screen -->
+    <div id="screen-transition" class="screen">
+        <canvas id="fireworks-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 15;"></canvas>
+        <div class="decorations-container">
+            <!-- 1. Top Bunting flags -->
+            <div class="decor-item decor-bunting">
+                <img src="assets/decoration/top-hang.png" alt="Top Hanging Decoration" class="bunting-img" style="width: 100%; height: auto; display: block;" />
+            </div>
+            
+            <!-- 2. Happy Birthday Typography Title -->
+            <div class="decor-text-group">
+                <h1 class="decor-item decor-title">Happy Birthday</h1>
+                
+                <!-- Profile Image, Name & Birthday Date -->
+                <div class="decor-item decor-profile-box">
+                    <div class="decor-avatar-wrapper">
+                        <img src="assets/avatar.jpg" alt="Evelyn Đỗ Hoàng Ngọc Hân" class="decor-avatar-img">
+                    </div>
+                    <h3 class="decor-person-name">
+                        <span class="name-line1">Evelyn</span>
+                        <span class="name-line2">Đỗ Hoàng Ngọc Hân</span>
+                    </h3>
+                    <div class="decor-person-dob"><i class="fa-solid fa-cake-candles"></i> July 22, 2002</div>
+                </div>
+
+                <!-- 3. Message Text -->
+                <p class="decor-item decor-message">
+                    Sending you my warmest wishes on your special day. Happy birthday!
+                </p>
+
+                <!-- 4. Unwrap Your Gift Button -->
+                <div class="transition-next-container" style="margin-top: 22px; display: flex; justify-content: center; z-index: 20;">
+                    <button id="transition-next-btn" class="glow-btn unwrap-btn" style="display: none; opacity: 0; transition: opacity 1s ease, transform 0.4s ease; padding: 14px 30px; font-size: 1.05rem; border-radius: 25px; gap: 10px;">
+                        <i class="fa-solid fa-gift"></i>
+                        <span>Unwrap Your Gift 🎁</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 4. Bottom Left Corner -->
+            <div class="decor-item decor-cake-left decor-corner-left">
+                <img src="assets/decoration/left-corner.png" alt="Left Corner Decoration" class="corner-img-left" />
+            </div>
+
+            <!-- 5. Bottom Right Corner -->
+            <div class="decor-item decor-cake-right decor-corner-right">
+                <img src="assets/decoration/right-corner.png" alt="Right Corner Decoration" class="corner-img-right"/>
+            </div>
+
+            <!-- 6. Left Popper -->
+            <div class="decor-item decor-popper decor-popper-left">
+                <img src="assets/decoration/left-popper.png" alt="Left Popper" class="popper-img-left" style="width: 150px; height: auto; display: block;" />
+            </div>
+
+            <!-- Left Memory Carousel Frame -->
+            <div class="decor-item decor-frame decor-frame-left">
+                <div class="frame-slides-viewport">
+                    <div class="frame-slide active">
+                        <img src="assets/carousel/cake.jpg" alt="Sweet Birthday Cake" class="frame-img">
+                        <div class="frame-caption">Sweet Cake 🎂</div>
+                    </div>
+                    <div class="frame-slide">
+                        <img src="assets/carousel/balloons.jpg" alt="Dreamy Balloons" class="frame-img">
+                        <div class="frame-caption">Dreamy Balloons 🎈</div>
+                    </div>
+                    <div class="frame-slide">
+                        <img src="assets/carousel/sparkler.jpg" alt="Bright Sparklers" class="frame-img">
+                        <div class="frame-caption">Bright Sparklers ✨</div>
+                    </div>
+                </div>
+                <!-- Theme Navigation Buttons Under Carousel -->
+                <div class="frame-controls-under">
+                    <button class="frame-btn btn-prev" title="Previous Image"><i class="fa-solid fa-chevron-left"></i></button>
+                    <span class="frame-dots-indicator"><i class="fa-solid fa-heart"></i></span>
+                    <button class="frame-btn btn-next" title="Next Image"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <!-- 7. Right Popper -->
+            <div class="decor-item decor-popper decor-popper-right">
+                <img src="assets/decoration/right-popper.png" alt="Right Popper" class="popper-img-right" style="width: 150px; height: auto; display: block;" />
+            </div>
+
+            <!-- Right Memory Carousel Frame -->
+            <div class="decor-item decor-frame decor-frame-right">
+                <div class="frame-slides-viewport">
+                    <div class="frame-slide active">
+                        <img src="assets/carousel/gift.jpg" alt="Magical Gifts" class="frame-img">
+                        <div class="frame-caption">Magical Surprises 🎁</div>
+                    </div>
+                    <div class="frame-slide">
+                        <img src="assets/carousel/avatar.png" alt="Evelyn Đỗ Hoàng Ngọc Hân" class="frame-img">
+                        <div class="frame-caption">Lovely Evelyn 💖</div>
+                    </div>
+                    <div class="frame-slide">
+                        <img src="assets/carousel/avatar-1.jpg" alt="Special Memories" class="frame-img">
+                        <div class="frame-caption">Special Memories 🌸</div>
+                    </div>
+                </div>
+                <!-- Theme Navigation Buttons Under Carousel -->
+                <div class="frame-controls-under">
+                    <button class="frame-btn btn-prev" title="Previous Image"><i class="fa-solid fa-chevron-left"></i></button>
+                    <span class="frame-dots-indicator"><i class="fa-solid fa-heart"></i></span>
+                    <button class="frame-btn btn-next" title="Next Image"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <!-- 8. Bottom Cake -->
+            <div class="decor-item decor-gifts decor-cake-bottom">
+                <img src="assets/decoration/bottom-cake.png" alt="Bottom Cake" class="cake-bottom-img" style="width: 220px; height: auto; display: block;" />
+            </div>
+
+            <!-- 9. Floating stars (Left & Right) -->
+            <div class="decor-item decor-stars">
+                <i class="fa-solid fa-star star-1" style="position: absolute; left: 16%; top: 32%; color: #f8b34c; font-size: 1.8rem; transform: rotate(15deg);"></i>
+                <i class="fa-solid fa-star star-2" style="position: absolute; left: 19%; top: 38%; color: #f8b34c; font-size: 1.1rem; transform: rotate(-10deg);"></i>
+                <i class="fa-solid fa-star star-3" style="position: absolute; right: 17%; top: 52%; color: #f8b34c; font-size: 1.5rem; transform: rotate(20deg);"></i>
+                <i class="fa-solid fa-star star-4" style="position: absolute; right: 24%; top: 48%; color: #f8b34c; font-size: 2.2rem; transform: rotate(-25deg);"></i>
+            </div>
+
+            <!-- 10. Giftbox Frame Container (Revealed after clicking Unwrap Your Gift) -->
+            <div id="gifts-split-container" class="giftbox-frame-container" style="display: none;">
+                <div class="giftbox-frame-bg">
+                    <img src="assets/decoration/giftbox-frame.png" alt="Surprise Gift Frame" class="giftbox-frame-img" />
+                </div>
+                <div class="giftbox-frame-content">
+                    <div class="gift-boxes-container">
+                        <!-- Gift 1 -->
+                        <div class="gift-box-wrapper" data-box="1">
+                            <div class="gift-box-img-container">
+                                <img src="assets/decoration/giftbox-1-base.png" alt="Gift Box 1 Base" class="gift-img-base" />
+                                <img src="assets/decoration/giftbox-1-close.png" alt="Gift Box 1 Closed" class="gift-img gift-img-close" />
+                                <img src="assets/decoration/giftbox-1-open.png" alt="Gift Box 1 Open" class="gift-img gift-img-open" />
+                            </div>
+                            <div class="gift-box-label">Box 1</div>
+                        </div>
+                        <!-- Gift 2 -->
+                        <div class="gift-box-wrapper" data-box="2">
+                            <div class="gift-box-img-container">
+                                <img src="assets/decoration/giftbox-2-base.png" alt="Gift Box 2 Base" class="gift-img-base" />
+                                <img src="assets/decoration/giftbox-2-close.png" alt="Gift Box 2 Closed" class="gift-img gift-img-close" />
+                                <img src="assets/decoration/giftbox-2-open.png" alt="Gift Box 2 Open" class="gift-img gift-img-open" />
+                            </div>
+                            <div class="gift-box-label">Box 2</div>
+                        </div>
+                        <!-- Gift 3 -->
+                        <div class="gift-box-wrapper" data-box="3">
+                            <div class="gift-box-img-container">
+                                <img src="assets/decoration/giftbox-3-base.png" alt="Gift Box 3 Base" class="gift-img-base" />
+                                <img src="assets/decoration/giftbox-3-close.png" alt="Gift Box 3 Closed" class="gift-img gift-img-close" />
+                                <img src="assets/decoration/giftbox-3-open.png" alt="Gift Box 3 Open" class="gift-img gift-img-open" />
+                            </div>
+                            <div class="gift-box-label">Box 3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gift #1 Modal Overlay: Magical Flower Garden -->
+    <div id="garden-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content garden-modal-content">
+            <button id="close-garden-modal" class="modal-close-btn">&times;</button>
+            <iframe data-src="gift1_garden.html" class="garden-iframe" frameborder="0"></iframe>
+        </div>
+    </div>
+
+    <!-- Gift #2 Modal Overlay: The Time Capsule Memory Machine -->
+    <div id="clover-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content garden-modal-content" style="border-color: rgba(255, 209, 102, 0.5); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(212, 175, 55, 0.4);">
+            <button id="close-clover-modal" class="modal-close-btn">&times;</button>
+            <iframe data-src="gift2_clover.html" class="garden-iframe" frameborder="0"></iframe>
+        </div>
+    </div>
+
+    <!-- Gift #3 Modal Overlay: Make a Birthday Wish Scene -->
+    <div id="wish-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content garden-modal-content" style="border-color: rgba(255, 209, 102, 0.5); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(255, 209, 102, 0.35);">
+            <button id="close-wish-modal" class="modal-close-btn">&times;</button>
+            <iframe data-src="gift3_wish.html" class="garden-iframe" frameborder="0"></iframe>
+        </div>
+    </div>
+
+    <!-- Early Close Warning Toast for Gift Box #3 -->
+    <div id="early-close-toast" class="early-close-toast">
+        Oops, we're not done yet, don't leave so soon! ✨
+    </div>
+
+    <!-- Floating Mute/Unmute Button (Topmost DOM layer above all modals) -->
+    <button id="mute-btn" class="mute-btn" title="Mute">
+      <i class="fa-solid fa-volume-high"></i>
+    </button>
+
+    <!-- JS Files -->
+    <script src="app.js"></script>
+</body>
+</html>
