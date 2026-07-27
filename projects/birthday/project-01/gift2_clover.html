@@ -341,7 +341,7 @@
 
         <!-- Pure Minimal Floating Date Text (Slides ABOVE narrative message!) -->
         <div id="date-display-container" class="date-display-container">
-            <span id="date-day" class="date-unit date-unit-day">27</span>
+            <span id="date-day" class="date-unit date-unit-day">26</span>
             <span id="date-month" class="date-unit date-unit-month">JUL</span>
             <span id="date-year" class="date-unit date-unit-year">2026</span>
         </div>
@@ -587,6 +587,18 @@
             const letterSignature = document.getElementById('letter-signature');
             const fountainPen = document.getElementById('fountain-pen');
 
+            // Dynamically calculate today's date for visitor's current day, month, and year
+            const today = new Date();
+            const todayDay = String(today.getDate()).padStart(2, '0');
+            const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+            const todayMonth = months[today.getMonth()];
+            const todayYear = today.getFullYear();
+
+            // Set initial date display to exact current date user visits the page
+            dateDay.textContent = todayDay;
+            dateMonth.textContent = todayMonth;
+            dateYear.textContent = String(todayYear);
+
             function showNarrative(text, isGold, isGuideline) {
                 narrativeText.classList.remove('active');
                 setTimeout(() => {
@@ -609,7 +621,7 @@
                 narrativeText.classList.remove('active');
             }
 
-            // Scene 1: Initial Today's Date (26 JUL 2026) Displays cleanly
+            // Scene 1: Initial Today's Date Displays cleanly
             showNarrative("Let's travel back to a very special day...", false);
 
             // AUTOMATIC TRIGGER 3 SECONDS LATER
@@ -620,15 +632,13 @@
 
             // Staggered Reel Countdown (Year spins fastest -> Month -> Day spins last)
             function startAutomaticTimeCountdown() {
-                const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-
                 // Start continuous time-ticking audio track
                 startReelAudio();
 
-                // 1. Year Reel (Spins fastest line-by-line: 2026 -> 2025 -> 2024 -> 2023... -> 2002)
-                let currentYear = 2026;
+                // 1. Year Reel (Spins fastest line-by-line: todayYear -> ... -> 2002)
+                let currentYear = todayYear;
                 let yearCount = 0;
-                const maxYearFlips = 24;
+                const totalYearDiff = Math.max(1, todayYear - 2002);
 
                 const yearInterval = setInterval(() => {
                     yearCount++;
@@ -636,7 +646,7 @@
                     dateYear.textContent = String(currentYear);
                     playReelClickSound();
 
-                    if (yearCount >= maxYearFlips) {
+                    if (currentYear <= 2002 || yearCount >= totalYearDiff) {
                         clearInterval(yearInterval);
                         dateYear.textContent = "2002";
                         dateYear.classList.add('locked');
