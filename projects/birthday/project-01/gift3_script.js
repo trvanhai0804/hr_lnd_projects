@@ -609,6 +609,6 @@ document.addEventListener('DOMContentLoaded', () => {
         constellationTimer = setInterval(() => {
             const nextPhase = (currentConstellationPhase === 0) ? 1 : 0;
             applyConstellationPhase(nextPhase);
-        }, 20000); // Alternates every 20 seconds for comfortable reading
+        }, 30000); // Alternates every 20 seconds for comfortable reading
     }
 });
