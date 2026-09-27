@@ -1,0 +1,12 @@
+THE BOOK ON THE PARTY TABLE
+===========================
+
+Put the HTML page for the soft-black book in this folder
+(plus any CSS, JS or images it needs, using the same relative paths).
+
+Then open js/config.js and set the file name, for example:
+    book: { file: 'book.html', title: 'A book for Anne' },
+
+Clicking the book in the birthday room will open it in the same
+pop-up window as the gifts. Until a file is set, the book just shows
+a short "still being written" message.
