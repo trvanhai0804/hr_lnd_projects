@@ -2021,6 +2021,11 @@
             const { L, a } = STEMS[n], r = a * Math.PI / 180;
             const bx = .75, by = G, tx = bx + L * Math.sin(r), ty = by + L * Math.cos(r);
             const dot = fx('pulse', bx, by);
+            // the main stem grows with the light: its tip rises at the same pace as the glow
+            const line = q(`.flower--${n} .flower__line`);
+            line.style.animationDuration = dur + 'ms';
+            line.style.animationTimingFunction = 'linear';
+            on(line);
             dot.animate([{ transform: T(bx, by), opacity: 0 }, { transform: T(bx + (tx - bx) * .05, by + (ty - by) * .05), opacity: 1, offset: .05 }, { transform: T(tx, ty), opacity: 1 }],
                 { duration: dur, easing: 'linear', fill: 'forwards' });
             // each leaf unfolds exactly when the light reaches it
@@ -2088,15 +2093,15 @@
             await W(250); c1.flag('meh', false);
             await W(450); c2.flag('ears-back', false); c2.state('');
 
-            // 4. the seed sprouts
+            // 4. the seed settles into the ground and the first grass stirs
+            //    (the flower stems wait for the light further on)
             seed.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 2200, fill: 'forwards' });
-            ['.flower--1', '.flower--3', '.flower--2'].forEach((s, i) => setTimeout(() => on(q(s + ' .flower__line')), i * 200));
             growNear('.flower__g-long');
             c2.flag('wide', true);
             await Promise.all([(async () => { await c2.hop(); await c2.walk(16, 13, true); })(), c1.walk(-15, 6, true)]);
-            c1.state('look-up'); c2.state('look-up'); c2.flag('wide', false);
+            c1.state('look-down'); c2.state('look-down'); c2.flag('wide', false);
             c1.light(.5, .4); c2.light(.5, .4);
-            await W(2600);
+            await W(1600);
             c1.state(''); c2.state('');
 
             // every touch grows the garden right where it lands
@@ -2139,10 +2144,11 @@
             await c1.walk(-15, 7, true);
             await c2.walkPawTo(1.6, 13);
             await c2.pat(2);                                // a little too hard...
-            const line2 = q('.flower--2 .flower__line');
-            line2.style.transformOrigin = '50% 100%';
-            line2.animate([{ transform: 'rotate(0deg)' }, { transform: 'rotate(8deg)' }, { transform: 'rotate(-6deg)' }, { transform: 'rotate(3deg)' }, { transform: 'rotate(0deg)' }], { duration: 1200, easing: 'ease-out' });
-            const p2 = pulse(2, 1900, W);
+            const p2 = pulse(2, 1900, W).then(() => {      // ...so the new stem bounces as it blooms
+                const line2 = q('.flower--2 .flower__line');
+                line2.style.transformOrigin = '50% 100%';
+                line2.animate([{ transform: 'rotate(0deg)' }, { transform: 'rotate(8deg)' }, { transform: 'rotate(-6deg)' }, { transform: 'rotate(3deg)' }, { transform: 'rotate(0deg)' }], { duration: 1200, easing: 'ease-out' });
+            });
             c2.flag('wide', true); c2.flag('ears-back', true);
             await c2.hop(); await c2.walk(15, 12, true);
             c2.flag('ears-back', false); c2.state('look-up');
