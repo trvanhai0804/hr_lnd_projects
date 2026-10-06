@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Special Delivery · Gift #2</title>
+<style>
+  :root {
+    --ink: #3b2a1c;
+    --cream: #f7eedb;
+    --serif: 'Palatino Linotype', 'Book Antiqua', Palatino, 'Iowan Old Style', Georgia, serif;
+    --script: 'Segoe Script', 'Segoe Print', 'Bradley Hand', 'Lucida Handwriting', cursive;
+    --cur: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28'><path d='M3 2l7 19 3-7.5 7.5-3z' fill='%23fbf1dc' stroke='%233b2a1c' stroke-width='1.5' stroke-linejoin='round'/></svg>") 3 2, default;
+    --cur-hot: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'><circle cx='20' cy='20' r='7' fill='none' stroke='%23fbe6b0' stroke-width='1.4' opacity='.9'/><path d='M3 2l7 19 3-7.5 7.5-3z' fill='%23fff3cf' stroke='%233b2a1c' stroke-width='1.5' stroke-linejoin='round'/></svg>") 3 2, pointer;
+    /* the letter paper: the fold animation and the reading view share this size */
+    --lw: min(640px, 92vw);
+    --lh: min(calc(100vh - 104px), 680px);
+    /* the envelope close-up */
+    --ew: min(500px, 78vw, 90vh);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #2a1b1e; }
+  body {
+    font-family: var(--serif); color: var(--cream); cursor: var(--cur);
+    user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent;
+  }
+  button { font-family: inherit; cursor: var(--cur-hot); }
+
+  /* ---------- the machine: four stacked SVG layers sharing one coordinate system ---------- */
+  #stage { position: fixed; inset: 0; transition: filter 1.3s ease, transform 1.3s cubic-bezier(.3, .1, .2, 1); }
+  #stage svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; will-change: transform; }
+  #L3 { pointer-events: none; }
+  #L3 .hot { pointer-events: auto; cursor: var(--cur-hot); touch-action: none; }
+  body.cu-on #stage { filter: blur(7px) brightness(.4) saturate(.85); transform: scale(1.035); }
+  #L1, #L2, #L3 { transition: opacity 1.1s ease; }
+  body.intro #L1, body.intro #L3 { opacity: 0; }
+
+  /* marquee bulbs chase once the machine wakes up */
+  .bulb { opacity: .3; }
+  body:not(.intro) .bulb { animation: chase 1.5s steps(1) infinite; }
+  .bulb.k1 { animation-delay: -.5s !important; }
+  .bulb.k2 { animation-delay: -1s !important; }
+  body.win .bulb { animation-duration: .45s; }
+  @keyframes chase { 0% { opacity: 1; } 33.3% { opacity: .38; } 100% { opacity: .38; } }
+
+  /* control buttons */
+  .btn .dome { transition: transform .08s ease; }
+  .btn.down .dome { transform: translateY(4px); }
+  .btn .lamp { opacity: .1; transition: opacity .45s ease; }
+  body.ready .btn .lamp { opacity: .85; }
+  body.ready .btn.down .lamp { opacity: 1; }
+
+  /* prize slot */
+  #slotGlow { opacity: 0; transition: opacity .6s; }
+  body.won #slotGlow { animation: slotPulse 1.9s ease-in-out infinite; }
+  @keyframes slotPulse { 0%, 100% { opacity: .25; } 50% { opacity: .95; } }
+  .flap { transform-box: fill-box; transform-origin: 50% 0; transition: transform .4s cubic-bezier(.3, 1.4, .5, 1); }
+  .flap.bump { transform: scaleY(.9) skewX(-3deg); }
+  .flap.lift { transform: scaleY(.1); }
+  .glint { transform-box: fill-box; transform-origin: center; animation: glint 3.4s ease-in-out infinite; }
+  @keyframes glint { 0%, 72%, 100% { opacity: 0; transform: scale(.3) rotate(0deg); } 82% { opacity: .95; transform: scale(1) rotate(45deg); } }
+
+  /* ---------- short caption at the top ---------- */
+  #cap {
+    position: fixed; left: 50%; top: 12px; z-index: 30; max-width: calc(100vw - 32px);
+    display: flex; align-items: center; gap: 12px; padding: 7px 16px;
+    border-radius: 22px; background: rgba(34, 20, 16, .62); border: 1px solid rgba(255, 232, 190, .18);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .25);
+    font-style: italic; font-size: clamp(13px, 1.6vw, 16px); line-height: 1.35; text-align: center;
+    transform: translate(-50%, -8px); opacity: 0; pointer-events: none;
+    transition: opacity .45s ease, transform .45s ease;
+  }
+  #cap.on { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+  #cap kbd { font: inherit; font-style: normal; padding: 0 5px; border-radius: 4px; border: 1px solid rgba(255, 232, 190, .35); background: rgba(255, 240, 210, .08); }
+  #capBtn {
+    flex: none; white-space: nowrap; border: 0; border-radius: 16px; padding: 4px 12px; font-size: .92em; font-style: italic;
+    color: #3b2a1c; background: linear-gradient(180deg, #f6e3c6, #e3c9a0);
+  }
+  #capBtn:hover { background: linear-gradient(180deg, #fbecd4, #ead3ad); }
+
+  /* ---------- close-up: the envelope ---------- */
+  #cu { position: fixed; inset: 0; z-index: 20; pointer-events: none; }
+  #cu::before {
+    content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 1.3s;
+    background: radial-gradient(ellipse at 50% 46%, rgba(255, 214, 160, .1), rgba(20, 10, 8, .55) 75%);
+  }
+  #cu.on::before { opacity: 1; }
+  .cu-wrap {
+    position: absolute; left: calc(50% - var(--ew) / 2); top: calc(50% - var(--ew) / 3 + 12px);
+    width: var(--ew); height: calc(var(--ew) * 2 / 3); visibility: hidden;
+    filter: drop-shadow(0 26px 34px rgba(0, 0, 0, .5));
+  }
+  #cu.on .cu-wrap { visibility: visible; }
+  .cu-wrap.away { transform: translateY(46vh) rotate(5deg) scale(.9) !important; opacity: 0; transition: transform 1.2s cubic-bezier(.5, 0, .7, .4), opacity 1s ease .2s !important; }
+  .cu-env { position: absolute; inset: 0; perspective: 1400px; }
+  .cu-env > * { position: absolute; }
+  .cu-back, .cu-pocket { left: 0; top: 0; width: 100%; height: 100%; display: block; }
+  .cu-back { z-index: 1; }
+  .cu-paper {
+    z-index: 2; left: 5.5%; right: 5.5%; top: 5%; height: 86%; border-radius: 2px;
+    background: linear-gradient(180deg, #fdf8ec, #f3e8cf);
+    box-shadow: 0 -2px 8px rgba(90, 60, 30, .18), inset 0 0 0 1px rgba(160, 120, 70, .2);
+    transition: transform 1.25s cubic-bezier(.35, .05, .2, 1);
+  }
+  .cu-paper::after {
+    content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(140, 100, 60, .22) 15%, rgba(140, 100, 60, .22) 85%, transparent);
+  }
+  .cu-pocket { z-index: 3; pointer-events: none; }
+  .cu-flap {
+    z-index: 4; left: 0; top: 0; width: 100%; height: 62%;
+    transform-origin: 50% 0; transform-style: preserve-3d;
+    transition: transform 1.05s cubic-bezier(.5, 0, .3, 1), z-index 0s linear .52s;
+  }
+  .cu-flap svg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+  .cu-flap-in { transform: rotateX(180deg); }
+  .cu-env.open .cu-flap { transform: rotateX(180deg); z-index: 1; }
+  .cu-env.pull .cu-paper { transform: translateY(-64%); }
+  .cu-seal {
+    z-index: 6; left: 50%; top: 56.5%; width: 15.5%; aspect-ratio: 1; padding: 0; border: 0; background: none;
+    transform: translate(-50%, -50%); border-radius: 50%; pointer-events: none; outline: none;
+  }
+  #cu.sealed .cu-seal { pointer-events: auto; }
+  .cu-seal svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; transition: transform .75s cubic-bezier(.3, .6, .4, 1), opacity .75s ease .2s; }
+  .seal-l { clip-path: polygon(0 0, 53% 0, 46% 28%, 56% 50%, 44% 74%, 51% 100%, 0 100%); }
+  .seal-r { clip-path: polygon(53% 0, 100% 0, 100% 100%, 51% 100%, 44% 74%, 56% 50%, 46% 28%); }
+  .cu-seal.broken .seal-l { transform: translate(-22%, 30%) rotate(-24deg); opacity: 0; }
+  .cu-seal.broken .seal-r { transform: translate(22%, 36%) rotate(20deg); opacity: 0; }
+  .cu-seal::after {
+    content: ''; position: absolute; inset: -14%; border-radius: 50%; opacity: 0; pointer-events: none;
+    box-shadow: 0 0 0 2px rgba(255, 226, 170, .75), 0 0 22px 6px rgba(255, 210, 140, .45);
+  }
+  #cu.sealed .cu-seal::after { animation: sealPulse 1.8s ease-in-out infinite; }
+  .cu-seal:hover svg, .cu-seal:focus-visible svg { transform: scale(1.06); }
+  @keyframes sealPulse { 0%, 100% { opacity: 0; transform: scale(.92); } 50% { opacity: 1; transform: scale(1.04); } }
+
+  /* ---------- the tri-folded letter, then the reading view ---------- */
+  .fold, .letter {
+    position: fixed; left: calc(50% - var(--lw) / 2); top: calc(50% - var(--lh) / 2 - 22px);
+    width: var(--lw); height: var(--lh);
+  }
+  .fold { perspective: 1900px; transform-origin: 50% 50%; opacity: 0; pointer-events: none; }
+  .fold.on { opacity: 1; }
+  .fp {
+    position: absolute; left: 0; right: 0; height: 33.4%;
+    background: linear-gradient(180deg, #fcf6e8, #f3e8cf);
+    box-shadow: inset 0 0 0 1px rgba(160, 120, 70, .18), 0 10px 26px rgba(0, 0, 0, .28);
+    transition: transform 1s cubic-bezier(.45, 0, .25, 1), filter 1s;
+  }
+  .fp-m { top: 33.3%; }
+  .fp-t { top: 0; transform-origin: 50% 100%; transform: rotateX(-180deg); filter: brightness(.93); }
+  .fp-b { top: 66.6%; transform-origin: 50% 0; transform: rotateX(180deg); filter: brightness(.96); }
+  .fold.u1 .fp-t, .fold.u2 .fp-b { transform: none; filter: none; }
+
+  .letter {
+    z-index: 2; opacity: 0; pointer-events: none; overflow-y: auto; overscroll-behavior: contain;
+    padding: clamp(18px, 3.2vh, 40px) clamp(22px, 5.4vw, 56px) clamp(16px, 3vh, 34px);
+    border-radius: 3px; color: #4a3320;
+    background:
+      /* the old fold creases: only a soft, blurred hint so they never cut through the writing */
+      linear-gradient(180deg, transparent calc(33.3% - 9px), rgba(140, 100, 60, .035) 33.3%, transparent calc(33.3% + 9px)),
+      linear-gradient(180deg, transparent calc(66.6% - 9px), rgba(140, 100, 60, .035) 66.6%, transparent calc(66.6% + 9px)),
+      radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, .5), transparent 60%),
+      linear-gradient(180deg, #fdf8ec, #f3e8cf);
+    background-attachment: local, local, scroll, scroll;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, .55), inset 0 0 0 1px rgba(160, 120, 70, .22), inset 0 0 70px rgba(200, 160, 100, .16);
+    /* the script shrinks this a little if needed, so the whole letter fits without scrolling */
+    font-size: clamp(15px, 1.25vw + 5px, 19px); line-height: 1.5;
+    transition: opacity .6s ease;
+    user-select: text; -webkit-user-select: text;
+    scrollbar-width: thin; scrollbar-color: #c9a46a transparent;
+  }
+  .letter.on { opacity: 1; pointer-events: auto; }
+  .letter p { margin: 0; }
+  .lt-greet {
+    font-family: var(--script); font-size: 1.55em; line-height: 1.4; color: #3b2a1c; margin-bottom: .35em !important;
+    clip-path: inset(-10% 100% -20% 0); transition: clip-path 1.5s cubic-bezier(.4, 0, .4, 1);
+  }
+  .lt-greet.on { clip-path: inset(-10% -4% -20% 0); }
+  .lt-title { font-weight: bold; font-size: 1.1em; color: #3b220e; margin-bottom: .5em !important; }
+  .lt-p { margin-bottom: .6em !important; }
+  .lt-p .r, .lt-title .r { color: transparent; }
+  .lt-sign {
+    display: flex; justify-content: flex-end; align-items: flex-end; gap: 14px; margin-top: .7em;
+    opacity: 0; transform: translateY(6px); transition: opacity 1.1s ease, transform 1.1s ease;
+  }
+  .lt-sign.on { opacity: 1; transform: none; }
+  .lt-sign-text { font-family: var(--script); font-size: 1.12em; line-height: 1.55; text-align: right; color: #4a1f22; }
+  .lt-sign-text strong { font-weight: 700; }
+  .lt-paws { width: 3.6em; height: 2.6em; flex: none; margin-bottom: .2em; overflow: visible; }
+  .lt-paws .pw { opacity: 0; transform-box: fill-box; transform-origin: center; transform: scale(1.5); transition: opacity .35s ease, transform .35s cubic-bezier(.3, 1.5, .5, 1); }
+  .lt-sign.paws .pw { opacity: .8; transform: none; }
+  .lt-sign.paws .pw2 { transition-delay: .45s; }
+  .lt-ps {
+    margin-top: .9em; padding-top: .5em; border-top: 1px dashed rgba(140, 100, 60, .32);
+    font-family: var(--script); font-size: .9em; line-height: 1.45; color: #5a3f28;
+    opacity: 0; transition: opacity 1.1s ease;
+  }
+  .lt-ps.on { opacity: 1; }
+  .lt-ps .from { display: block; text-align: right; margin-top: .2em; }
+
+  .lt-ctrl {
+    position: fixed; left: 0; right: 0; top: calc(50% + var(--lh) / 2 - 22px + 8px); z-index: 3;
+    display: flex; justify-content: center; gap: 26px; opacity: 0; pointer-events: none; transition: opacity .6s ease;
+  }
+  .lt-ctrl.on { opacity: 1; pointer-events: auto; }
+  .lt-ctrl button {
+    border: 0; background: none; padding: 6px 4px; color: #f1dfb4; opacity: .72;
+    font-size: 15px; font-style: italic; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 4px;
+    transition: opacity .2s, text-decoration-color .2s;
+  }
+  .lt-ctrl button:hover, .lt-ctrl button:focus-visible { opacity: 1; text-decoration-color: rgba(241, 223, 180, .55); outline: none; }
+  [hidden] { display: none !important; }
+
+  @media (max-width: 560px) {
+    .lt-ctrl { gap: 14px; }
+    .lt-ctrl button { font-size: 14px; }
+  }
+</style>
+</head>
+<body class="intro">
+
+<div id="stage">
+  <svg id="L0" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+  <svg id="L1" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+  <svg id="L2" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+  <svg id="L3" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"></svg>
+</div>
+
+<div id="cap" aria-live="polite"><span id="capText"></span><button id="capBtn" type="button" hidden></button></div>
+
+<div id="cu">
+  <div class="cu-wrap" id="cuWrap">
+    <div class="cu-env" id="cuEnv">
+      <svg class="cu-back" viewBox="0 0 300 200" aria-hidden="true"></svg>
+      <div class="cu-paper" id="cuPaper"></div>
+      <svg class="cu-pocket" viewBox="0 0 300 200" aria-hidden="true"></svg>
+      <div class="cu-flap">
+        <svg class="cu-flap-out" viewBox="0 0 300 124" aria-hidden="true"></svg>
+        <svg class="cu-flap-in" viewBox="0 0 300 124" aria-hidden="true"></svg>
+      </div>
+      <button class="cu-seal" id="cuSeal" type="button" aria-label="Break the seal and open the envelope">
+        <svg class="seal-l" viewBox="-24 -24 48 48" aria-hidden="true"></svg>
+        <svg class="seal-r" viewBox="-24 -24 48 48" aria-hidden="true"></svg>
+      </button>
+    </div>
+  </div>
+  <div class="fold" id="fold" aria-hidden="true"><div class="fp fp-m"></div><div class="fp fp-b"></div><div class="fp fp-t"></div></div>
+  <article class="letter" id="letter" aria-label="Birthday letter"><div id="ltBody"></div></article>
+  <div class="lt-ctrl" id="ltCtrl">
+    <button id="btnFull" type="button">Show full letter</button>
+    <button id="btnAgain" type="button" hidden>Read it again</button>
+    <button id="btnBack" type="button" hidden>Back to the party</button>
+  </div>
+</div>
+
+<!-- shared gradients, patterns and filters (the four layers and the close-up all use them) -->
+<svg id="defs" width="0" height="0" style="position:absolute" aria-hidden="true"><defs id="defsInner"></defs></svg>
+
+<!-- names and cat colours come from the main game's settings -->
+<script src="../../js/config.js"></script>
+
+<script>
+/* =====================================================================
+   EDIT THE LETTER HERE
+   Everything written in Gift 2 lives in this one block.
+   ===================================================================== */
+window.LETTER = {
+  recipient: 'Anne',                 // the name handwritten on the envelope and the machine's sign
+  greeting: 'Dear Anne,',            // shown first, in handwriting
+  title: 'Happy Birthday! 🎉',       // first line of the message ('' leaves it out)
+
+  paragraphs: [
+    "Wishing you good health, plenty of adventures, and enough annual leave to actually go on them.",
+    "With all the training you’ve been doing, here’s hoping your next adventures feel a little easier!",
+    "May the year ahead bring new places to explore, good things at work, and plenty of reasons to celebrate. Please take photos. The 2026 album is currently surviving on a very limited budget.",
+    "Enjoy your birthday, have some cake, and leave the tough tasks for tomorrow."
+  ],
+
+  signature: { closing: 'Best wishes,', name: 'HR–L&D' },
+
+  /* Optional note from the cats, shown under the signature.
+     Change the words, or set   postscript: null   to remove it. */
+  postscript: {
+    text: 'P.S. We helped deliver this. Please reward us with snacks.',
+    from: '— Your two future household managers'
+  }
+};
+</script>
+
+<script src="gift2_claw.js"></script>
+</body>
+</html>
