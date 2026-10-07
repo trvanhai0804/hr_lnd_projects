@@ -131,6 +131,8 @@ const G = (() => {
     if (!cu) return;
     const def = cur.closeups[cu.id];
     const closing = cu;
+    // a view marked backToParent (e.g. a book opened from the bookshelf) always steps back one level
+    if (all === true && def && def.backToParent && cu.parent) all = false;
     if (!all && cu.parent) {
       const p = cu.parent; cu = null;
       openCloseup(p.id, p.arg, { parent: p.parent });
@@ -244,7 +246,7 @@ const G = (() => {
   /* ---------------- transitions ---------------- */
   async function goScene(n, opts = {}) {
     busy = true;
-    closeCloseup(true); select(null); closeHint();
+    closeCloseup('force'); select(null); closeHint();   // leaving the room closes everything
     const stage = $('#stage'), fade = $('#fade');
     const p = opts.zoom ? toScreen(opts.zoom[0], opts.zoom[1]) : { x: innerWidth / 2, y: innerHeight / 2 };
     stage.style.transformOrigin = `${p.x}px ${p.y}px`;

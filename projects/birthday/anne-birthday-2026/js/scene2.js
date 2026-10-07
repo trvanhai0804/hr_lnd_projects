@@ -414,6 +414,7 @@
         }
       },
       page: {
+        backToParent: true,   // closing a book returns to the bookshelf, not to the room
         render: cuPage,
         after(svg, key) {
           const n = G.get('books', []).length;
