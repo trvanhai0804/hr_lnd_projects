@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A Few Chapters Along the Way</title>
+<link rel="stylesheet" href="css/memories.css">
+</head>
+<body>
+  <!-- the party table the book is lying on -->
+  <div id="room" aria-hidden="true">
+    <div class="bokeh"></div>
+    <div class="table"></div>
+    <div class="glow"></div>
+  </div>
+
+  <main id="stage">
+    <div id="book" class="book closed">
+      <div class="board board-left"></div>
+      <div class="board board-right"><div class="ribbon"></div></div>
+      <div class="stack stack-left"></div>
+      <div class="stack stack-right"></div>
+      <div id="base" class="page right-page base"></div>
+      <div id="leaves"></div>
+      <div class="zone zone-prev" data-dir="-1" aria-label="Previous page"></div>
+      <div class="zone zone-next" data-dir="1" aria-label="Next page"><div class="curl"></div></div>
+    </div>
+  </main>
+
+  <!-- always there: closes the book and goes back to the birthday room -->
+  <button id="close-top" class="close-top" type="button">
+    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    Close the book
+  </button>
+
+  <div id="zoom" hidden></div>
+  <div id="scrap" aria-live="polite"></div>
+  <div id="fade" class="on"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/art.js"></script>
+  <script src="js/memories-data.js"></script>
+  <script src="js/memories.js"></script>
+</body>
+</html>

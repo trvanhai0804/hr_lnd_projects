@@ -1,0 +1,694 @@
+/* ==========================================
+   Gift #3: Cinematic Birthday Wish Scene Styles
+   (With Custom Animated SVG Cake & Candle)
+   ========================================== */
+:root {
+    --sky-dark: #050814;
+    --sky-mid: #0d1326;
+    --sky-light: #17203b;
+    --moon-color: #fffde7;
+    --moon-glow: rgba(255, 253, 231, 0.4);
+    --gold-glow: #ffd166;
+    --text-primary: #ffffff;
+    --text-muted: #cbd5e1;
+    --ease-cinematic: cubic-bezier(0.25, 1, 0.5, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--sky-dark);
+    font-family: 'Outfit', 'Segoe UI', 'Lato', 'Inter', -apple-system, sans-serif;
+    color: var(--text-primary);
+    position: relative;
+    user-select: none;
+}
+
+/* Background Night Sky Gradient */
+.sky-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 30%, var(--sky-light) 0%, var(--sky-mid) 50%, var(--sky-dark) 100%);
+    z-index: 1;
+}
+
+/* Starry Canvas */
+#sky-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* Moon Viewport */
+.moon-container {
+    position: absolute;
+    top: 10%;
+    right: 15%;
+    width: 100px;
+    height: 100px;
+    z-index: 3;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 2s ease, transform 2s var(--ease-cinematic);
+}
+
+.moon-container.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.moon {
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 35% 35%, #ffffff 0%, var(--moon-color) 60%, #e6dfa7 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 40px var(--moon-glow), 0 0 80px rgba(255, 253, 231, 0.2);
+    animation: moonPulse 6s ease-in-out infinite alternate;
+}
+
+@keyframes moonPulse {
+    0% { box-shadow: 0 0 35px var(--moon-glow), 0 0 70px rgba(255, 253, 231, 0.2); }
+    100% { shadow: 0 0 55px var(--moon-glow), 0 0 100px rgba(255, 253, 231, 0.35); }
+}
+
+
+
+/* Message Display Overlay */
+.message-overlay {
+    position: absolute;
+    top: 16%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    text-align: center;
+    width: 90%;
+    max-width: 650px;
+    pointer-events: none;
+}
+
+.message-text {
+    font-size: 1.6rem;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 1.5s var(--ease-cinematic), transform 1.5s var(--ease-cinematic);
+}
+
+.message-text.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.message-text.gold-glow {
+    font-size: 2.2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #fff5cc 0%, #ffd166 50%, #ff758c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 25px rgba(255, 209, 102, 0.5);
+}
+
+/* Subtitle Hint */
+.hint-badge {
+    margin-top: 15px;
+    display: inline-block;
+    font-size: 0.9rem;
+    color: var(--gold-glow);
+    background: rgba(255, 209, 102, 0.12);
+    border: 1px solid rgba(255, 209, 102, 0.3);
+    padding: 6px 18px;
+    border-radius: 20px;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.hint-badge.visible {
+    opacity: 1;
+}
+
+/* Foreground Cake Container */
+.cake-scene-container {
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%) translateY(140%);
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 260px;
+    height: 460px;
+    /* hidden until the moon is touched, then it forms beside the climber.
+       Scaled to 75% around its plate (317px down the box), so the plate stays put. */
+    transform: translateX(-50%) scale(.75);
+    transform-origin: 50% 317px;
+    opacity: 0;
+    filter: brightness(2.6) blur(5px);
+    pointer-events: none;
+    transition: opacity 2.6s ease, filter 3.4s ease;
+}
+
+.cake-scene-container.visible {
+    opacity: 1;
+    filter: brightness(1) blur(0);
+    pointer-events: auto;
+}
+
+/* the candles drop in and the flames start only when the cake appears */
+body:not(.cake-go) .cake.candle-item,
+body:not(.cake-go) .fuego {
+    animation: none !important;
+}
+
+/* ==============================================
+   Custom Animated SVG Birthday Cake & Candle Styles
+   ============================================== */
+
+#cake {
+    display: block;
+    position: relative;
+    margin: -10em auto 0 auto;
+    width: 220px;
+    height: 500px;
+    filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.5));
+}
+
+/* Candle Bodies (3 Candles) */
+.cake.candle-item {
+    background: #ffffff;
+    border-radius: 10px;
+    position: absolute;
+    margin-left: -3px;
+    margin-top: -8px;
+    width: 6px;
+    height: 35px;
+    transform: translateY(-150vh);
+    opacity: 0;
+    backface-visibility: hidden;
+    cursor: pointer;
+    z-index: 15;
+}
+
+.cake.candle-left {
+    left: 36%;
+    top: 232px;
+    animation: fallFromAbove 800ms 2.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.cake.candle-center {
+    left: 50%;
+    top: 226px;
+    animation: fallFromAbove 800ms 2.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.cake.candle-right {
+    left: 64%;
+    top: 232px;
+    animation: fallFromAbove 800ms 2.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.cake:after,
+.cake:before {
+    background: rgba(255, 0, 0, 0.4);
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 2.22222222px;
+}
+
+.cake:after {
+    top: 25%;
+    left: 0;
+}
+
+.cake:before {
+    top: 45%;
+    left: 0;
+}
+
+/* Flame Layers */
+.fuego {
+    border-radius: 100%;
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    margin-left: -3.3px;
+    width: 7.5px;
+    height: 19px;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.fuego:nth-child(1) {
+    animation: fuego 2s 2.5s infinite;
+}
+.fuego:nth-child(2) {
+    animation: fuego 1.5s 2.5s infinite;
+}
+.fuego:nth-child(3) {
+    animation: fuego 1s 2.5s infinite;
+}
+.fuego:nth-child(4) {
+    animation: fuego 0.5s 2.5s infinite;
+}
+.fuego:nth-child(5) {
+    animation: fuego 0.2s 2.5s infinite;
+}
+
+/* Extinguished Candle State */
+.cake.extinguished .fuego {
+    opacity: 0 !important;
+    transform: translateY(-10px) scale(0) !important;
+    pointer-events: none;
+}
+
+/* Glowing Ember */
+.ember {
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: #ff4500;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #ff4500;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.cake.extinguished .ember {
+    opacity: 1;
+    animation: emberFade 3s ease forwards;
+}
+
+@keyframes emberFade {
+    0% { opacity: 1; box-shadow: 0 0 10px #ff4500; }
+    100% { opacity: 0.2; box-shadow: 0 0 2px #ff4500; }
+}
+
+/* Smoke Particle */
+.smoke {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    background: rgba(226, 232, 240, 0.6);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.smoke.active {
+    animation: smokeRise 2.0s ease-out forwards;
+}
+
+@keyframes smokeRise {
+    0% { transform: translateX(-50%) translateY(0) scale(1); opacity: 0.7; }
+    50% { transform: translateX(-70%) translateY(-35px) scale(2.2); opacity: 0.4; }
+    100% { transform: translateX(-30%) translateY(-80px) scale(3.5); opacity: 0; }
+}
+
+/* Animation Fire */
+@keyframes fuego {
+    0%, 100% {
+        background: rgba(254, 248, 97, 0.85);
+        box-shadow: 0 0 40px 10px rgba(248, 233, 209, 0.4);
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        background: rgba(255, 50, 0, 0.35);
+        box-shadow: 0 0 40px 20px rgba(248, 233, 209, 0.4);
+        transform: translateY(-20px) scale(0);
+    }
+}
+
+@keyframes fallFromAbove {
+    0% {
+        transform: translateY(-150vh);
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Cake Text Label */
+.text {
+    color: #e2e8f0;
+    font-family: 'Lato', 'Outfit', sans-serif;
+    font-weight: 400;
+    font-style: italic;
+    text-align: center;
+    margin-top: -85px;
+    position: relative;
+    z-index: 10;
+}
+
+.text h1 {
+    font-size: 1.4em;
+    color: #ffd166;
+    text-shadow: 0 2px 10px rgba(255, 209, 102, 0.4);
+}
+
+.name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #ff758c;
+    font-style: normal;
+    margin-top: 2px;
+}
+
+/* Mic Blowing Visualizer Indicator */
+.mic-indicator {
+    position: fixed;
+    bottom: 20px;
+    right: 25px;
+    z-index: 20;
+    background: rgba(15, 23, 42, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.mic-indicator.shown {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.mic-indicator span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.mic-icon {
+    width: 13px;
+    height: 13px;
+}
+
+.mic-indicator:hover {
+    background: rgba(255, 117, 140, 0.3);
+    border-color: rgba(255, 117, 140, 0.6);
+    color: #ffffff;
+}
+
+.mic-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #94a3b8;
+    transition: background 0.3s ease;
+}
+
+.mic-indicator.listening .mic-dot {
+    background: #22c55e;
+    box-shadow: 0 0 8px #22c55e;
+    animation: micPulse 1s infinite alternate;
+}
+
+@keyframes micPulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.4); }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+    .message-text {
+        font-size: 1.3rem;
+    }
+    .message-text.gold-glow {
+        font-size: 1.7rem;
+    }
+    .cake-scene-container {
+        transform: translateX(-50%) scale(0.64);
+    }
+    .adventure-line {
+        bottom: 64px;
+    }
+}
+
+/* ==========================================
+   The climb: mountain, climber and moon
+   ========================================== */
+#world {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    z-index: 3;
+    opacity: 0;
+    transition: opacity 2.6s ease;
+}
+
+#world.on {
+    opacity: 1;
+}
+
+#world.quiet {
+    pointer-events: none;
+}
+
+#world .hold {
+    cursor: pointer;
+}
+
+#world .glint {
+    animation: glint 2.6s ease-in-out infinite;
+}
+
+@keyframes glint {
+    0%, 100% { opacity: .25; }
+    50% { opacity: .9; }
+}
+
+.veil {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    background: #02040a;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 1.8s ease;
+}
+
+.veil.off {
+    opacity: 0;
+}
+
+.climb-caption {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 84px;
+    z-index: 11;
+    padding: 0 20px;
+    text-align: center;
+    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+    font-style: italic;
+    font-size: clamp(18px, 2.7vmin, 26px);
+    letter-spacing: .04em;
+    color: rgba(232, 237, 247, .88);
+    text-shadow: 0 0 16px rgba(2, 4, 10, .9), 0 0 3px rgba(2, 4, 10, .8);
+    opacity: 0;
+    transition: opacity 1.8s ease;
+    pointer-events: none;
+}
+
+.climb-caption.on {
+    opacity: 1;
+}
+
+.keep-climbing,
+.replay-btn {
+    position: fixed;
+    z-index: 12;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 17px 7px 18px;
+    border-radius: 22px;
+    border: 1px solid rgba(203, 213, 225, .18);
+    background: rgba(6, 10, 22, .38);
+    color: rgba(226, 232, 240, .78);
+    font: italic 15px 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+    letter-spacing: .03em;
+    white-space: nowrap;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .9s ease, color .3s ease, border-color .3s ease;
+}
+
+.keep-climbing {
+    left: 50%;
+    bottom: 26px;
+    transform: translateX(-50%);
+}
+
+.replay-btn {
+    left: 22px;
+    bottom: 20px;
+    padding: 6px 15px 6px 12px;
+    font-size: 14px;
+}
+
+.keep-climbing svg,
+.replay-btn svg {
+    width: 13px;
+    height: 13px;
+}
+
+.keep-climbing.on,
+.replay-btn.on {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.replay-btn.on {
+    opacity: .7;
+}
+
+.keep-climbing:hover,
+.keep-climbing:focus-visible,
+.replay-btn:hover,
+.replay-btn:focus-visible {
+    opacity: 1;
+    color: #ffffff;
+    border-color: rgba(220, 228, 245, .5);
+    outline: none;
+}
+
+/* an invisible button laid exactly over the moon; enabled only at the summit */
+.moon-btn {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 11;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    display: none;
+}
+
+.moon-btn.on {
+    display: block;
+}
+
+.moon-btn:focus-visible {
+    outline: 1px dashed rgba(236, 240, 250, .45);
+    outline-offset: 6px;
+}
+
+.moon-hint {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 11;
+    font: italic 16px 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+    letter-spacing: .04em;
+    color: rgba(236, 240, 250, .86);
+    text-shadow: 0 0 12px rgba(2, 4, 10, .95);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+    pointer-events: none;
+}
+
+.moon-hint.on {
+    opacity: 1;
+}
+
+/* the DOM moon takes over from the travelling moon without a jump */
+.moon-container.handover {
+    transform: scale(1);
+    transition: opacity 1.6s ease;
+}
+
+.adventure-line {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 24px;
+    z-index: 10;
+    padding: 0 150px;
+    text-align: center;
+    font: italic clamp(14px, 1.9vmin, 17px) 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+    letter-spacing: .04em;
+    color: rgba(255, 228, 196, .78);
+    text-shadow: 0 0 14px rgba(255, 190, 120, .25);
+    opacity: 0;
+    transition: opacity 3s ease;
+    pointer-events: none;
+}
+
+.adventure-line.on {
+    opacity: 1;
+}
+
+@media (max-width: 600px) {
+    .adventure-line {
+        padding: 0 20px;
+    }
+}
+
+/* reduced motion: a calm, complete version */
+.rm .cake.candle-item {
+    animation: none !important;
+    transform: none;
+    opacity: 0;
+    transition: opacity 1.2s ease 1s;
+}
+
+.rm body.cake-go .cake.candle-item {
+    opacity: 1;
+}
+
+.rm .fuego {
+    animation: none !important;
+    background: rgba(254, 248, 97, .85);
+    box-shadow: 0 0 30px 8px rgba(248, 233, 209, .35);
+}
+
+.rm .fuego:nth-child(n+2) {
+    display: none;
+}
+
+.rm #world .glint {
+    animation: none;
+    opacity: .7;
+}
