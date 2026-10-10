@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- flat icon in the style of data-analysis.png: dark outlines, green/yellow/blue/red fills -->
+  <rect width="100" height="100" fill="#ffffff"/>
+  <g stroke="#262626" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="26" y="22" width="48" height="60" rx="4" fill="#ffde7a"/>
+    <rect x="31" y="28" width="38" height="49" rx="2" fill="#ffffff"/>
+    <path d="M40 18h20v9H40z" fill="#2fb0d6"/>
+    <rect x="35" y="35" width="8" height="8" rx="1.5" fill="#08e09c"/>
+    <rect x="35" y="49" width="8" height="8" rx="1.5" fill="#08e09c"/>
+    <rect x="35" y="63" width="8" height="8" rx="1.5" fill="#ff5a5a"/>
+    <path d="M37 39l2 2 3.5-4M37 53l2 2 3.5-4" fill="none"/>
+    <path d="M48 37h15M48 41h9M48 51h15M48 55h9M48 65h15M48 69h9" fill="none"/>
+  </g>
+</svg>

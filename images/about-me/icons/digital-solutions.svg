@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- flat icon in the style of data-analysis.png: dark outlines, green/yellow/blue/red fills -->
+  <rect width="100" height="100" fill="#ffffff"/>
+  <g stroke="#262626" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="20" y="26" width="60" height="42" rx="3" fill="#ffffff"/>
+    <path d="M20 35h60V29a3 3 0 0 0-3-3H23a3 3 0 0 0-3 3z" fill="#2fb0d6"/>
+    <path d="M42 68l-3 8h22l-3-8" fill="#ffffff"/>
+    <path d="M35 76h30"/>
+    <ellipse cx="36" cy="45" rx="8" ry="3" fill="#ffde7a"/>
+    <path d="M28 45v12c0 1.7 3.6 3 8 3s8-1.3 8-3V45" fill="#ffde7a"/>
+    <path d="M28 51c0 1.7 3.6 3 8 3s8-1.3 8-3" fill="none"/>
+    <rect x="51" y="41" width="9" height="9" rx="1.5" fill="#ff5a5a"/>
+    <rect x="63" y="41" width="9" height="9" rx="1.5" fill="#08e09c"/>
+    <rect x="51" y="53" width="9" height="9" rx="1.5" fill="#08e09c"/>
+    <rect x="63" y="53" width="9" height="9" rx="1.5" fill="#2fb0d6"/>
+  </g>
+  <g fill="#262626"><circle cx="25" cy="30.5" r="1.3"/><circle cx="29.5" cy="30.5" r="1.3"/></g>
+</svg>

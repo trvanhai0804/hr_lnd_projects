@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- flat icon in the style of data-analysis.png: dark outlines, green/yellow/blue/red fills -->
+  <rect width="100" height="100" fill="#ffffff"/>
+  <g stroke="#262626" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M42 26h8l1.5 6.2 4.6 1.9 5.4-3.4 5.7 5.7-3.4 5.4 1.9 4.6L72 48v8l-6.2 1.5-1.9 4.6 3.4 5.4-5.7 5.7-5.4-3.4-4.6 1.9L50 78h-8l-1.5-6.2-4.6-1.9-5.4 3.4-5.7-5.7 3.4-5.4-1.9-4.6L20 56v-8l6.2-1.5 1.9-4.6-3.4-5.4 5.7-5.7 5.4 3.4 4.6-1.9z" fill="#2fb0d6"/>
+    <circle cx="46" cy="52" r="9" fill="#ffffff"/>
+    <path d="M70 20l4.6 1.2 2.4-2.8 4 2.3-1.2 3.5 3.3 3.3 3.5-1.2 2.3 4-2.8 2.4L88 37l-4.6 1.2-.8 3.6 2.8 2.4-2.3 4-3.5-1.2-3.3 3.3-2.9-.7" fill="#ffde7a"/>
+    <path d="M30 86a28 28 0 0 1-13-12" fill="none"/>
+    <path d="M16 79l1-6 6 2" fill="none" stroke="#ff5a5a"/>
+    <path d="M17 73a28 28 0 0 0 13 13" fill="none" stroke="#ff5a5a"/>
+  </g>
+  <circle cx="46" cy="52" r="3.4" fill="#08e09c" stroke="#262626" stroke-width="2.2"/>
+</svg>
