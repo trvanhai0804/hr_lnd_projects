@@ -1,0 +1,527 @@
+/* ==========================================
+   Status pages: Portfolio (coming soon) and Projects (private).
+   Loaded after style.css, which provides the header, nav and buttons.
+   ========================================== */
+
+body {
+  min-height: 100vh;
+  overflow: auto; /* style.css locks scrolling for the homepage canvas */
+  background:
+    radial-gradient(circle at 50% 55%, rgba(51, 255, 252, 0.12), transparent 45%),
+    radial-gradient(circle at 15% 85%, rgba(25, 75, 79, 0.45), transparent 40%),
+    #24252a;
+}
+
+.status {
+  min-height: calc(100vh - 110px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 16px 60px;
+  font-family: "Montserrat", sans-serif;
+}
+
+.status-card {
+  position: relative;
+  width: 100%;
+  max-width: 620px;
+  padding: 48px 40px 40px;
+  text-align: center;
+  color: #d4d4d4;
+  border-radius: 24px;
+  border: 1px solid rgba(51, 255, 252, 0.35);
+  background: rgba(12, 16, 26, 0.72);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 35px rgba(51, 255, 252, 0.12);
+  backdrop-filter: blur(8px);
+}
+
+.status-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  margin-bottom: 22px;
+  border-radius: 50%;
+  border: 1px solid rgba(51, 255, 252, 0.45);
+  background: radial-gradient(circle, rgba(51, 255, 252, 0.18), rgba(51, 255, 252, 0.02) 70%);
+  box-shadow: 0 0 30px rgba(51, 255, 252, 0.25);
+}
+
+.status-icon svg {
+  width: 48px;
+  height: 48px;
+}
+
+.status-tag {
+  color: #33fffc;
+  letter-spacing: 3px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.status h1 {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.15;
+  color: #ffffff;
+}
+
+.status-text {
+  margin: 18px auto 0;
+  max-width: 470px;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #a0aec0;
+}
+
+.status-actions {
+  margin-top: 34px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+}
+
+/* a quieter second action next to the main button */
+.status-actions .ghost {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 25px;
+  border-radius: 50px;
+  border: 1px solid rgba(51, 255, 252, 0.45);
+  color: #edf0f1;
+  transition: 0.3s;
+}
+
+.status-actions .ghost:hover {
+  background: rgba(51, 255, 252, 0.12);
+}
+
+/* ---------- Portfolio: coming soon ---------- */
+.status-progress {
+  position: relative;
+  height: 6px;
+  max-width: 320px;
+  margin: 28px auto 0;
+  border-radius: 6px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.status-progress span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 40%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #194b4f, #33fffc);
+  box-shadow: 0 0 12px #33fffc;
+  animation: building 2.4s ease-in-out infinite;
+}
+
+@keyframes building {
+  0% { left: -40%; }
+  100% { left: 100%; }
+}
+
+.status-icon .hourglass-sand {
+  animation: sandTurn 3s ease-in-out infinite;
+  transform-origin: 24px 24px;
+}
+
+@keyframes sandTurn {
+  0%, 80% { transform: rotate(0deg); }
+  100% { transform: rotate(180deg); }
+}
+
+/* ---------- Projects: private space ---------- */
+.status-badge {
+  display: inline-block;
+  margin-top: 22px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #ff8a80;
+  border: 1px solid rgba(255, 112, 100, 0.45);
+  background: rgba(255, 82, 70, 0.1);
+}
+
+.status-icon.locked {
+  border-color: rgba(255, 112, 100, 0.5);
+  background: radial-gradient(circle, rgba(255, 82, 70, 0.16), rgba(255, 82, 70, 0.02) 70%);
+  box-shadow: 0 0 30px rgba(255, 82, 70, 0.22);
+  animation: lockShake 0.6s ease 0.4s both;
+}
+
+@keyframes lockShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-7px) rotate(-6deg); }
+  40% { transform: translateX(6px) rotate(5deg); }
+  60% { transform: translateX(-4px) rotate(-3deg); }
+  80% { transform: translateX(3px) rotate(2deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status-progress span,
+  .status-icon .hourglass-sand,
+  .status-icon.locked {
+    animation: none;
+  }
+  .status-progress span {
+    left: 0;
+    width: 60%;
+  }
+}
+
+@media (max-width: 600px) {
+  .status-card {
+    padding: 36px 22px 30px;
+  }
+  .status h1 {
+    font-size: 36px;
+  }
+}
+
+/* the three views of projects.html share the page; only one shows at a time */
+[hidden] {
+  display: none !important;
+}
+
+/* ---------- Projects: passcode ---------- */
+.pass-lock svg {
+  stroke: #ff8a80;
+}
+
+.pass-lock .keyhole {
+  fill: #ff8a80;
+}
+
+.pass-lock .shackle {
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: 32px 21px;
+}
+
+/* unlocked: the shackle swings open and the lock turns cyan */
+.pass-lock.open {
+  border-color: rgba(51, 255, 252, 0.6);
+  background: radial-gradient(circle, rgba(51, 255, 252, 0.2), rgba(51, 255, 252, 0.02) 70%);
+  box-shadow: 0 0 34px rgba(51, 255, 252, 0.4);
+  animation: none;
+}
+
+.pass-lock.open svg {
+  stroke: #33fffc;
+}
+
+.pass-lock.open .keyhole {
+  fill: #33fffc;
+}
+
+.pass-lock.open .shackle {
+  transform: translateY(-4px) rotate(28deg);
+}
+
+.pin-dots {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 26px;
+}
+
+.pin-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(51, 255, 252, 0.6);
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.pin-dot.filled {
+  background: #33fffc;
+  box-shadow: 0 0 12px #33fffc;
+  transform: scale(1.1);
+}
+
+.pin-dots.wrong {
+  animation: pinShake 0.5s ease;
+}
+
+.pin-dots.wrong .pin-dot {
+  border-color: #ff8a80;
+  background: #ff8a80;
+  box-shadow: 0 0 12px rgba(255, 112, 100, 0.7);
+}
+
+.pin-dots.ok .pin-dot {
+  background: #33fffc;
+  box-shadow: 0 0 18px #33fffc;
+}
+
+@keyframes pinShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-10px); }
+  40% { transform: translateX(9px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(4px); }
+}
+
+.pin-message {
+  min-height: 22px;
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+.pin-message.wrong {
+  color: #ff8a80;
+}
+
+.pin-message.ok {
+  color: #33fffc;
+}
+
+.numpad {
+  display: grid;
+  grid-template-columns: repeat(3, 64px);
+  gap: 14px 22px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.numpad button {
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(51, 255, 252, 0.35);
+  background: rgba(51, 255, 252, 0.06);
+  color: #edf0f1;
+  font-size: 22px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+}
+
+.numpad button:hover {
+  background: rgba(51, 255, 252, 0.18);
+  border-color: rgba(51, 255, 252, 0.8);
+}
+
+.numpad button:active {
+  transform: scale(0.94);
+}
+
+.numpad button:focus-visible,
+.text-link:focus-visible,
+.lock-btn:focus-visible,
+.project-open:focus-visible {
+  outline: 2px solid #33fffc;
+  outline-offset: 3px;
+}
+
+.numpad .numpad-fn {
+  border-color: transparent;
+  background: transparent;
+  font-size: 16px;
+  color: #a0aec0;
+}
+
+.numpad .numpad-fn svg {
+  width: 24px;
+  height: 24px;
+}
+
+.text-link {
+  margin-top: 22px;
+  padding: 6px 12px;
+  background: none;
+  border: 0;
+  color: #a0aec0;
+  font-size: 14px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.text-link:hover {
+  background: none;
+  color: #ffffff;
+}
+
+/* ---------- Projects: the list ---------- */
+.projects {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 30px 16px 80px;
+  font-family: "Montserrat", sans-serif;
+  color: #d4d4d4;
+}
+
+.projects-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 34px;
+}
+
+.projects-head h1 {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.15;
+  color: #ffffff;
+}
+
+.projects-head .status-text {
+  margin: 12px 0 0;
+}
+
+.lock-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 22px;
+  border-radius: 50px;
+  border: 1px solid rgba(51, 255, 252, 0.45);
+  background: transparent;
+  color: #edf0f1;
+}
+
+.lock-btn:hover {
+  background: rgba(51, 255, 252, 0.12);
+}
+
+.lock-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 28px;
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid rgba(51, 255, 252, 0.3);
+  background: rgba(12, 16, 26, 0.75);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  animation: cardIn 0.6s ease both;
+}
+
+.project-card:nth-child(2) {
+  animation-delay: 0.12s;
+}
+
+.project-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(51, 255, 252, 0.7);
+  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(51, 255, 252, 0.2);
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.project-cover {
+  aspect-ratio: 16 / 9;
+  border-bottom: 1px solid rgba(51, 255, 252, 0.2);
+}
+
+.project-cover svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.cover-anne {
+  background: radial-gradient(circle at 80% 20%, #1d4a63, #0b1a2a 70%);
+}
+
+.cover-evelyn {
+  background: radial-gradient(circle at 50% 25%, #3a2350, #0d1424 70%);
+}
+
+.project-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 24px 26px 26px;
+}
+
+.project-meta {
+  color: #33fffc;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.project-body h2 {
+  margin-top: 8px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.project-body > p:not(.project-meta) {
+  margin-top: 12px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: #a0aec0;
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 18px 0 22px;
+  list-style: none;
+}
+
+.project-tags li {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  color: #cfeff0;
+  border: 1px solid rgba(51, 255, 252, 0.3);
+  background: rgba(51, 255, 252, 0.06);
+}
+
+.project-open {
+  margin-top: auto;
+  align-self: flex-start;
+  border-radius: 50px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card,
+  .pin-dots.wrong {
+    animation: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .projects-head h1 {
+    font-size: 36px;
+  }
+  .numpad {
+    grid-template-columns: repeat(3, 58px);
+    gap: 12px 18px;
+  }
+  .numpad button {
+    width: 58px;
+    height: 58px;
+  }
+}

@@ -80,6 +80,19 @@ header {
   transition: 0.5s;
 }
 
+/* Rest on the current page (data-active on .nav_links); hover still moves it */
+.nav_links[data-active="2"] span {
+  left: 150px;
+}
+
+.nav_links[data-active="3"] span {
+  left: 300px;
+}
+
+.nav_links[data-active="4"] span {
+  left: 450px;
+}
+
 /* Hover movement */
 .nav_links li:nth-child(1):hover ~ span {
   left: 0;
