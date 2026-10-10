@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shival - Guy on an Endless Journey</title>
-    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
     <canvas id="world"></canvas>
@@ -12,15 +12,15 @@
     <header>
       <img src="images/shival_logo.png" class="logo" alt="Logo" />
       <nav>
-        <ul class="nav_links">
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Portfolio</a></li>
-          <li><a href="#">Projects</a></li>
-          <li><a href="/about-me.html">About Me</a></li>
+        <ul class="nav_links" data-active="1">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="portfolio.html">Portfolio</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="about-me.html">About Me</a></li>
           <span></span>
         </ul>
       </nav>
-      <a class="cta" href="#"><button>Connect With Me</button></a>
+      <a class="cta" href="about-me.html#get-in-touch"><button>Connect With Me</button></a>
     </header>
 
     <section class="hero">
@@ -35,7 +35,7 @@
       </p>
 
       <div class="hero-buttons">
-        <button class="btn">Connect with me</button>
+        <a href="about-me.html#get-in-touch"><button class="btn">Connect with me</button></a>
       </div>
     </section>
 
@@ -124,7 +124,8 @@
 
       function documentTouchStartHandler(event) {
         if (event.touches.length == 1) {
-          event.preventDefault();
+          // let taps on links and buttons through (e.g. "Connect with me")
+          if (!event.target.closest("a, button")) event.preventDefault();
 
           mouseX =
             event.touches[0].pageX - (window.innerWidth - SCREEN_WIDTH) * 0.5;

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects – Private Space | Shival</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/style-status.css" />
+  </head>
+  <body>
+    <header>
+      <img src="images/shival_logo.png" class="logo" alt="Logo" />
+      <nav>
+        <ul class="nav_links" data-active="3">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="portfolio.html">Portfolio</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="about-me.html">About Me</a></li>
+          <span></span>
+        </ul>
+      </nav>
+      <a class="cta" href="about-me.html#get-in-touch"><button>Connect With Me</button></a>
+    </header>
+
+    <!-- 1. Locked -->
+    <main class="status" id="view-locked">
+      <div class="status-card">
+        <div class="status-icon locked" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" stroke="#ff8a80" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="10" y="21" width="28" height="21" rx="4" />
+            <path d="M16 21v-6a8 8 0 0 1 16 0v6" />
+            <circle cx="24" cy="30" r="2.6" fill="#ff8a80" stroke="none" />
+            <path d="M24 32.5v4" />
+          </svg>
+        </div>
+
+        <p class="status-tag">• Projects •</p>
+        <h1>Private <span class="gradient-text">space</span></h1>
+        <p class="status-text">
+          Sorry, you don't have the authority to enter this area. The projects
+          here are private.
+        </p>
+
+        <div class="status-badge">403 · Access restricted</div>
+
+        <div class="status-actions">
+          <button id="btn-enter" type="button">Enter Passcode</button>
+          <a class="ghost" href="about-me.html#get-in-touch">Request Access</a>
+        </div>
+      </div>
+    </main>
+
+    <!-- 2. Passcode -->
+    <main class="status" id="view-passcode" hidden>
+      <div class="status-card passcode-card">
+        <div class="status-icon locked pass-lock" id="pass-lock" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="10" y="21" width="28" height="21" rx="4" />
+            <path class="shackle" d="M16 21v-6a8 8 0 0 1 16 0v6" />
+            <circle cx="24" cy="30" r="2.6" stroke="none" class="keyhole" />
+            <path d="M24 32.5v4" />
+          </svg>
+        </div>
+
+        <p class="status-tag">• Projects •</p>
+        <h1>Enter <span class="gradient-text">passcode</span></h1>
+
+        <div class="pin-dots" role="status" aria-label="Passcode">
+          <span class="pin-dot"></span>
+          <span class="pin-dot"></span>
+          <span class="pin-dot"></span>
+          <span class="pin-dot"></span>
+          <span class="pin-dot"></span>
+          <span class="pin-dot"></span>
+        </div>
+        <p class="pin-message" id="pin-message" aria-live="polite"></p>
+
+        <div class="numpad">
+          <button type="button" data-key="1">1</button>
+          <button type="button" data-key="2">2</button>
+          <button type="button" data-key="3">3</button>
+          <button type="button" data-key="4">4</button>
+          <button type="button" data-key="5">5</button>
+          <button type="button" data-key="6">6</button>
+          <button type="button" data-key="7">7</button>
+          <button type="button" data-key="8">8</button>
+          <button type="button" data-key="9">9</button>
+          <button type="button" data-key="clear" class="numpad-fn" aria-label="Clear">C</button>
+          <button type="button" data-key="0">0</button>
+          <button type="button" data-key="back" class="numpad-fn" aria-label="Delete">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 5H9l-6 7 6 7h12z" /><path d="M17 9l-6 6M11 9l6 6" /></svg>
+          </button>
+        </div>
+
+        <button type="button" class="text-link" id="btn-cancel">Cancel</button>
+      </div>
+    </main>
+
+    <!-- 3. The projects -->
+    <main class="projects" id="view-projects" hidden>
+      <div class="projects-head">
+        <div>
+          <p class="status-tag">• Private space •</p>
+          <h1>My <span class="gradient-text">projects</span></h1>
+          <p class="status-text">
+            Small interactive experiences built with HTML, CSS and JavaScript.
+          </p>
+        </div>
+        <button type="button" class="ghost lock-btn" id="btn-lock">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>
+          Lock
+        </button>
+      </div>
+
+      <!-- filled in by js/projects.js once the passcode decrypts the list -->
+      <div class="project-grid" id="project-grid"></div>
+    </main>
+
+    <script src="js/projects.js"></script>
+  </body>
+</html>

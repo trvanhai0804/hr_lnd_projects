@@ -4,21 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shival - Guy on an Endless Journey</title>
-    <link rel="stylesheet" href="/css/style-about.css" />
+    <link rel="stylesheet" href="css/style-about.css" />
   </head>
   <body>
     <header>
       <img src="images/shival_logo.png" class="logo" alt="Logo" />
       <nav>
-        <ul class="nav_links">
-          <li><a href="/index.html">Home</a></li>
-          <li><a href="#">Portfolio</a></li>
-          <li><a href="#">Projects</a></li>
-          <li><a href="#">About Me</a></li>
+        <ul class="nav_links" data-active="4">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="portfolio.html">Portfolio</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="about-me.html">About Me</a></li>
           <span></span>
         </ul>
       </nav>
-      <a class="cta" href="#"><button>Connect With Me</button></a>
+      <a class="cta" href="#get-in-touch"><button>Connect With Me</button></a>
     </header>
 
     <section class="hero">
@@ -97,45 +97,169 @@
     </section>
 
     <section class="motivation">
+      <div class="motivation-bg-overlay"></div>
+
       <div class="motivation-header">
-        <div class="section-tag">WHAT KEEPS ME GOING</div>
-        <h1>The mindset behind everything I build.</h1>
+        <div class="section-tag">• WHAT KEEPS ME GOING •</div>
+        <h1>The mindset behind<br /><span class="gradient-text">everything I build.</span></h1>
+        <p class="motivation-subtitle">These are the principles that drive me to learn, create and make a difference every day.</p>
+        <div class="motivation-scroll-icon">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#33fffc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
       </div>
 
       <div class="stair-stage">
-        <div class="game-person" id="gamePerson">
-          <div class="head"></div>
-          <div class="body"></div>
-          <div class="arm arm-left"></div>
-          <div class="arm arm-right"></div>
-          <div class="leg leg-left"></div>
-          <div class="leg leg-right"></div>
+        <!-- The tech guy and the ladders (drawn by js/stair-climber.js) -->
+        <svg class="climber-world" id="climberWorld" aria-hidden="true"></svg>
+
+        <!-- 5 Ascending Stair Block Steps -->
+        <div class="stair-steps-container">
+          <div class="step step-1" data-step="1">
+            <div class="step-glow-border"></div>
+            <div class="step-content">
+              <div class="step-icon">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#33fffc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 18h6m-5 3h4m-7-8a7 7 0 1 1 12 0c0 2.5-1.5 4-3 5.5V17H9v-1.5C7.5 14 6 12.5 6 10z"></path>
+                </svg>
+              </div>
+              <h3>Curiosity</h3>
+              <p>I question everything and seek to understand.</p>
+            </div>
+          </div>
+
+          <div class="step step-2" data-step="2">
+            <div class="step-glow-border"></div>
+            <div class="step-content">
+              <div class="step-icon">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#33fffc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                </svg>
+              </div>
+              <h3>Continuous Learning</h3>
+              <p>I'm always learning, always growing.</p>
+            </div>
+          </div>
+
+          <div class="step step-3" data-step="3">
+            <div class="step-glow-border"></div>
+            <div class="step-content">
+              <div class="step-icon">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#33fffc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="16 18 22 12 16 6"></polyline>
+                  <polyline points="8 6 2 12 8 18"></polyline>
+                </svg>
+              </div>
+              <h3>Problem Solving</h3>
+              <p>I turn complex problems into simple solutions.</p>
+            </div>
+          </div>
+
+          <div class="step step-4" data-step="4">
+            <div class="step-glow-border"></div>
+            <div class="step-content">
+              <div class="step-icon">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#33fffc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="20" x2="18" y2="10"></line>
+                  <line x1="12" y1="20" x2="12" y2="4"></line>
+                  <line x1="6" y1="20" x2="6" y2="14"></line>
+                </svg>
+              </div>
+              <h3>Business Impact</h3>
+              <p>I build with purpose to create real value.</p>
+            </div>
+          </div>
+
+          <div class="step step-5 active" data-step="5">
+            <div class="step-glow-border"></div>
+            <div class="step-content">
+              <div class="step-icon">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#33fffc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.71 1.26-1.5 1.77-2.31L4.5 16.5z"></path>
+                  <path d="M12 15l-3-3 7.5-7.5c1.5-1.5 4.5-1.5 4.5-1.5s0 3-1.5 4.5L12 15z"></path>
+                  <path d="M9 12l2 2"></path>
+                </svg>
+              </div>
+              <h3>Building Better Solutions</h3>
+              <p>I strive to leave things better than I found them.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Ribbon Navigation Bar -->
+      <div class="motivation-bottom-bar">
+        <div class="bottom-card-item" data-step="1">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#33fffc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18h6m-5 3h4m-7-8a7 7 0 1 1 12 0c0 2.5-1.5 4-3 5.5V17H9v-1.5C7.5 14 6 12.5 6 10z"></path>
+            </svg>
+          </div>
+          <div class="card-info">
+            <h4>Curiosity</h4>
+            <p>I question everything and seek to understand.</p>
+          </div>
+          <div class="card-arrow">›</div>
         </div>
 
-        <button class="step step-1 active" data-x="130" data-y="300">
-          <h3>Curiosity</h3>
-          <p>I question everything and seek to understand.</p>
-        </button>
+        <div class="bottom-card-item" data-step="2">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#33fffc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+          </div>
+          <div class="card-info">
+            <h4>Continuous Learning</h4>
+            <p>I'm always learning, always growing.</p>
+          </div>
+          <div class="card-arrow">›</div>
+        </div>
 
-        <button class="step step-2" data-x="310" data-y="240">
-          <h3>Continuous Learning</h3>
-          <p>I'm always learning, always growing.</p>
-        </button>
+        <div class="bottom-card-item" data-step="3">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#33fffc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="16 18 22 12 16 6"></polyline>
+              <polyline points="8 6 2 12 8 18"></polyline>
+            </svg>
+          </div>
+          <div class="card-info">
+            <h4>Problem Solving</h4>
+            <p>I turn complex problems into simple solutions.</p>
+          </div>
+          <div class="card-arrow">›</div>
+        </div>
 
-        <button class="step step-3" data-x="500" data-y="180">
-          <h3>Problem Solving</h3>
-          <p>I turn complex problems into simple solutions.</p>
-        </button>
+        <div class="bottom-card-item" data-step="4">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#33fffc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10"></line>
+              <line x1="12" y1="20" x2="12" y2="4"></line>
+              <line x1="6" y1="20" x2="6" y2="14"></line>
+            </svg>
+          </div>
+          <div class="card-info">
+            <h4>Business Impact</h4>
+            <p>I build with purpose to create real value.</p>
+          </div>
+          <div class="card-arrow">›</div>
+        </div>
 
-        <button class="step step-4" data-x="690" data-y="120">
-          <h3>Business Impact</h3>
-          <p>I build with purpose to create real value.</p>
-        </button>
-
-        <button class="step step-5" data-x="880" data-y="60">
-          <h3>Building Better Solutions</h3>
-          <p>I leave things better than I found them.</p>
-        </button>
+        <div class="bottom-card-item active" data-step="5">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#33fffc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.71 1.26-1.5 1.77-2.31L4.5 16.5z"></path>
+              <path d="M12 15l-3-3 7.5-7.5c1.5-1.5 4.5-1.5 4.5-1.5s0 3-1.5 4.5L12 15z"></path>
+              <path d="M9 12l2 2"></path>
+            </svg>
+          </div>
+          <div class="card-info">
+            <h4>Building Better Solutions</h4>
+            <p>I strive to leave things better than I found them.</p>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -143,73 +267,72 @@
       <div class="left-column">
         <h1>MY EXPERIENCE</h1>
         <p>
-          With a background in data analysis and a passion for technology, I
-          have gained valuable experience through various projects and freelance
-          work. My journey has been marked by continuous learning and a
-          commitment to delivering high-quality results.
+          With over 11 years of experience in manufacturing, technical
+          training, and Learning &amp; Development, I've built my career around
+          developing people, improving processes, and driving organizational
+          effectiveness. Combining my passion for technology with data-driven
+          thinking, I focus on transforming complex challenges into practical
+          solutions through continuous improvement, automation, and innovation.
         </p>
       </div>
 
       <div class="right-column">
         <div class="experience-item">
-          <h2>Senior Learning & Development Supervisor</h2>
-          <h3>HR - Learning & Development</h3>
+          <h2>Senior Learning &amp; Development Supervisor</h2>
+          <h3>HR – Learning &amp; Development</h3>
           <h4>
             <span>Techtronic Industries Vietnam</span>
             <span> | </span>
-            <span>2020 - Present</span>
+            <span>June 2022 – Present</span>
           </h4>
           <p>
-            During my internship at Tech Company XYZ, I had the opportunity to
-            work on real-world data analysis projects. I collaborated with a
-            team of professionals to analyze large datasets, identify trends,
-            and provide actionable insights that contributed to the company's
-            decision-making process.
+            Focusing on data analytics, business intelligence, and digital solutions
+            to support Learning &amp; Development operations. Developing L&amp;D key
+            metrics, interactive Power BI dashboards, and centralized Data Hub
+            solutions to enable data-driven decision-making. Leveraging Power
+            Platform and automation to streamline workflows, improve data
+            accessibility, and enhance operational efficiency, while supporting
+            key L&amp;D initiatives, including onboarding, people development,
+            performance management, and 360-degree feedback.
           </p>
         </div>
 
         <hr class="divider" />
 
         <div class="experience-item">
-          <h2>Data Analyst Intern</h2>
-          <h3>Tech Company XYZ</h3>
-          <h4>June 2023 - August 2023</h4>
+          <h2>Technical Training Supervisor</h2>
+          <h3>Technical Training</h3>
+          <h4>
+            <span>Jabil Vietnam</span>
+            <span> | </span>
+            <span>August 2018 – March 2022</span>
+          </h4>
           <p>
-            During my internship at Tech Company XYZ, I had the opportunity to
-            work on real-world data analysis projects. I collaborated with a
-            team of professionals to analyze large datasets, identify trends,
-            and provide actionable insights that contributed to the company's
-            decision-making process.
+            Led and developed a technical training team that grew from 20 to 63
+            members, overseeing onboarding and technical training operations.
+            Designed structured learning programs, enhanced training systems,
+            and supported business expansion by ensuring smooth training
+            operations and successful project transfers.
           </p>
         </div>
 
         <hr class="divider" />
 
         <div class="experience-item">
-          <h2>Data Analyst Intern</h2>
-          <h3>Tech Company XYZ</h3>
-          <h4>June 2023 - August 2023</h4>
+          <h2>Production Sub Leader</h2>
+          <h3>Manufacturing Operations</h3>
+          <h4>
+            <span>Samsung Electronics HCMC CE Complex</span>
+            <span> | </span>
+            <span>April 2016 – March 2018</span>
+          </h4>
           <p>
-            During my internship at Tech Company XYZ, I had the opportunity to
-            work on real-world data analysis projects. I collaborated with a
-            team of professionals to analyze large datasets, identify trends,
-            and provide actionable insights that contributed to the company's
-            decision-making process.
-          </p>
-        </div>
-
-        <hr class="divider" />
-
-        <div class="experience-item">
-          <h2>Data Analyst Intern</h2>
-          <h3>Tech Company XYZ</h3>
-          <h4>June 2023 - August 2023</h4>
-          <p>
-            During my internship at Tech Company XYZ, I had the opportunity to
-            work on real-world data analysis projects. I collaborated with a
-            team of professionals to analyze large datasets, identify trends,
-            and provide actionable insights that contributed to the company's
-            decision-making process.
+            Coordinated daily production activities, managed workforce
+            assignments, and monitored materials and equipment to ensure smooth
+            operations. Developed hands-on experience in manufacturing
+            processes, team coordination, and problem-solving, building a strong
+            foundation for future roles in technical training and people
+            development.
           </p>
         </div>
       </div>
@@ -219,10 +342,11 @@
       <div class="left-column">
         <h1>MY EXPERTISE</h1>
         <p>
-          With a background in data analysis and a passion for technology, I
-          have gained valuable experience through various projects and freelance
-          work. My journey has been marked by continuous learning and a
-          commitment to delivering high-quality results.
+          My expertise combines people development, data analytics, and
+          technology to solve business challenges. From designing learning
+          solutions to building data platforms and automating workflows, I
+          focus on making processes simpler, information more accessible, and
+          decisions more effective.
         </p>
       </div>
 
@@ -230,58 +354,56 @@
         <ul class="expertise-list">
           <li class="expertise-item">
             <div class="icon">
-              <img
-                src="images/about-me/icons/data-analysis.png"
-                alt="Data Analysis Icon"
-              />
+              <img src="images/about-me/icons/data-analysis.png" alt="" />
             </div>
             <div class="expertise-description">
-              <h2 class="expertise-title">Data Analysis</h2>
+              <h2 class="expertise-title">
+                Data Analytics &amp; Business Intelligence
+              </h2>
               <p class="expertise-text">
-                Transforming raw data into meaningful insights and business
-                decisions.
+                Turning complex data into meaningful KPIs, actionable insights,
+                and informed decisions.
               </p>
             </div>
-            <div class="expertise-rating">Intermediate</div>
           </li>
           <li class="expertise-item">
             <div class="icon">
-              <img src="images/about-me/icons/powerbl.png" alt="PowerBI Icon" />
+              <img src="images/about-me/icons/digital-solutions.svg" alt="" />
             </div>
             <div class="expertise-description">
-              <h2 class="expertise-title">PowerBI</h2>
+              <h2 class="expertise-title">Digital Solutions Development</h2>
               <p class="expertise-text">
-                Creating interactive dashboards and reports
+                Building centralized data platforms and practical applications
+                to address business needs.
               </p>
             </div>
-            <div class="expertise-rating">Intermediate</div>
           </li>
           <li class="expertise-item">
             <div class="icon">
-              <img src="images/about-me/icons/html.png" alt="HTML Icon" />
+              <img src="images/about-me/icons/process-automation.svg" alt="" />
             </div>
             <div class="expertise-description">
-              <h2 class="expertise-title">HTML</h2>
+              <h2 class="expertise-title">Process Automation &amp; Optimization</h2>
               <p class="expertise-text">
-                HTML (HyperText Markup Language) is the standard markup language
-                used to structure and display content on web pages.
+                Simplifying workflows, eliminating repetitive tasks, and
+                improving operational efficiency.
               </p>
             </div>
-            <div class="expertise-rating">Intermediate</div>
           </li>
           <li class="expertise-item">
             <div class="icon">
-              <img src="images/about-me/icons/powerbl.png" alt="PowerBI Icon" />
+              <img src="images/about-me/icons/project-management.svg" alt="" />
             </div>
             <div class="expertise-description">
-              <h2 class="expertise-title">PowerBI</h2>
+              <h2 class="expertise-title">
+                Project Management &amp; Continuous Improvement
+              </h2>
               <p class="expertise-text">
-                Creating interactive dashboards and reports
+                Managing projects, improving processes, and delivering solutions
+                that create business value.
               </p>
             </div>
-            <div class="expertise-rating">Intermediate</div>
           </li>
-          <span></span>
         </ul>
       </div>
     </section>
@@ -326,6 +448,19 @@
               Power Automate is a workflow automation platform from Microsoft
               that enables users to automate repetitive tasks, connect
               applications, and streamline business processes.
+            </p>
+          </div>
+        </div>
+        <div class="app-outer">
+          <div class="glow-eff-one"></div>
+          <div class="glow-eff-two"></div>
+          <div class="app-item">
+            <img src="images/about-me/icons/power-query.png" alt="Power Query" />
+            <h2 class="app-name">Power Query</h2>
+            <p class="app-description">
+              Power Query is a data preparation tool from Microsoft that
+              connects, cleans, and transforms data from multiple sources into
+              analysis-ready tables.
             </p>
           </div>
         </div>
@@ -458,17 +593,17 @@
         </div>
         <div class="nav-buttons">
           <button class="back">
-            <img src="/images/about-me/icons/back.png" />
+            <img src="images/about-me/icons/back.png" alt="Previous quote" />
           </button>
 
           <button class="fwd">
-            <img src="/images/about-me/icons/next.png" />
+            <img src="images/about-me/icons/next.png" alt="Next quote" />
           </button>
         </div>
       </div>
     </section>
 
-    <section class="get-in-touch">
+    <section class="get-in-touch" id="get-in-touch">
       <div class="get-in-touch-text">
         <div class="get-in-touch-header">LET'S GET IN TOUCH</div>
         <p class="get-in-touch-message get-in-touch-message-one">
@@ -497,17 +632,108 @@
         <div class="git-glow-eff-part-two"><span></span></div>
       </div>
       <div class="head-img">
-        <img src="/images/about-me/footer-head-img.png" />
+        <img src="images/about-me/footer-head-img.png" alt="" />
       </div>
       <div class="footer-gradient"></div>
     </section>
 
-    <div class="flying-book" id="flyingBook">
-      📘
+    <div class="flying-book" id="flyingBook" title="Click me!">
+      <div class="luxury-book-wrapper">
+        <svg class="luxury-book-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FFE57F" />
+              <stop offset="50%" stop-color="#D4AF37" />
+              <stop offset="100%" stop-color="#996515" />
+            </linearGradient>
+
+            <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#80FFFF" />
+              <stop offset="50%" stop-color="#33FFFC" />
+              <stop offset="100%" stop-color="#009999" />
+            </linearGradient>
+
+            <linearGradient id="coverGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#1A2639" />
+              <stop offset="50%" stop-color="#111B2B" />
+              <stop offset="100%" stop-color="#090E17" />
+            </linearGradient>
+
+            <linearGradient id="pageGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#FFFDF7" />
+              <stop offset="100%" stop-color="#E8DCB8" />
+            </linearGradient>
+
+            <filter id="goldGlow" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="2.5" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+
+          <!-- Ambient Glow Circle -->
+          <circle cx="50" cy="50" r="36" fill="url(#cyanGrad)" opacity="0.25" class="svg-aura" />
+
+          <!-- Ether Wings / Energy Flares -->
+          <g class="svg-wings">
+            <path d="M 18 42 C 10 30, 4 44, 18 52 C 11 48, 12 38, 18 42 Z" fill="url(#cyanGrad)" opacity="0.65" />
+            <path d="M 82 42 C 90 30, 96 44, 82 52 C 89 48, 88 38, 82 42 Z" fill="url(#cyanGrad)" opacity="0.65" />
+          </g>
+
+          <!-- Book Shadow -->
+          <ellipse cx="50" cy="76" rx="32" ry="5" fill="#000" opacity="0.4" />
+
+          <!-- Open Pages Base -->
+          <path d="M 18 36 Q 50 44 82 36 L 82 66 Q 50 74 18 66 Z" fill="url(#pageGrad)" stroke="#8C733E" stroke-width="0.8" />
+          <!-- Page Layers -->
+          <path d="M 20 67.5 Q 50 75.5 80 67.5" stroke="#D4AF37" stroke-width="0.7" fill="none" opacity="0.9" />
+          <path d="M 20 69 Q 50 77 80 69" stroke="#194B4F" stroke-width="0.5" fill="none" opacity="0.6" />
+
+          <!-- Left Cover Spine -->
+          <path d="M 15 33 Q 48 42 49 69 Q 47 70 15 63 Z" fill="url(#coverGrad)" stroke="url(#goldGrad)" stroke-width="1.5" />
+
+          <!-- Right Cover Spine -->
+          <path d="M 85 33 Q 52 42 51 69 Q 53 70 85 63 Z" fill="url(#coverGrad)" stroke="url(#goldGrad)" stroke-width="1.5" />
+
+          <!-- Center Spine & Light Conduit -->
+          <path d="M 48 41 L 52 41 L 52 70 L 48 70 Z" fill="url(#goldGrad)" />
+          <line x1="50" y1="35" x2="50" y2="71" stroke="#33FFFC" stroke-width="1.2" opacity="0.9" />
+
+          <!-- Left Page Text/Runes Lines -->
+          <path d="M 24 43 Q 36 46 44 43" stroke="#B8860B" stroke-width="0.8" fill="none" opacity="0.6" />
+          <path d="M 25 49 Q 36 52 44 49" stroke="#B8860B" stroke-width="0.8" fill="none" opacity="0.6" />
+          <path d="M 26 55 Q 36 58 44 55" stroke="#B8860B" stroke-width="0.8" fill="none" opacity="0.6" />
+
+          <!-- Right Page Text/Runes Lines -->
+          <path d="M 56 43 Q 64 46 76 43" stroke="#B8860B" stroke-width="0.8" fill="none" opacity="0.6" />
+          <path d="M 56 49 Q 64 52 75 49" stroke="#B8860B" stroke-width="0.8" fill="none" opacity="0.6" />
+          <path d="M 56 55 Q 64 58 74 55" stroke="#B8860B" stroke-width="0.8" fill="none" opacity="0.6" />
+
+          <!-- Royal Crimson Ribbon Bookmark -->
+          <path d="M 50 38 Q 47 52 41 76 L 45 79 L 49 74 L 53 79 L 51 76 Q 51 52 50 38 Z" fill="#D90429" stroke="url(#goldGrad)" stroke-width="0.5" />
+
+          <!-- Gold Crest & Diamond Jewel -->
+          <g filter="url(#goldGlow)">
+            <polygon points="50,24 55,32 50,40 45,32" fill="url(#goldGrad)" />
+            <circle cx="50" cy="32" r="2.5" fill="#33FFFC" />
+          </g>
+
+          <!-- Floating Magic Sparkles -->
+          <g class="svg-sparkles">
+            <path d="M 28 22 L 30 26 L 34 28 L 30 30 L 28 34 L 26 30 L 22 28 L 26 26 Z" fill="url(#goldGrad)" class="sparkle s1" />
+            <path d="M 72 18 L 73.5 21 L 76.5 22.5 L 73.5 24 L 72 27 L 70.5 24 L 67.5 22.5 L 70.5 21 Z" fill="#33FFFC" class="sparkle s2" />
+            <circle cx="82" cy="58" r="1.8" fill="#FFE57F" class="sparkle s3" />
+            <circle cx="16" cy="52" r="1.8" fill="#33FFFC" class="sparkle s4" />
+          </g>
+        </svg>
+      </div>
       <span class="book-message">Hi 👋</span>
     </div>
 
     <script src="js/about-me.js"></script>
+    <script src="js/stair-climber.js"></script>
 
     <script
       type="module"
