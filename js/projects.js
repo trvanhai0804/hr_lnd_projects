@@ -1,7 +1,8 @@
 /* ==========================================
-   Projects: a private space behind a passcode.
+   Projects: two areas side by side.
 
-   Locked card -> passcode pad -> the projects grid.
+   Public projects (#public) are open to everyone. The private space
+   (#private) goes locked card -> passcode pad -> the projects grid.
 
    Nothing here gives the passcode away: the page never stores it or a
    hash of it. The project list itself (titles, descriptions, links and
@@ -68,7 +69,7 @@
   window.projectsSource = () => grid.innerHTML.trim();
 
   const $ = (s) => document.querySelector(s);
-  const views = { locked: $("#view-locked"), pass: $("#view-passcode"), list: $("#view-projects") };
+  const views = { home: $("#view-home"), pass: $("#view-passcode"), private: $("#view-private"), public: $("#view-public") };
   const grid = $("#project-grid");
   const dots = Array.from(document.querySelectorAll(".pin-dot"));
   const pin = $(".pin-dots");
@@ -86,8 +87,21 @@
     try { html ? sessionStorage.setItem(KEY, html) : sessionStorage.removeItem(KEY); } catch (e) {}
   };
 
+  // which view shows follows the address: projects.html, #public or #private
+  const unlocked = () => grid.innerHTML.trim() !== "";
+  function route() {
+    const h = location.hash;
+    show(h === "#public" ? "public" : h === "#private" ? (unlocked() ? "private" : "pass") : "home");
+  }
+  const goHome = () => {
+    if (location.hash) location.hash = "";
+    else route();
+  };
+
   function show(name) {
     Object.entries(views).forEach(([k, v]) => { v.hidden = k !== name; });
+    $("#btn-enter").textContent = unlocked() ? "Open Private Space" : "Enter Passcode";
+    window.scrollTo(0, 0);
     if (name === "pass") {
       code = "";
       render();
@@ -132,8 +146,7 @@
       setTimeout(() => {
         pin.classList.remove("ok");
         busy = false;
-        show("list");
-        window.scrollTo(0, 0);
+        route();
       }, 900);
     } else {
       wrongTries++;
@@ -161,20 +174,21 @@
     if (views.pass.hidden) return;
     if (/^[0-9]$/.test(e.key)) press(e.key);
     else if (e.key === "Backspace") press("back");
-    else if (e.key === "Escape") show("locked");
+    else if (e.key === "Escape") goHome();
     else return;
     e.preventDefault();
   });
 
-  $("#btn-enter").addEventListener("click", () => show("pass"));
-  $("#btn-cancel").addEventListener("click", () => show("locked"));
+  $("#btn-enter").addEventListener("click", () => { location.hash = "#private"; });
+  $("#btn-cancel").addEventListener("click", goHome);
   $("#btn-lock").addEventListener("click", () => {
     remember(null);
     grid.innerHTML = "";
-    show("locked");
+    goHome();
   });
 
   const html = saved();
   if (html) grid.innerHTML = html;
-  show(html ? "list" : "locked");
+  window.addEventListener("hashchange", route);
+  route();
 })();
