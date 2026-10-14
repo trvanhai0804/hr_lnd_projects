@@ -70,6 +70,7 @@ canvas.game{display:block;width:100%;height:auto;aspect-ratio:900/570}
 .cap{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);background:#0b1f2add;color:#fff4d6;font-weight:800;font-size:clamp(12px,1.6vw,17px);padding:8px 22px;border-radius:999px;white-space:nowrap;pointer-events:none}
 .mode{display:inline-flex;background:#e7ece9;border-radius:12px;padding:4px;gap:4px;flex-wrap:wrap}.mode button{padding:8px 14px;font-size:14px;background:transparent;color:var(--ink);border-radius:9px}.mode button.on{background:var(--ink);color:#fff}
 .modebox{margin-top:18px;padding-top:16px;border-top:1px solid #e9e8df}.modebox p{margin:6px 0 10px;font-size:14px}
+#sound.on,#music.on{background:var(--teal);color:#fff}#music:disabled{opacity:.45}#sound.off,#music.off{background:#fde4e1;color:#b04634;box-shadow:inset 0 0 0 2px #f2b8b0}
 .footer{font-size:12px;color:#87928c;text-align:center;padding-top:20px}
 @media (max-width:900px){header{padding:16px}main{padding:8px 16px}.setup,.game-layout{grid-template-columns:1fr}.history{max-height:200px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
@@ -85,7 +86,7 @@ canvas.game{display:block;width:100%;height:auto;aspect-ratio:900/570}
     <button data-page="wheel">04 · Prize wheel</button>
     <button data-page="jack">05 · Jack in the box</button>
   </nav>
-  <div class="tools"><button class="secondary small" id="sound">🔊 Sound: on</button><button class="secondary small" id="full">⛶ Fullscreen</button></div>
+  <div class="tools"><button class="small" id="sound" aria-pressed="true">🔊 Sound ON</button><button class="small" id="music" aria-pressed="true">🎵 Music ON</button><button class="secondary small" id="full">⛶ Fullscreen</button></div>
 </header>
 <main>
 <section id="setup" class="page active">
@@ -4389,10 +4390,10 @@ const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const KEY='presentationArcadeV2',GAMES=['claw','fish','wheel','jack'];
 const palette=['#f9bc49','#fb7d85','#64c9bf','#a49bdf','#91be71','#ed9d64','#6fb3ea','#f29bd0'];
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-let groups=[],order=[],busy=false,muted=false,mystery=false,active='setup',draw=null,ac=null,wheelRot=0,revealReady=false;
+let groups=[],order=[],busy=false,muted=false,musicOn=true,mystery=false,active='setup',draw=null,ac=null,wheelRot=0,revealReady=false;
 
-(function load(){for(const k of [KEY,'presentationArcadeV1']){try{const s=JSON.parse(localStorage.getItem(k));if(s&&Array.isArray(s.groups)&&Array.isArray(s.order)){groups=s.groups;order=s.order;if(typeof s.muted==='boolean')muted=s.muted;if(typeof s.mystery==='boolean')mystery=s.mystery;return}}catch(e){}}})();
-function persist(){try{localStorage.setItem(KEY,JSON.stringify({groups,order,muted,mystery}))}catch(e){}}
+(function load(){for(const k of [KEY,'presentationArcadeV1']){try{const s=JSON.parse(localStorage.getItem(k));if(s&&Array.isArray(s.groups)&&Array.isArray(s.order)){groups=s.groups;order=s.order;if(typeof s.muted==='boolean')muted=s.muted;if(typeof s.mystery==='boolean')mystery=s.mystery;if(typeof s.musicOn==='boolean')musicOn=s.musicOn;return}}catch(e){}}})();
+function persist(){try{localStorage.setItem(KEY,JSON.stringify({groups,order,muted,musicOn,mystery}))}catch(e){}}
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const remaining=()=>groups.filter(g=>!order.some(o=>o.id===g.id));
 const colorOf=id=>palette[(Number(id)-1)%palette.length];
@@ -4439,12 +4440,46 @@ $('#save').onclick=()=>{
   persist();render();n.className='notice ok';n.textContent=groups.length+' groups ready. Pick a game!';
 };
 $('#demo').onclick=()=>{$('#entries').value=Array.from({length:8},(_,i)=>(i+1)+', Group '+String(i+1).padStart(2,'0')).join('\n');$('#notice').className='notice ok';$('#notice').textContent='Example loaded. Click Apply groups to use it.'};
-function soundLabel(){$('#sound').textContent=muted?'🔇 Sound: off':'🔊 Sound: on'}
-$('#sound').onclick=()=>{muted=!muted;soundLabel();persist();tone(660,.12,'triangle')};
+function soundLabel(){const b=$('#sound');b.textContent=muted?'🔇 Sound OFF':'🔊 Sound ON';b.className='small '+(muted?'off':'on');b.title=muted?'Click to turn sound on':'Click to mute';b.setAttribute('aria-pressed',String(!muted));const m=$('#music');m.textContent=musicOn?'🎵 Music ON':'🎵 Music OFF';m.className='small '+(musicOn?'on':'off');m.disabled=muted;m.title=muted?'Turn sound on first':musicOn?'Click to stop the background music':'Click to play background music';m.setAttribute('aria-pressed',String(musicOn))}
+$('#sound').onclick=()=>{muted=!muted;soundLabel();persist();if(!muted){[523,659,784].forEach((f,i)=>tone(f,.22,'triangle',.08,i*.09));if(musicOn)Music.start()}else Music.stop()};
+$('#music').onclick=()=>{musicOn=!musicOn;soundLabel();persist();musicOn?Music.start():Music.stop()};
 $('#full').onclick=()=>{if(document.fullscreenElement)document.exitFullscreen?.();else document.documentElement.requestFullscreen?.().catch(()=>{})};
 
 /* ---------- Sound ---------- */
-function tone(f,d,type='sine',vol=.06,delay=0){if(muted)return;try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();if(ac.state==='suspended')ac.resume();const t0=ac.currentTime+delay,o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.value=f;g.gain.setValueAtTime(vol,t0);g.gain.exponentialRampToValueAtTime(.001,t0+d);o.connect(g);g.connect(ac.destination);o.start(t0);o.stop(t0+d+.05)}catch(e){}}
+let master=null;
+function audio(){if(!ac){ac=new (window.AudioContext||window.webkitAudioContext)();const comp=ac.createDynamicsCompressor();master=ac.createGain();master.gain.value=1;master.connect(comp);comp.connect(ac.destination)}if(ac.state!=='running')ac.resume();return ac}
+// unlock audio on the very first click or key press, so later sounds are never blocked by the browser
+['pointerdown','keydown','touchstart'].forEach(ev=>document.addEventListener(ev,()=>{if(!muted)try{audio();if(musicOn)Music.start()}catch(e){}},{capture:true,passive:true}));
+function tone(f,d,type='sine',vol=.06,delay=0){if(muted)return;try{const a=audio(),t0=a.currentTime+delay+.01,o=a.createOscillator(),g=a.createGain();o.type=type;o.frequency.value=f;g.gain.setValueAtTime(0.0001,t0);g.gain.linearRampToValueAtTime(Math.min(.9,vol*3.2),t0+.008);g.gain.exponentialRampToValueAtTime(.0005,t0+d);o.connect(g);g.connect(master);o.start(t0);o.stop(t0+d+.05)}catch(e){}}
+/* ---------- Background music: an original, generated arcade loop (C – Am – F – G) ---------- */
+const Music=(()=>{
+  const BASE=.55,STEP=60/108/2;   // 108 bpm, eighth notes
+  const hz=n=>440*Math.pow(2,(n-69)/12);   // MIDI note → Hz
+  const CHORDS=[[48,[60,64,67]],[45,[57,60,64]],[41,[57,60,65]],[43,[55,59,62]]];  // bass root + triad
+  const ARP=[0,1,2,1,0,2,1,2];
+  // 8-bar tune (MIDI per eighth, 0 = rest), played every other time round
+  const MEL=[76,0,79,0,84,0,79,0, 81,0,79,76,0,0,72,0, 77,0,81,0,84,0,81,79, 79,0,0,74,0,79,83,0,
+             84,0,83,84,0,79,76,0, 76,0,81,0,84,0,83,81, 81,0,77,0,81,0,84,0, 83,0,86,0,83,79,0,0];
+  let bus=null,timer=null,next=0,step=0,noise=null,level=-1;
+  function voice(f,t,d,type,vol){const a=ac,o=a.createOscillator(),g=a.createGain();o.type=type;o.frequency.value=f;g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(vol,t+.012);g.gain.exponentialRampToValueAtTime(.0005,t+d);o.connect(g);g.connect(bus);o.start(t);o.stop(t+d+.05)}
+  function kick(t){const o=ac.createOscillator(),g=ac.createGain();o.frequency.setValueAtTime(130,t);o.frequency.exponentialRampToValueAtTime(45,t+.14);g.gain.setValueAtTime(.16,t);g.gain.exponentialRampToValueAtTime(.001,t+.18);o.connect(g);g.connect(bus);o.start(t);o.stop(t+.2)}
+  function hat(t,v){if(!noise){noise=ac.createBuffer(1,ac.sampleRate*.05,ac.sampleRate);const d=noise.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1}
+    const s=ac.createBufferSource(),f=ac.createBiquadFilter(),g=ac.createGain();s.buffer=noise;f.type='highpass';f.frequency.value=7000;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0005,t+.04);s.connect(f);f.connect(g);g.connect(bus);s.start(t)}
+  function play(s,t){const bar=Math.floor(s/8)%16,e=s%8,[root,tri]=CHORDS[bar%4];
+    if(e===0||e===4)voice(hz(root-12),t,STEP*3.2,'triangle',.2);if(e===6)voice(hz(root),t,STEP*.9,'triangle',.12);
+    voice(hz(tri[ARP[e]]+12),t,STEP*1.4,'sine',.06);
+    if(e===0||e===4)kick(t);if(e%2)hat(t,.03);
+    if(bar>=8){const m=MEL[(bar-8)*8+e];if(m)voice(hz(m-12),t,STEP*1.7,'triangle',.075)}}
+  function tick(){if(!ac||!bus)return;const now=ac.currentTime;
+    const want=(draw&&draw.game==='jack')?BASE*.15:BASE;   // duck under the jack-in-the-box music box
+    if(want!==level){level=want;bus.gain.setTargetAtTime(want,now,.25)}
+    if(next<now-.05)next=now+.05;   // catch up after the tab was in the background
+    while(next<now+.35){play(step,next);next+=STEP;step++}}
+  function start(){if(timer||muted||!musicOn)return;try{audio()}catch(e){return}bus=ac.createGain();bus.gain.value=0;bus.connect(master);level=-1;next=ac.currentTime+.1;step=0;timer=setInterval(tick,60);tick()}
+  function stop(){if(!timer)return;clearInterval(timer);timer=null;const b=bus;bus=null;try{b.gain.cancelScheduledValues(ac.currentTime);b.gain.setTargetAtTime(0,ac.currentTime,.15);setTimeout(()=>b.disconnect(),1200)}catch(e){}}
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();else if(ac&&ac.state==='running'&&!muted&&musicOn)start()});
+  return{start,stop};
+})();
 const fanfare=()=>[523,659,784,1047].forEach((f,i)=>tone(f,.4,'triangle',.07,i*.12));
 const sad=()=>[392,311].forEach((f,i)=>tone(f,.3,'triangle',.06,i*.2));
 const boing=()=>{[180,260,360,500].forEach((f,i)=>tone(f,.18,'sine',.08,i*.04));tone(900,.25,'square',.03,.05)};
