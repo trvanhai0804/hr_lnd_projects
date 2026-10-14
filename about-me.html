@@ -631,99 +631,64 @@
       <div class="footer-gradient"></div>
     </section>
 
-    <div class="flying-book" id="flyingBook" title="Click me!">
-      <div class="luxury-book-wrapper">
-        <svg class="luxury-book-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#FFE57F" />
-              <stop offset="50%" stop-color="#D4AF37" />
-              <stop offset="100%" stop-color="#996515" />
-            </linearGradient>
-
-            <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#80FFFF" />
-              <stop offset="50%" stop-color="#33FFFC" />
-              <stop offset="100%" stop-color="#009999" />
-            </linearGradient>
-
-            <linearGradient id="coverGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#1A2639" />
-              <stop offset="50%" stop-color="#111B2B" />
-              <stop offset="100%" stop-color="#090E17" />
-            </linearGradient>
-
-            <linearGradient id="pageGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#FFFDF7" />
-              <stop offset="100%" stop-color="#E8DCB8" />
-            </linearGradient>
-
-            <filter id="goldGlow" x="-30%" y="-30%" width="160%" height="160%">
-              <feGaussianBlur stdDeviation="2.5" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
-
-          <!-- Ambient Glow Circle -->
-          <circle cx="50" cy="50" r="36" fill="url(#cyanGrad)" opacity="0.25" class="svg-aura" />
-
-          <!-- Ether Wings / Energy Flares -->
-          <g class="svg-wings">
-            <path d="M 18 42 C 10 30, 4 44, 18 52 C 11 48, 12 38, 18 42 Z" fill="url(#cyanGrad)" opacity="0.65" />
-            <path d="M 82 42 C 90 30, 96 44, 82 52 C 89 48, 88 38, 82 42 Z" fill="url(#cyanGrad)" opacity="0.65" />
-          </g>
-
-          <!-- Book Shadow -->
-          <ellipse cx="50" cy="76" rx="32" ry="5" fill="#000" opacity="0.4" />
-
-          <!-- Open Pages Base -->
-          <path d="M 18 36 Q 50 44 82 36 L 82 66 Q 50 74 18 66 Z" fill="url(#pageGrad)" stroke="#8C733E" stroke-width="0.8" />
-          <!-- Page Layers -->
-          <path d="M 20 67.5 Q 50 75.5 80 67.5" stroke="#D4AF37" stroke-width="0.7" fill="none" opacity="0.9" />
-          <path d="M 20 69 Q 50 77 80 69" stroke="#194B4F" stroke-width="0.5" fill="none" opacity="0.6" />
-
-          <!-- Left Cover Spine -->
-          <path d="M 15 33 Q 48 42 49 69 Q 47 70 15 63 Z" fill="url(#coverGrad)" stroke="url(#goldGrad)" stroke-width="1.5" />
-
-          <!-- Right Cover Spine -->
-          <path d="M 85 33 Q 52 42 51 69 Q 53 70 85 63 Z" fill="url(#coverGrad)" stroke="url(#goldGrad)" stroke-width="1.5" />
-
-          <!-- Center Spine & Light Conduit -->
-          <path d="M 48 41 L 52 41 L 52 70 L 48 70 Z" fill="url(#goldGrad)" />
-          <line x1="50" y1="35" x2="50" y2="71" stroke="#33FFFC" stroke-width="1.2" opacity="0.9" />
-
-          <!-- Left Page Text/Runes Lines -->
-          <path d="M 24 43 Q 36 46 44 43" stroke="#B8860B" stroke-width="0.8" fill="none" opacity="0.6" />
-          <path d="M 25 49 Q 36 52 44 49" stroke="#B8860B" stroke-width="0.8" fill="none" opacity="0.6" />
-          <path d="M 26 55 Q 36 58 44 55" stroke="#B8860B" stroke-width="0.8" fill="none" opacity="0.6" />
-
-          <!-- Right Page Text/Runes Lines -->
-          <path d="M 56 43 Q 64 46 76 43" stroke="#B8860B" stroke-width="0.8" fill="none" opacity="0.6" />
-          <path d="M 56 49 Q 64 52 75 49" stroke="#B8860B" stroke-width="0.8" fill="none" opacity="0.6" />
-          <path d="M 56 55 Q 64 58 74 55" stroke="#B8860B" stroke-width="0.8" fill="none" opacity="0.6" />
-
-          <!-- Royal Crimson Ribbon Bookmark -->
-          <path d="M 50 38 Q 47 52 41 76 L 45 79 L 49 74 L 53 79 L 51 76 Q 51 52 50 38 Z" fill="#D90429" stroke="url(#goldGrad)" stroke-width="0.5" />
-
-          <!-- Gold Crest & Diamond Jewel -->
-          <g filter="url(#goldGlow)">
-            <polygon points="50,24 55,32 50,40 45,32" fill="url(#goldGrad)" />
-            <circle cx="50" cy="32" r="2.5" fill="#33FFFC" />
-          </g>
-
-          <!-- Floating Magic Sparkles -->
-          <g class="svg-sparkles">
-            <path d="M 28 22 L 30 26 L 34 28 L 30 30 L 28 34 L 26 30 L 22 28 L 26 26 Z" fill="url(#goldGrad)" class="sparkle s1" />
-            <path d="M 72 18 L 73.5 21 L 76.5 22.5 L 73.5 24 L 72 27 L 70.5 24 L 67.5 22.5 L 70.5 21 Z" fill="#33FFFC" class="sparkle s2" />
-            <circle cx="82" cy="58" r="1.8" fill="#FFE57F" class="sparkle s3" />
-            <circle cx="16" cy="52" r="1.8" fill="#33FFFC" class="sparkle s4" />
-          </g>
-        </svg>
-      </div>
-      <span class="book-message">Hi 👋</span>
+    <!-- The little star fairy (from the Evelyn birthday project) flying around the page -->
+    <canvas class="fairy-dust" id="fairyDust" aria-hidden="true"></canvas>
+    <div class="magic-fairy" id="magicFairy" title="Click me!">
+      <svg viewBox="0 0 100 100" class="fairy-svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="fairy-wing-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ffd0a6" stop-opacity="0.9" />
+            <stop offset="100%" stop-color="#ff758c" stop-opacity="0.4" />
+          </linearGradient>
+          <radialGradient id="fairy-body-grad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ffffff" />
+            <stop offset="60%" stop-color="#ffe683" />
+            <stop offset="100%" stop-color="#ffa726" />
+          </radialGradient>
+          <filter id="fairy-glow-filter" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="3.5" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
+        </defs>
+        <path class="fairy-wing left-wing" d="M 40,42 C 15,20 5,35 12,52 C 16,62 30,55 42,48 Z" fill="url(#fairy-wing-grad)" />
+        <path class="fairy-wing right-wing" d="M 60,42 C 85,20 95,35 88,52 C 84,62 70,55 58,48 Z" fill="url(#fairy-wing-grad)" />
+        <path class="fairy-star-body" d="M 50,22 L 57,38 L 74,40 L 61,52 L 65,69 L 50,60 L 35,69 L 39,52 L 26,40 L 43,38 Z" fill="url(#fairy-body-grad)" filter="url(#fairy-glow-filter)" />
+        <circle cx="44" cy="46" r="2.5" fill="#221b1b" />
+        <circle cx="43.2" cy="44.8" r="0.8" fill="#ffffff" />
+        <circle cx="56" cy="46" r="2.5" fill="#221b1b" />
+        <circle cx="55.2" cy="44.8" r="0.8" fill="#ffffff" />
+        <circle cx="41.5" cy="50.5" r="2" fill="#ff758c" opacity="0.7" />
+        <circle cx="58.5" cy="50.5" r="2" fill="#ff758c" opacity="0.7" />
+        <path d="M 48.5,50.8 Q 50,52.8 51.5,50.8" stroke="#221b1b" stroke-width="1.5" fill="none" stroke-linecap="round" />
+      </svg>
+      <span class="fairy-message">Hi 👋</span>
+    </div>
+    <!-- her friend: the same star fairy in rose and lavender -->
+    <div class="magic-fairy fairy-rose" id="magicFairy2" title="Click me!">
+      <svg viewBox="0 0 100 100" class="fairy-svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="fairy2-wing-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#e9d5ff" stop-opacity="0.9" />
+            <stop offset="100%" stop-color="#a78bfa" stop-opacity="0.4" />
+          </linearGradient>
+          <radialGradient id="fairy2-body-grad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ffffff" />
+            <stop offset="60%" stop-color="#ffc2dc" />
+            <stop offset="100%" stop-color="#f472b6" />
+          </radialGradient>
+        </defs>
+        <path class="fairy-wing left-wing" d="M 40,42 C 15,20 5,35 12,52 C 16,62 30,55 42,48 Z" fill="url(#fairy2-wing-grad)" />
+        <path class="fairy-wing right-wing" d="M 60,42 C 85,20 95,35 88,52 C 84,62 70,55 58,48 Z" fill="url(#fairy2-wing-grad)" />
+        <path class="fairy-star-body" d="M 50,22 L 57,38 L 74,40 L 61,52 L 65,69 L 50,60 L 35,69 L 39,52 L 26,40 L 43,38 Z" fill="url(#fairy2-body-grad)" filter="url(#fairy-glow-filter)" />
+        <circle cx="44" cy="46" r="2.5" fill="#221b1b" />
+        <circle cx="43.2" cy="44.8" r="0.8" fill="#ffffff" />
+        <circle cx="56" cy="46" r="2.5" fill="#221b1b" />
+        <circle cx="55.2" cy="44.8" r="0.8" fill="#ffffff" />
+        <circle cx="41.5" cy="50.5" r="2" fill="#ff758c" opacity="0.7" />
+        <circle cx="58.5" cy="50.5" r="2" fill="#ff758c" opacity="0.7" />
+        <path d="M 48.5,50.8 Q 50,52.8 51.5,50.8" stroke="#221b1b" stroke-width="1.5" fill="none" stroke-linecap="round" />
+      </svg>
+      <span class="fairy-message">Hello ✨</span>
     </div>
 
     <script src="js/about-me.js"></script>
