@@ -68,6 +68,8 @@ canvas.game{display:block;width:100%;height:auto;aspect-ratio:900/570}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 #confetti{position:fixed;inset:0;pointer-events:none;z-index:20}
 .cap{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);background:#0b1f2add;color:#fff4d6;font-weight:800;font-size:clamp(12px,1.6vw,17px);padding:8px 22px;border-radius:999px;white-space:nowrap;pointer-events:none}
+.mode{display:inline-flex;background:#e7ece9;border-radius:12px;padding:4px;gap:4px;flex-wrap:wrap}.mode button{padding:8px 14px;font-size:14px;background:transparent;color:var(--ink);border-radius:9px}.mode button.on{background:var(--ink);color:#fff}
+.modebox{margin-top:18px;padding-top:16px;border-top:1px solid #e9e8df}.modebox p{margin:6px 0 10px;font-size:14px}
 .footer{font-size:12px;color:#87928c;text-align:center;padding-top:20px}
 @media (max-width:900px){header{padding:16px}main{padding:8px 16px}.setup,.game-layout{grid-template-columns:1fr}.history{max-height:200px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
@@ -80,7 +82,7 @@ canvas.game{display:block;width:100%;height:auto;aspect-ratio:900/570}
     <button data-page="setup" class="active">01 · Groups</button>
     <button data-page="claw">02 · Claw machine</button>
     <button data-page="fish">03 · Gone fishing</button>
-    <button data-page="wheel">04 · Mystery wheel</button>
+    <button data-page="wheel">04 · Prize wheel</button>
     <button data-page="jack">05 · Jack in the box</button>
   </nav>
   <div class="tools"><button class="secondary small" id="sound">🔊 Sound: on</button><button class="secondary small" id="full">⛶ Fullscreen</button></div>
@@ -89,48 +91,49 @@ canvas.game{display:block;width:100%;height:auto;aspect-ratio:900/570}
 <section id="setup" class="page active">
   <div class="eyebrow">A little suspense before the slides</div>
   <h1>Who’s up next?</h1>
-  <p>Set up your groups, then let the claw, a very opinionated fish, the mystery wheel or a jack-in-the-box decide the presentation order.</p>
+  <p>Set up your groups, then let the claw, a very opinionated fish, the prize wheel or a jack-in-the-box decide the presentation order.</p>
   <div class="setup">
     <div class="card">
       <h2>Your group list</h2>
       <p>One group per line: <b>number, group name</b>. Names alone get automatic numbers. Up to 30 groups.</p>
-      <textarea id="entries" aria-label="Group list" placeholder="1, The Bright Ideas&#10;2, Deadline Heroes&#10;3, Ctrl Alt Elite"></textarea>
+      <textarea id="entries" aria-label="Group list" placeholder="1, Group 01&#10;2, Group 02&#10;3, Group 03"></textarea>
       <div class="toolbar"><button id="save">Apply groups</button><button class="secondary" id="demo">Load example</button></div>
       <div id="notice" class="notice" role="status"></div>
-      <p class="fair">🎲 <b>It’s fair:</b> each winner is picked with true random numbers the moment you press the button. Every group still waiting gets an equal share of capsules and fish, and the claw or hook then goes for one of the winner’s. Slipping claws and escaping fish are just for show. The wheel and the jack-in-the-box stay sealed until the big reveal.</p>
+      <p class="fair">🎲 <b>It’s fair:</b> each winner is picked with true random numbers the moment you press the button. In <b>Show numbers</b> style every waiting group gets an equal share of capsules, fish and wheel slices, and the claw, hook or wheel then lands on one of the winner’s. In <b>Mystery</b> style nothing gives the winner away until the reveal. Slipping claws, escaping fish and near-misses on the wheel are just for show. The jack-in-the-box always stays a surprise.</p>
     </div>
     <div class="card">
       <h2>Ready to present</h2>
       <div id="roster" class="roster"></div>
-      <div class="toolbar"><button data-page="claw">🕹️ Claw machine</button><button class="secondary" data-page="fish">🎣 Go fishing</button><button class="secondary" data-page="wheel">🎡 Mystery wheel</button><button class="secondary" data-page="jack">🎁 Jack in the box</button></div>
+      <div class="toolbar"><button data-page="claw">🕹️ Claw machine</button><button class="secondary" data-page="fish">🎣 Go fishing</button><button class="secondary" data-page="wheel">🎡 Prize wheel</button><button class="secondary" data-page="jack">🎁 Jack in the box</button></div>
+      <div class="modebox"><strong>Claw, fishing & wheel style</strong><p><b>Show numbers:</b> capsules, fish and wheel slices carry group numbers, so the class can cheer for their own. <b>Mystery:</b> everything shows “?” until the big reveal.</p><div class="mode" role="group" aria-label="Number or mystery style"><button data-mode="numbers">🔢 Show numbers</button><button data-mode="mystery">❓ Mystery</button></div></div>
     </div>
   </div>
 </section>
 
 <section id="claw" class="page">
-  <div class="game-head"><div><div class="eyebrow">Grab your moment</div><h1>The claw has spoken.</h1></div><span>🕹️ Arcade mode</span></div>
+  <div class="game-head"><div><div class="eyebrow">Grab your moment</div><h1>The claw has spoken.</h1></div><div class="mode" role="group" aria-label="Number or mystery style"><button data-mode="numbers">🔢 Show numbers</button><button data-mode="mystery">❓ Mystery</button></div></div>
   <div class="game-layout"><div>
     <div class="stage"><canvas class="game" id="clawCanvas" width="900" height="570" aria-label="3D claw machine full of sealed mystery capsules"></canvas><div class="cap" id="clawCap"></div></div>
     <div class="controls"><button class="draw" data-game="claw">Grab a capsule</button></div>
-    <p class="hint">Press Space to grab. Every capsule carries a group number — and the claw has been known to slip…</p>
+    <p class="hint" id="clawHint"></p>
   </div><aside class="card sidebar"></aside></div>
 </section>
 
 <section id="fish" class="page">
-  <div class="game-head"><div><div class="eyebrow">Cast now. Present later.</div><h1>Something’s on the line.</h1></div><span>🎣 Pond mode</span></div>
+  <div class="game-head"><div><div class="eyebrow">Cast now. Present later.</div><h1>Something’s on the line.</h1></div><div class="mode" role="group" aria-label="Number or mystery style"><button data-mode="numbers">🔢 Show numbers</button><button data-mode="mystery">❓ Mystery</button></div></div>
   <div class="game-layout"><div>
     <div class="stage"><canvas class="game" id="fishCanvas" width="900" height="570" aria-label="Pond full of mystery fish"></canvas></div>
     <div class="controls"><button class="draw" data-game="fish">Cast & catch</button></div>
-    <p class="hint">Press Space to cast. Every fish carries a group number. Some only nibble.</p>
+    <p class="hint" id="fishHint"></p>
   </div><aside class="card sidebar"></aside></div>
 </section>
 
 <section id="wheel" class="page">
-  <div class="game-head"><div><div class="eyebrow">Round and round it goes</div><h1>Spin for your spot.</h1></div><span>🎡 Game-show mode</span></div>
+  <div class="game-head"><div><div class="eyebrow">Round and round it goes</div><h1>Spin for your spot.</h1></div><div class="mode" role="group" aria-label="Number or mystery style"><button data-mode="numbers">🔢 Show numbers</button><button data-mode="mystery">❓ Mystery</button></div></div>
   <div class="game-layout"><div>
-    <div class="stage"><canvas class="game" id="wheelCanvas" width="900" height="570" aria-label="Mystery prize wheel with sealed slices"></canvas></div>
+    <div class="stage"><canvas class="game" id="wheelCanvas" width="900" height="570" aria-label="Prize wheel"></canvas></div>
     <div class="controls"><button class="draw" data-game="wheel">Spin the wheel</button></div>
-    <p class="hint">Press Space to spin. Every slice is sealed until the wheel stops.</p>
+    <p class="hint" id="wheelHint"></p>
   </div><aside class="card sidebar"></aside></div>
 </section>
 
@@ -4386,10 +4389,10 @@ const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const KEY='presentationArcadeV2',GAMES=['claw','fish','wheel','jack'];
 const palette=['#f9bc49','#fb7d85','#64c9bf','#a49bdf','#91be71','#ed9d64','#6fb3ea','#f29bd0'];
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-let groups=[],order=[],busy=false,muted=false,active='setup',draw=null,ac=null,wheelRot=0,revealReady=false;
+let groups=[],order=[],busy=false,muted=false,mystery=false,active='setup',draw=null,ac=null,wheelRot=0,revealReady=false;
 
-(function load(){for(const k of [KEY,'presentationArcadeV1']){try{const s=JSON.parse(localStorage.getItem(k));if(s&&Array.isArray(s.groups)&&Array.isArray(s.order)){groups=s.groups;order=s.order;if(typeof s.muted==='boolean')muted=s.muted;return}}catch(e){}}})();
-function persist(){try{localStorage.setItem(KEY,JSON.stringify({groups,order,muted}))}catch(e){}}
+(function load(){for(const k of [KEY,'presentationArcadeV1']){try{const s=JSON.parse(localStorage.getItem(k));if(s&&Array.isArray(s.groups)&&Array.isArray(s.order)){groups=s.groups;order=s.order;if(typeof s.muted==='boolean')muted=s.muted;if(typeof s.mystery==='boolean')mystery=s.mystery;return}}catch(e){}}})();
+function persist(){try{localStorage.setItem(KEY,JSON.stringify({groups,order,muted,mystery}))}catch(e){}}
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const remaining=()=>groups.filter(g=>!order.some(o=>o.id===g.id));
 const colorOf=id=>palette[(Number(id)-1)%palette.length];
@@ -4406,12 +4409,17 @@ function render(){
   const label={claw:'Grab a capsule',fish:'Cast & catch',wheel:'Spin the wheel',jack:'Turn the crank'};
   $$('.draw').forEach(b=>{b.disabled=busy||!rem.length;b.textContent=busy?'Suspense in progress…':rem.length?label[b.dataset.game]:(groups.length?'Everyone’s in the lineup ✓':'Add groups first')});
   $$('nav button').forEach(b=>b.disabled=busy&&b.dataset.page!==active);
+  $$('.mode button').forEach(b=>{b.classList.toggle('on',(b.dataset.mode==='mystery')===mystery);b.disabled=busy});
+  $('#clawHint').textContent=mystery?'Press Space to grab. Every capsule is a sealed mystery — and the claw has been known to slip…':'Press Space to grab. Every capsule carries a group number — and the claw has been known to slip…';
+  $('#wheelHint').textContent=mystery?'Press Space to spin. Every slice is sealed until the wheel stops.':'Press Space to spin. Every group has the same number of slices.';
+  $('#fishHint').textContent=mystery?'Press Space to cast. Every fish is a mystery. Some only nibble.':'Press Space to cast. Every fish carries a group number. Some only nibble.';
 }
 function navigate(p){if(busy)return;active=p;$$('.page').forEach(e=>e.classList.toggle('active',e.id===p));$$('nav button').forEach(e=>e.classList.toggle('active',e.dataset.page===p));scrollTo({top:0})}
 
 document.addEventListener('click',e=>{
   const b=e.target.closest('button');if(!b||b.disabled)return;
   if(b.dataset.page)navigate(b.dataset.page);
+  if(b.dataset.mode&&!busy){mystery=b.dataset.mode==='mystery';persist();render();Claw.refresh()}
   if(b.classList.contains('draw'))start(b.dataset.game);
   if(b.classList.contains('reset')&&confirm('Start a new draw with all groups? This clears the current presentation order.')){order=[];persist();render()}
   if(b.classList.contains('lightning'))lightning();
@@ -4430,7 +4438,7 @@ $('#save').onclick=()=>{
   if(JSON.stringify(list)!==JSON.stringify(groups)){if(order.length&&!confirm('Apply this new list and clear the existing presentation order?'))return;groups=list;order=[]}
   persist();render();n.className='notice ok';n.textContent=groups.length+' groups ready. Pick a game!';
 };
-$('#demo').onclick=()=>{$('#entries').value='1, The Bright Ideas\n2, Deadline Heroes\n3, Ctrl Alt Elite\n4, The Brainstormers\n5, Slide Hustlers\n6, Team Coffee\n7, Pixel Pushers\n8, The Overachievers';$('#notice').className='notice ok';$('#notice').textContent='Example loaded. Click Apply groups to use it.'};
+$('#demo').onclick=()=>{$('#entries').value=Array.from({length:8},(_,i)=>(i+1)+', Group '+String(i+1).padStart(2,'0')).join('\n');$('#notice').className='notice ok';$('#notice').textContent='Example loaded. Click Apply groups to use it.'};
 function soundLabel(){$('#sound').textContent=muted?'🔇 Sound: off':'🔊 Sound: on'}
 $('#sound').onclick=()=>{muted=!muted;soundLabel();persist();tone(660,.12,'triangle')};
 $('#full').onclick=()=>{if(document.fullscreenElement)document.exitFullscreen?.();else document.documentElement.requestFullscreen?.().catch(()=>{})};
@@ -4465,7 +4473,7 @@ function openReveal(d){
   $('#slot').textContent='Presentation slot #'+order.length;
   $('#joke').textContent=pickJoke(d.game,order.length,groups.length);
   const land=()=>{num.textContent=d.target.id;title.textContent=d.target.name;m.classList.add('ready');revealReady=true;fanfare();confetti();$('#continue').focus()};
-  if(reduced||d.pool.length===1||['jack','claw','fish'].includes(d.game)){land();return}
+  if(reduced||d.pool.length===1||d.game==='jack'||(!mystery&&['claw','fish','wheel'].includes(d.game))){land();return}
   let delay=50;
   (function step(){const g=d.pool[Math.floor(Math.random()*d.pool.length)];num.textContent=g.id;title.textContent=g.name;tone(130+Math.random()*40,.07,'triangle',.06);delay*=1.18;if(delay>400)setTimeout(land,450);else setTimeout(step,delay)})();
 }
@@ -4499,7 +4507,7 @@ const Claw=(()=>{
   const canvas=$('#clawCanvas'),capEl=$('#clawCap');
   let renderer;
   try{renderer=new THREE.WebGLRenderer({canvas,antialias:true})}catch(e){renderer=null}
-  if(!renderer||!window.THREE){capEl.textContent='3D isn’t available in this browser — try another game!';return{setup(){},scene(){if(draw&&draw.game==='claw')finish()},restock(){}}}
+  if(!renderer||!window.THREE){capEl.textContent='3D isn’t available in this browser — try another game!';return{setup(){},scene(){if(draw&&draw.game==='claw')finish()},restock(){},refresh(){}}}
   const R=.3,GRAV=9.8,X0=-2,X1=2,Z0=-1.3,Z1=1.3,HOMEY=3.25,COUNT=46,GRIP=.32;
   const CH={x0:-2,x1:-1.05,z0:.35,z1:1.3,top:1.35},CHX=(CH.x0+CH.x1)/2,CHZ=(CH.z0+CH.z1)/2;
   renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.setSize(900,570,false);
@@ -4555,15 +4563,18 @@ const Claw=(()=>{
 
   /* capsules */
   const ballGeo=new THREE.SphereGeometry(R,32,20),matCache=new Map();
-  function matFor(id){if(matCache.has(id))return matCache.get(id);const col=colorOf(id),s=String(id),big=s.length>1?84:104;
+  function matFor(id){return mkMat('n'+id,colorOf(id),String(id))}
+  function qMat(i){return mkMat('q'+i,palette[i],'?')}
+  const ballMaterial=b=>mystery?qMat(b.mc):matFor(b.id);
+  function mkMat(key,col,s){if(matCache.has(key))return matCache.get(key);const big=s.length>1?84:104;
     const m=new THREE.MeshPhysicalMaterial({roughness:.28,clearcoat:.8,clearcoatRoughness:.15,map:tex(512,256,(c,w,h)=>{
       c.fillStyle='#eef7fb';c.fillRect(0,0,w,h/2);c.fillStyle=col;c.globalAlpha=.3;c.fillRect(0,0,w,h/2);c.globalAlpha=1;c.fillStyle=col;c.fillRect(0,h/2,w,h/2);
       c.fillStyle='#ffffffcc';c.fillRect(0,h/2-5,w,10);c.textAlign='center';c.textBaseline='middle';c.lineJoin='round';c.strokeStyle='#193348';c.fillStyle='#fff';
       c.font=`900 ${big}px Segoe UI, Arial`;c.lineWidth=14;for(let i=0;i<4;i++){const x=64+i*128;c.strokeText(s,x,h*.72);c.fillText(s,x,h*.72);c.strokeText(s,(x+64)%w,h*.3);c.fillText(s,(x+64)%w,h*.3)}})});
-    matCache.set(id,m);return m}
+    matCache.set(key,m);return m}
   let balls=[],labelKey=null;
   const rq=()=>{const q=new THREE.Quaternion();q.setFromAxisAngle(new THREE.Vector3(Math.random()-.5,Math.random()-.5,Math.random()-.5).normalize(),Math.random()*6.3);return q};
-  function makeBall(x,y,z,id){const m=new THREE.Mesh(ballGeo,matFor(id));m.castShadow=m.receiveShadow=true;m.quaternion.copy(rq());scene.add(m);const b={mesh:m,id,p:new THREE.Vector3(x,y,z),v:new THREE.Vector3(),kin:false,inChute:false,gone:false};balls.push(b);return b}
+  function makeBall(x,y,z,id){const mc=Math.floor(Math.random()*palette.length),m=new THREE.Mesh(ballGeo,mystery?qMat(mc):matFor(id));m.castShadow=m.receiveShadow=true;m.quaternion.copy(rq());scene.add(m);const b={mesh:m,id,mc,p:new THREE.Vector3(x,y,z),v:new THREE.Vector3(),kin:false,inChute:false,gone:false};balls.push(b);return b}
   const inChuteXZ=(x,z,pad=0)=>x<CH.x1+pad&&z>CH.z0-pad;
   function spots(){const out=[];for(let l=0;l<6;l++){const layer=[];for(let x=-1.66;x<=1.67;x+=.64)for(let z=-.96;z<=.97;z+=.64){if(!inChuteXZ(x,z,R))layer.push([x+(Math.random()-.5)*.14,R+.04+l*.64,z+(Math.random()-.5)*.14])}layer.sort(()=>Math.random()-.5);out.push(...layer)}return out}
   function nextLabel(rem){const cnt=new Map(rem.map(id=>[id,0]));for(const b of balls)if(cnt.has(b.id))cnt.set(b.id,cnt.get(b.id)+1);let best=[],min=1e9;for(const [id,n] of cnt){if(n<min){min=n;best=[id]}else if(n===min)best.push(id)}return best[Math.floor(Math.random()*best.length)]}
@@ -4606,7 +4617,7 @@ const Claw=(()=>{
   const reachable=b=>Math.abs(b.p.x)<1.6&&Math.abs(b.p.z)<.95;
   function pickBall(want,avoid){let c=balls.filter(b=>!b.gone&&!b.kin&&!inChuteXZ(b.p.x,b.p.z,.25));
     if(want!=null){const t=c.filter(b=>b.id===want),r=t.filter(reachable);let b=(r.length?r:t).sort((a,b)=>b.p.y-a.p.y)[0];
-      if(!b){b=c.filter(reachable).sort((a,b)=>b.p.y-a.p.y)[0]||c[0];b.id=want;b.mesh.material=matFor(want)}return b}
+      if(!b){b=c.filter(reachable).sort((a,b)=>b.p.y-a.p.y)[0]||c[0];b.id=want;b.mesh.material=ballMaterial(b)}return b}
     const o=c.filter(b=>b.id!==avoid);if(o.length)c=o;
     c=c.filter(reachable).sort((a,b)=>b.p.y-a.p.y).slice(0,6);return c[Math.floor(Math.random()*c.length)]||balls.find(b=>!b.gone)}
   const grab=b=>{b.kin=true;b.v.set(0,0,0);draw.carry=b};
@@ -4617,18 +4628,18 @@ const Claw=(()=>{
     for(let f=0;f<fakes;f++){const second=f===1;
       S.push(()=>{d.ball=pickBall(null,d.target.id);return{to:{x:d.ball.p.x,z:d.ball.p.z,open:1},dur:1200,sound:'move'}});
       S.push(()=>({to:{y:d.ball.p.y+GRIP},dur:900,cap:second?'Going down… again…':'Going down…'}));
-      S.push(()=>({to:{open:0},dur:400,cap:`Got group ${d.ball.id}…?`,sound:'grab',end:()=>grab(d.ball)}));
+      S.push(()=>({to:{open:0},dur:400,cap:mystery?'Got one…?':`Got group ${d.ball.id}…?`,sound:'grab',end:()=>grab(d.ball)}));
       S.push(()=>({to:{y:2.2+Math.random()*.6},dur:900}));
-      S.push(()=>({to:{open:.7},dur:300,cap:second?`Slipped AGAIN?! Bye, group ${d.ball.id} 😤`:`Nope! Group ${d.ball.id} slipped away 😱`,sound:'slip',start:()=>drop(d.ball)}));
+      S.push(()=>({to:{open:.7},dur:300,cap:mystery?(second?'Slipped AGAIN?! 😤':'Nope! The claw slipped 😱'):(second?`Slipped AGAIN?! Bye, group ${d.ball.id} 😤`:`Nope! Group ${d.ball.id} slipped away 😱`),sound:'slip',start:()=>drop(d.ball)}));
       S.push(()=>({dur:700}));
       S.push(()=>({to:{y:HOMEY,open:1},dur:600,cap:f<fakes-1?'Argh! Let’s try that again…':'Okay… one more try'}))}
     S.push(()=>{d.ball=pickBall(d.target.id);return{to:{x:d.ball.p.x,z:d.ball.p.z,open:1},dur:1200,sound:'move'}});
     S.push(()=>({to:{y:d.ball.p.y+GRIP},dur:1000,cap:'Going down…'}));
     S.push(()=>({to:{open:0},dur:400,cap:'Gotcha!',sound:'grab',end:()=>grab(d.ball)}));
     S.push(()=>({dur:300}));
-    S.push(()=>({to:{y:HOMEY},dur:1200,cap:`It’s group ${d.ball.id}… hold on, hold on! 😬`}));
+    S.push(()=>({to:{y:HOMEY},dur:1200,cap:mystery?'Hold on… hold on… 😬':`It’s group ${d.ball.id}… hold on, hold on! 😬`}));
     S.push(()=>({to:{x:CHX,z:CHZ},dur:1300,cap:'Heading for the prize chute…'}));
-    S.push(()=>({to:{open:1},dur:400,cap:`Group ${d.ball.id} is on its way! 🎉`,sound:'drop',start:()=>drop(d.ball,true)}));
+    S.push(()=>({to:{open:1},dur:400,cap:mystery?'Prize incoming! Who’s inside? 🤔':`Group ${d.ball.id} is on its way! 🎉`,sound:'drop',start:()=>drop(d.ball,true)}));
     S.push(()=>({dur:1100}));
     d.si=-1;
   }
@@ -4652,9 +4663,10 @@ const Claw=(()=>{
     bulbs.forEach((m,i)=>m.emissiveIntensity=Math.sin(t/(run?80:350)+i)>.1?1.3:.08);
     camera.position.set(Math.sin(t/5000)*.5,3.3,12);camera.lookAt(0,2,0);
     renderer.render(scene,camera);
-    const c=run?draw.cap:(has?'Every capsule carries a group number… grab one!':'Everyone’s been drawn!');if(c!==cap){cap=c;capEl.textContent=c}
+    const c=run?draw.cap:(has?(mystery?'Every capsule hides a group… grab one!':'Every capsule carries a group number… grab one!'):'Everyone’s been drawn!');if(c!==cap){cap=c;capEl.textContent=c}
   }
-  return{setup,scene:sceneFn,restock};
+  function refresh(){for(const b of balls)b.mesh.material=ballMaterial(b)}
+  return{setup,scene:sceneFn,restock,refresh};
 })();
 
 /* ---------- Fishing (16 mystery fish) ---------- */
@@ -4681,10 +4693,10 @@ function fishScene(t){
   switch(ph.n){
     case 'cast':bx=lerp(310,BX,ease(ph.p));by=lerp(144,BY,ph.p)-Math.sin(Math.PI*ph.p)*90;cap='Casting…';fire('cast',()=>tone(700,.25,'sine',.04));break;
     case 'wait':cap='Waiting for a bite…';break;
-    case 'nibble':{const g=fishLabels[ph.o.fd];if(ph.p>.3&&ph.p<.6)by=BY+Math.abs(Math.sin((ph.p-.3)/.3*Math.PI*2))*12;if(ph.p>.3)fire('nib'+ph.i,()=>tone(500,.08,'square',.03));if(ph.p>=.6)fire('flee'+ph.i,sad);cap=ph.p<.6?`Group ${g} is nibbling… 👀`:(ph.o.second?`Group ${g} escaped too?! 😤`:`Group ${g} got away! 💨`);break}
+    case 'nibble':{const g=fishLabels[ph.o.fd];if(ph.p>.3&&ph.p<.6)by=BY+Math.abs(Math.sin((ph.p-.3)/.3*Math.PI*2))*12;if(ph.p>.3)fire('nib'+ph.i,()=>tone(500,.08,'square',.03));if(ph.p>=.6)fire('flee'+ph.i,sad);cap=mystery?(ph.p<.6?'Something’s nibbling… 👀':(ph.o.second?'Another one escaped?! 😤':'It got away! 💨')):(ph.p<.6?`Group ${g} is nibbling… 👀`:(ph.o.second?`Group ${g} escaped too?! 😤`:`Group ${g} got away! 💨`));break}
     case 'bite':if(ph.p>.65){by=BY+ease((ph.p-.65)/.35)*30;fire('bite',()=>tone(880,.18,'square',.05))}cap=ph.p<.65?'Here comes one…':'BITE!!';break;
     case 'reel':bx=lerp(BX,392,ease(ph.p));by=lerp(BY+30,175,ease(ph.p));cap='Reel it in!!';fire('reel',()=>tone(220,.35,'sawtooth',.035));break;
-    case 'hold':bx=392;by=175+Math.sin(t/120)*3;cap=`What a catch — it’s group ${fishLabels[draw.ft]}!`;break;
+    case 'hold':bx=392;by=175+Math.sin(t/120)*3;cap=mystery?'What a catch! But who is it? 🤔':`What a catch — it’s group ${fishLabels[draw.ft]}!`;break;
   }
   const up=ph.n==='reel'||ph.n==='hold',hx=bx,hy=up?by+40:by+(ph.n==='cast'?70*ph.p:70);
   if(has)for(let i=1;i<fishLabels.length;i++){
@@ -4694,7 +4706,7 @@ function fishScene(t){
     if(isD&&ph.n==='nibble'){const p=ph.p;a=p<.3?ease(p/.3):p<.6?1:1-ease((p-.6)/.4);flee=p>=.6}
     if(isT&&ph.n==='bite')a=ease(Math.min(1,ph.p/.6));
     if(a>0){const d=hx>=n.x?1:-1;x=lerp(n.x,hx-27*d,a);y=lerp(n.y,hy+4,a);dir=flee?-d:d;if(isT&&ph.p>.6)y+=Math.sin(t/40)*3}
-    fish(c,x,y,colorOf(fishLabels[i]),.72,dir,0,fishLabels[i]);
+    fish(c,x,y,mystery?palette[i%palette.length]:colorOf(fishLabels[i]),.72,dir,0,mystery?'?':fishLabels[i]);
   }
   round(c,0,228,240,28,8,'#ae8454');for(let i=0;i<7;i++)line(c,[[i*40,232],[i*40,252]],'#896943',2);
   round(c,28,252,18,200,4,'#84664c');round(c,190,252,18,160,4,'#84664c');
@@ -4706,33 +4718,44 @@ function fishScene(t){
   line(c,[[hx,hy],[hx,hy+12],[hx-7,hy+15],[hx-9,hy+9]],'#e8eef0',2.5);
   ellipse(c,bx,by,9,10,'#fa7b73');c.save();c.beginPath();c.ellipse(bx,by,9,10,0,0,Math.PI*2);c.clip();c.fillStyle='#fff';c.fillRect(bx-9,by-10,18,8);c.restore();
   if(ph.n==='reel'&&ph.p<.4){const q=ph.p/.4;for(let i=0;i<14;i++){const an=-Math.PI*(i+.5)/14;ellipse(c,BX+Math.cos(an)*q*95,255+Math.sin(an)*q*95+q*q*70,3,5,'#d8f5efcc')}}
-  if(run&&up)fish(c,hx,hy+38,colorOf(fishLabels[draw.ft]),1.15,1,-Math.PI/2+Math.sin(t/70)*.3,fishLabels[draw.ft]);
-  pill(c,run?cap:(has?'Every fish carries a group number… cast your line!':'The pond is empty — everyone’s been caught!'),450,546);
+  if(run&&up)fish(c,hx,hy+38,mystery?palette[draw.ft%palette.length]:colorOf(fishLabels[draw.ft]),1.15,1,-Math.PI/2+Math.sin(t/70)*.3,mystery?'?':fishLabels[draw.ft]);
+  pill(c,run?cap:(has?(mystery?'Every fish hides a group… cast your line!':'Every fish carries a group number… cast your line!'):'The pond is empty — everyone’s been caught!'),450,546);
   if(run&&ph.done)finish();
 }
 
-/* ---------- Mystery wheel (24 sealed slices) ---------- */
-const SLICES=24;
-function setupWheel(d){const k=Math.floor(Math.random()*SLICES),s=Math.PI*2/SLICES;let f=.2+Math.random()*.6;if(Math.random()<.4)f=Math.random()<.5?.06+Math.random()*.06:.88+Math.random()*.06;const base=-Math.PI/2-(k+f)*s;d.wk=k;d.from=wheelRot;d.to=base+Math.PI*2*Math.ceil((d.from+Math.PI*2*7-base)/(Math.PI*2));d.dur=6500+Math.random()*1200}
+/* ---------- Prize wheel (mystery: 24 sealed slices · numbers: equal slices per group) ---------- */
+const SLICES=24;let wheelLabels=[],wheelKey=null;
+function syncWheel(){const rem=remaining().map(g=>g.id),key=rem.join(',');if(key===wheelKey)return;wheelKey=key;wheelLabels=[];if(!rem.length)return;
+  const reps=Math.max(1,Math.round(SLICES/rem.length));   // same number of slices for every waiting group
+  for(let r=0;r<reps;r++){const sh=[...rem].sort(()=>Math.random()-.5);if(sh.length>1&&sh[0]===wheelLabels[wheelLabels.length-1])sh.push(sh.shift());wheelLabels.push(...sh)}
+  if(rem.length>2&&wheelLabels[0]===wheelLabels[wheelLabels.length-1]){const L=wheelLabels.length;[wheelLabels[L-1],wheelLabels[L-2]]=[wheelLabels[L-2],wheelLabels[L-1]]}}
+function setupWheel(d){syncWheel();d.mys=mystery;const N=d.mys?SLICES:wheelLabels.length;d.wn=N;
+  let k=Math.floor(Math.random()*N);
+  if(!d.mys){const mine=wheelLabels.map((id,i)=>i).filter(i=>wheelLabels[i]===d.target.id);k=mine[Math.floor(Math.random()*mine.length)]}
+  const s=Math.PI*2/N;let f=.2+Math.random()*.6;if(Math.random()<.4)f=Math.random()<.5?.06+Math.random()*.06:.88+Math.random()*.06;
+  const base=-Math.PI/2-(k+f)*s;d.wk=k;d.from=wheelRot;d.to=base+Math.PI*2*Math.ceil((d.from+Math.PI*2*7-base)/(Math.PI*2));d.dur=6500+Math.random()*1200}
 function wheelScene(t){
   const c=wc,run=draw&&draw.game==='wheel',has=run||remaining().length>0;
+  if(!run)syncWheel();
+  const mys=run?draw.mys:mystery,N=run?draw.wn:(mys?SLICES:(wheelLabels.length||SLICES));
   const bg=c.createRadialGradient(450,290,40,450,290,560);bg.addColorStop(0,'#2d4a6b');bg.addColorStop(1,'#111d2c');c.fillStyle=bg;c.fillRect(0,0,900,570);
   for(let i=0;i<30;i++)ellipse(c,(i*197)%900,(i*83)%570,1.6,1.6,'#ffffff30');
-  const CX=450,CY=290,R=210,s=Math.PI*2/SLICES;
+  const CX=450,CY=290,R=210,s=Math.PI*2/N;
   let rot,p=0;
   if(run){p=Math.min(1,(t-draw.start)/draw.dur);rot=draw.from+(draw.to-draw.from)*(1-Math.pow(1-p,4));wheelRot=rot}
   else{wheelRot=mod(wheelRot+.0025,Math.PI*2);rot=wheelRot}
   ellipse(c,CX,CY+8,R+30,R+30,'#0006');ellipse(c,CX,CY,R+28,R+28,'#f28188');ellipse(c,CX,CY,R+12,R+12,'#183a4b');
   for(let i=0;i<24;i++){const a=i/24*Math.PI*2;ellipse(c,CX+Math.cos(a)*(R+20),CY+Math.sin(a)*(R+20),4.5,4.5,(i+Math.floor(t/(run?110:450)))%2?'#fff1b7':'#c95c66')}
-  const k=Math.floor(mod(-Math.PI/2-rot,Math.PI*2)/s)%SLICES,landed=run&&p>=1;
-  for(let j=0;j<SLICES;j++){const a0=rot+j*s;c.beginPath();c.moveTo(CX,CY);c.arc(CX,CY,R,a0,a0+s);c.closePath();c.fillStyle=has?palette[j%palette.length]:'#3a5566';c.fill();c.strokeStyle='#fffdf5';c.lineWidth=2;c.stroke();
+  const k=Math.floor(mod(-Math.PI/2-rot,Math.PI*2)/s)%N,landed=run&&p>=1;
+  const col=j=>!has?'#3a5566':mys?palette[j%palette.length]:colorOf(wheelLabels[j]);
+  for(let j=0;j<N;j++){const a0=rot+j*s;c.beginPath();c.moveTo(CX,CY);c.arc(CX,CY,R,a0,a0+s);c.closePath();c.fillStyle=col(j);c.fill();c.strokeStyle='#fffdf5';c.lineWidth=2;c.stroke();
     if(landed&&j===k&&Math.floor(t/120)%2){c.fillStyle='#ffffffaa';c.fill()}
-    if(has){const m=a0+s/2;label(c,j%3===1?'★':'?',CX+Math.cos(m)*(R-30),CY+Math.sin(m)*(R-30),j%3===1?20:24)}}
+    if(has){const m=a0+s/2,x=CX+Math.cos(m)*(R-30),y=CY+Math.sin(m)*(R-30);if(mys)label(c,j%3===1?'★':'?',x,y,j%3===1?20:24);else label(c,String(wheelLabels[j]),x,y,N>24?17:22)}}
   if(run&&k!==draw.lastK){if(draw.lastK!==-1)tone(1500,.03,'square',.025);draw.lastK=k;draw.tickAt=t}
-  ellipse(c,CX,CY,54,54,'#fffdf5');ellipse(c,CX,CY,46,46,has?palette[k%palette.length]:'#3a5566');label(c,'?',CX,CY+2,40);
+  ellipse(c,CX,CY,54,54,'#fffdf5');ellipse(c,CX,CY,46,46,col(k));label(c,!has||mys?'?':String(wheelLabels[k]),CX,CY+2,40);
   c.save();c.translate(CX,CY-R-20);c.rotate(run&&t-draw.tickAt<70?-.28:0);c.beginPath();c.moveTo(-19,-14);c.lineTo(19,-14);c.lineTo(0,34);c.closePath();c.fillStyle='#fffdf5';c.fill();c.strokeStyle='#193348';c.lineWidth=3;c.stroke();ellipse(c,0,-10,7,7,'#f28188');c.restore();
-  let cap=has?'Every slice is sealed… spin it!':'Everyone’s been drawn!';
-  if(run){cap=p<.25?'Spinning!':p<.8?'Round and round…':p<1?'Slowing down… 😬':'Opening the slice…';if(p>=1)fire('land',()=>tone(660,.2,'triangle',.06))}
+  let cap=has?(mys?'Every slice is sealed… spin it!':'Every group has the same number of slices… spin it!'):'Everyone’s been drawn!';
+  if(run){cap=p<.25?'Spinning!':p<.8?'Round and round…':p<1?'Slowing down… 😬':(mys?'Opening the slice…':`Group ${wheelLabels[k]} it is! 🎉`);if(p>=1)fire('land',()=>tone(660,.2,'triangle',.06))}
   pill(c,cap,450,546);
   if(run&&t-draw.start>draw.dur+1100)finish();
 }
