@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Projects – Private Space | Shival</title>
+    <title>Projects | Shival</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/style-status.css" />
   </head>
@@ -22,30 +22,57 @@
       <a class="cta" href="about-me.html#get-in-touch"><button>Connect With Me</button></a>
     </header>
 
-    <!-- 1. Locked -->
-    <main class="status" id="view-locked">
-      <div class="status-card">
-        <div class="status-icon locked" aria-hidden="true">
-          <svg viewBox="0 0 48 48" fill="none" stroke="#ff8a80" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="10" y="21" width="28" height="21" rx="4" />
-            <path d="M16 21v-6a8 8 0 0 1 16 0v6" />
-            <circle cx="24" cy="30" r="2.6" fill="#ff8a80" stroke="none" />
-            <path d="M24 32.5v4" />
-          </svg>
+    <!-- 1. The two areas: private (left) and public (right) -->
+    <main class="status" id="view-home">
+      <div class="split">
+        <div class="status-card">
+          <div class="status-icon locked" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="#ff8a80" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="10" y="21" width="28" height="21" rx="4" />
+              <path d="M16 21v-6a8 8 0 0 1 16 0v6" />
+              <circle cx="24" cy="30" r="2.6" fill="#ff8a80" stroke="none" />
+              <path d="M24 32.5v4" />
+            </svg>
+          </div>
+
+          <p class="status-tag">• Projects •</p>
+          <h1>Private <span class="gradient-text">space</span></h1>
+          <p class="status-text">
+            Sorry, you don't have the authority to enter this area. The projects
+            here are private.
+          </p>
+
+          <div class="status-badge">403 · Access restricted</div>
+
+          <div class="status-actions">
+            <button id="btn-enter" type="button">Enter Passcode</button>
+            <a class="ghost" href="about-me.html#get-in-touch">Request Access</a>
+          </div>
         </div>
 
-        <p class="status-tag">• Projects •</p>
-        <h1>Private <span class="gradient-text">space</span></h1>
-        <p class="status-text">
-          Sorry, you don't have the authority to enter this area. The projects
-          here are private.
-        </p>
+        <div class="status-card public">
+          <div class="status-icon" aria-hidden="true">
+            <!-- an open padlock: anyone can come in -->
+            <svg viewBox="0 0 48 48" fill="none" stroke="#33fffc" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="10" y="21" width="28" height="21" rx="4" />
+              <path d="M16 21v-6a8 8 0 0 1 15.4-3" />
+              <circle cx="24" cy="30" r="2.6" fill="#33fffc" stroke="none" />
+              <path d="M24 32.5v4" />
+            </svg>
+          </div>
 
-        <div class="status-badge">403 · Access restricted</div>
+          <p class="status-tag">• Projects •</p>
+          <h1>Public <span class="gradient-text">projects</span></h1>
+          <p class="status-text">
+            Open to everyone. Tools and experiments you can try right away, no
+            passcode needed.
+          </p>
 
-        <div class="status-actions">
-          <button id="btn-enter" type="button">Enter Passcode</button>
-          <a class="ghost" href="about-me.html#get-in-touch">Request Access</a>
+          <div class="status-badge open">1 project · Open to everyone</div>
+
+          <div class="status-actions">
+            <a href="#public"><button type="button" tabindex="-1">Explore Projects</button></a>
+          </div>
         </div>
       </div>
     </main>
@@ -96,8 +123,12 @@
       </div>
     </main>
 
-    <!-- 3. The projects -->
-    <main class="projects" id="view-projects" hidden>
+    <!-- 3. The private projects -->
+    <main class="projects" id="view-private" hidden>
+      <a class="back-link" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
+        All projects
+      </a>
       <div class="projects-head">
         <div>
           <p class="status-tag">• Private space •</p>
@@ -114,6 +145,72 @@
 
       <!-- filled in by js/projects.js once the passcode decrypts the list -->
       <div class="project-grid" id="project-grid"></div>
+    </main>
+
+    <!-- 4. The public projects -->
+    <main class="projects" id="view-public" hidden>
+      <a class="back-link" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
+        All projects
+      </a>
+      <div class="projects-head">
+        <div>
+          <p class="status-tag">• Open to everyone •</p>
+          <h1>Public <span class="gradient-text">projects</span></h1>
+          <p class="status-text">
+            Tools built for real classrooms and teams. Open one and try it.
+          </p>
+        </div>
+      </div>
+
+      <div class="project-grid">
+        <article class="project-card">
+          <div class="project-cover cover-arcade" aria-hidden="true">
+            <!-- a claw machine next to a prize wheel: the presentation-order games -->
+            <svg viewBox="0 0 320 180">
+              <g fill="#33fffc" opacity="0.8"><circle cx="30" cy="30" r="2" /><circle cx="300" cy="24" r="1.5" /><circle cx="296" cy="150" r="2" /><circle cx="20" cy="140" r="1.5" /></g>
+              <!-- claw machine -->
+              <rect x="52" y="38" width="96" height="132" rx="8" fill="#e8746c" stroke="#0c2730" stroke-width="2" />
+              <rect x="58" y="44" width="84" height="16" rx="4" fill="#fff4cf" />
+              <text x="100" y="56" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="800" fill="#c24a43">LUCKY CLAW</text>
+              <rect x="62" y="66" width="76" height="62" rx="4" fill="#0f2d3b" stroke="#33fffc" stroke-width="1.5" />
+              <path d="M100 66v18" stroke="#d8dde4" stroke-width="2" />
+              <path d="M92 92l8-8 8 8M92 92l-2 6M108 92l2 6" fill="none" stroke="#d8dde4" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+              <circle cx="76" cy="118" r="8" fill="#f9bc49" /><circle cx="92" cy="120" r="8" fill="#64c9bf" /><circle cx="108" cy="118" r="8" fill="#a49bdf" /><circle cx="124" cy="120" r="8" fill="#fb7d85" /><circle cx="84" cy="108" r="7" fill="#91be71" /><circle cx="116" cy="108" r="7" fill="#6fb3ea" />
+              <rect x="66" y="136" width="30" height="20" rx="3" fill="#0c2730" />
+              <circle cx="122" cy="146" r="6" fill="#f9bc49" stroke="#0c2730" stroke-width="2" />
+              <!-- prize wheel -->
+              <g transform="translate(232 92)">
+                <circle r="52" fill="#0c2730" stroke="#fff4cf" stroke-width="4" />
+                <path d="M0 0L0-48A48 48 0 0 1 41.6-24z" fill="#f9bc49" />
+                <path d="M0 0L41.6-24A48 48 0 0 1 41.6 24z" fill="#fb7d85" />
+                <path d="M0 0L41.6 24A48 48 0 0 1 0 48z" fill="#64c9bf" />
+                <path d="M0 0L0 48A48 48 0 0 1-41.6 24z" fill="#a49bdf" />
+                <path d="M0 0L-41.6 24A48 48 0 0 1-41.6-24z" fill="#91be71" />
+                <path d="M0 0L-41.6-24A48 48 0 0 1 0-48z" fill="#6fb3ea" />
+                <circle r="8" fill="#fff4cf" stroke="#0c2730" stroke-width="2" />
+                <path d="M-8-62h16l-8 14z" fill="#33fffc" stroke="#0c2730" stroke-width="2" stroke-linejoin="round" />
+              </g>
+              <path d="M222 148l10-4 10 4v24h-20z" fill="#1b4d57" />
+            </svg>
+          </div>
+          <div class="project-body">
+            <p class="project-meta">Classroom tool · 2026</p>
+            <h2>Presentation Arcade</h2>
+            <p>
+              Who presents next? A 3D claw machine, a fishing pond, a prize wheel
+              or a jack-in-the-box picks the next group – fairly, at random, and
+              with a little suspense before the slides.
+            </p>
+            <ul class="project-tags">
+              <li>4 mini-games</li>
+              <li>Up to 30 groups</li>
+              <li>Works offline</li>
+            </ul>
+            <a class="project-open" href="projects/ttivn/group-picker.html" target="_blank" rel="noopener"><button type="button" tabindex="-1">Open project</button></a>
+          </div>
+        </article>
+      </div>
     </main>
 
     <script src="js/projects.js"></script>
